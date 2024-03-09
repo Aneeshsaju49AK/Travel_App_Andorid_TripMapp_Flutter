@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
@@ -401,6 +402,7 @@ class TabBarListWidget extends StatelessWidget {
           itemCount: min(5, placeList.length),
           itemBuilder: (context, index) {
             ModelPlace place = placeList[index];
+
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
@@ -419,7 +421,6 @@ class TabBarListWidget extends StatelessWidget {
                   width: 200,
                   height: 300,
                   decoration: BoxDecoration(
-                    color: Colors.blue,
                     border: Border.all(),
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: const [
@@ -453,6 +454,40 @@ class TabBarListWidget extends StatelessWidget {
                                 File(place.images![0]),
                                 fit: BoxFit.fill,
                               ),
+                        // this container is used to set a opacity for image to prevent unreadablty
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.2),
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(30),
+                              bottomRight: Radius.circular(30),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 10,
+                          top: 170,
+                          child: Text(
+                            place.placeName ?? "placeName",
+                            style: GoogleFonts.abel(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 10,
+                          top: 195,
+                          child: Text(
+                            place.subPlaceName ?? "district",
+                            style: GoogleFonts.abel(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -549,6 +584,13 @@ class SilderViewWidget extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                       ),
+                    ),
+                  ),
+                  // this container is used to set a opacity for image to prevent unreadablty
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
                   Positioned(
