@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
-import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 
 const PLACELISTADDTRIP_DB_NAME = "addtrip-database-01";
 

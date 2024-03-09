@@ -22,7 +22,7 @@ class BlogsScreenWidget extends StatelessWidget {
             width: width / 1,
             child: Column(
               children: [
-                Row(
+                const Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
@@ -41,7 +41,7 @@ class BlogsScreenWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 Container(
@@ -63,7 +63,7 @@ class BlogsScreenWidget extends StatelessWidget {
                               clipBehavior: Clip.antiAlias,
                               width: width / 1,
                               height: height / 3.5,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Colors.amber,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
@@ -105,7 +105,7 @@ class BlogsScreenWidget extends StatelessWidget {
                                               .reFreshUIBlogs();
                                         });
                                       },
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.delete,
                                         size: 30,
                                         color: Colors.red,
@@ -136,7 +136,7 @@ class BlogsScreenWidget extends StatelessWidget {
           // );
           Navigator.push(context, MaterialPageRoute(
             builder: (context) {
-              return Scaffold(
+              return const Scaffold(
                 body: SafeArea(
                   child: PopupScreen(),
                 ),
@@ -177,7 +177,7 @@ class PopupScreen extends StatefulWidget {
 
 class _PopupScreenState extends State<PopupScreen> {
   int countImage = 0;
-  List<String> _images = [];
+  final List<String> _images = [];
   TextEditingController nameController = TextEditingController();
   TextEditingController contentController = TextEditingController();
 
@@ -331,7 +331,7 @@ class _PopupScreenState extends State<PopupScreen> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     left: 15,
                     top: 20,
                   ),
@@ -341,16 +341,16 @@ class _PopupScreenState extends State<PopupScreen> {
                         onTap: () {
                           handleSavebuttonBlogPage(context);
                         },
-                        child: RoundButton(
+                        child: const RoundButton(
                           label: "Save",
                           imagePath: "asset/imges/navigation_img/eye.png",
                           buttonColor: Colors.blue,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 40,
                       ),
-                      RoundButton(
+                      const RoundButton(
                         label: "Clear",
                         imagePath: "asset/imges/navigation_img/eye.png",
                         buttonColor: Colors.red,

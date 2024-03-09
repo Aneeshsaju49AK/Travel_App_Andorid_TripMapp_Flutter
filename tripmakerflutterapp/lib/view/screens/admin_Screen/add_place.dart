@@ -428,7 +428,7 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                           onTap: () {
                             handleAddPlaceSaveButtonPress(context);
                           },
-                          child: RoundButton(
+                          child: const RoundButton(
                             label: "Save",
                             imagePath: "asset/imges/navigation_img/eye.png",
                             buttonColor: Colors.blue,
@@ -437,7 +437,7 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                         const SizedBox(
                           width: 40,
                         ),
-                        RoundButton(
+                        const RoundButton(
                           label: "Clear",
                           imagePath: "asset/imges/navigation_img/eye.png",
                           buttonColor: Colors.red,

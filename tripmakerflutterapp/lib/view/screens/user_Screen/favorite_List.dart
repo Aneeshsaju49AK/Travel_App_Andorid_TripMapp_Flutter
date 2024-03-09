@@ -30,7 +30,7 @@ class _FavoritePageState extends State<FavoritePage> {
             height: height / 1,
             child: Column(
               children: [
-                Row(
+                const Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
@@ -74,7 +74,7 @@ class _FavoritePageState extends State<FavoritePage> {
                               clipBehavior: Clip.antiAlias,
                               width: width / 1,
                               height: height / 3.5,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Colors.amber,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
@@ -97,7 +97,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                       PlacesDB.favoriteListNotifier.value
                                           .remove(place);
                                       setState(() {
-                                        FavoritePage();
+                                        const FavoritePage();
                                       });
                                     },
                                   ),

@@ -23,8 +23,8 @@ class ScreenSelection extends StatelessWidget {
 
   final _pages = [
     const HomeScreen(),
-    AddTripScreen(),
-    ActivityScreenWidget(),
+    const AddTripScreen(),
+    const ActivityScreenWidget(),
     const BlogsScreenWidget(),
   ];
 
@@ -201,13 +201,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: width / 1,
                           height: height / 1.5,
                           child: Padding(
-                            padding: EdgeInsets.all(18.0),
+                            padding: const EdgeInsets.all(18.0),
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => FavoritePage(),
+                                    builder: (context) => const FavoritePage(),
                                   ),
                                 );
                               },

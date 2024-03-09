@@ -59,7 +59,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           left: 290,
                           top: 15,
                         ),

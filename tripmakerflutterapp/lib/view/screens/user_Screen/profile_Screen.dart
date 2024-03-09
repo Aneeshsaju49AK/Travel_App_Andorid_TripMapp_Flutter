@@ -176,7 +176,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                             onTap: () {
                               handleProfileSaveButtonPress(context);
                             },
-                            child: RoundButton(
+                            child: const RoundButton(
                               imagePath: "asset/imges/navigation_img/eye.png",
                               label: "Add",
                               buttonColor: Colors.blue,
@@ -186,7 +186,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                         const SizedBox(
                           width: 20,
                         ),
-                        RoundButton(
+                        const RoundButton(
                           imagePath: "asset/imges/navigation_img/location.png",
                           label: "Delete",
                           buttonColor: Colors.red,

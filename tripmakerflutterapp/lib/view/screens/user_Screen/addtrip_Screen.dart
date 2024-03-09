@@ -6,7 +6,7 @@ import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class AddTripScreen extends StatefulWidget {
   final void Function(ModelPlace)? onPlace;
-  AddTripScreen({this.onPlace, super.key});
+  const AddTripScreen({this.onPlace, super.key});
 
   @override
   State<AddTripScreen> createState() => _AddTripScreenState();

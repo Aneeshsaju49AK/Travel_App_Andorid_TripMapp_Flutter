@@ -9,7 +9,7 @@ import 'package:tripmakerflutterapp/view/screens/user_Screen/addtrip_Screen.dart
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class ActivityScreenWidget extends StatefulWidget {
-  ActivityScreenWidget({super.key});
+  const ActivityScreenWidget({super.key});
 
   @override
   State<ActivityScreenWidget> createState() => _ActivityScreenWidgetState();
@@ -34,7 +34,7 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
           height: height / 1,
           child: Column(
             children: [
-              Row(
+              const Row(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
@@ -53,7 +53,7 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Container(
@@ -75,7 +75,7 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                             clipBehavior: Clip.antiAlias,
                             width: width / 1,
                             height: height / 3.5,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.amber,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
@@ -142,7 +142,7 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                                             .refreshListUI();
                                       });
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.delete,
                                       size: 30,
                                       color: Colors.red,
@@ -167,7 +167,7 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
           showBottomSheet(
             context: context,
             builder: (context) {
-              return PopScreenAddTrip();
+              return const PopScreenAddTrip();
             },
           );
         },
@@ -416,7 +416,7 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       left: 15,
                       top: 20,
                     ),
@@ -426,16 +426,16 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
                           onTap: () {
                             handleActivitySaveButtonPress(context);
                           },
-                          child: RoundButton(
+                          child: const RoundButton(
                             label: "Save",
                             imagePath: "asset/imges/navigation_img/eye.png",
                             buttonColor: Colors.blue,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 40,
                         ),
-                        RoundButton(
+                        const RoundButton(
                           label: "Clear",
                           imagePath: "asset/imges/navigation_img/eye.png",
                           buttonColor: Colors.red,

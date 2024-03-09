@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/addTrip_model/addTrip_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';

@@ -212,7 +212,7 @@ class CircleAvatarWidget extends StatelessWidget {
                 : null
             : location != null
                 ? Text("$locationName")
-                : Text("Location not available"),
+                : const Text("Location not available"),
       ),
     );
   }
@@ -429,21 +429,32 @@ class TabBarListWidget extends StatelessWidget {
                         blurRadius: 1,
                       ),
                     ],
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.blue,
+                        Colors.green,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    clipBehavior: Clip.antiAlias,
-                    children: [
-                      place.images![0].startsWith("asset/")
-                          ? Image.asset(
-                              place.images![0],
-                              fit: BoxFit.fill,
-                            )
-                          : Image.file(
-                              File(place.images![0]),
-                              fit: BoxFit.fill,
-                            ),
-                    ],
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      clipBehavior: Clip.antiAlias,
+                      children: [
+                        place.images![0].startsWith("asset/")
+                            ? Image.asset(
+                                place.images![0],
+                                fit: BoxFit.fill,
+                              )
+                            : Image.file(
+                                File(place.images![0]),
+                                fit: BoxFit.fill,
+                              ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -530,6 +541,14 @@ class SilderViewWidget extends StatelessWidget {
                         ),
                         fit: BoxFit.cover,
                       ),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.blue,
+                          Colors.green,
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
                     ),
                   ),
                   Positioned(
@@ -581,7 +600,7 @@ class RoundButton extends StatelessWidget {
   final String label;
   final String imagePath;
   final Color buttonColor;
-  RoundButton(
+  const RoundButton(
       {required this.label,
       required this.imagePath,
       required this.buttonColor,
@@ -823,7 +842,7 @@ class _HeartButtonWidgetState extends State<HeartButtonWidget> {
 class PopularListViewWidget extends StatelessWidget {
   final ValueNotifier<List<ModelPlace>> placeListNotifierPopular;
   final void Function(ModelPlace)? onPlaceSelected;
-  PopularListViewWidget({
+  const PopularListViewWidget({
     required this.placeListNotifierPopular,
     this.onPlaceSelected,
     Key? key,
