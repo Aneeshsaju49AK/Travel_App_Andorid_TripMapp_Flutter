@@ -7,7 +7,7 @@ const BLOG_DB_NAME = 'blog-database';
 abstract class BlogDbFunctions {
   Future<List<BlogModel>> getBlogs();
   Future<void> insertBlog(BlogModel value);
-  Future<void> deletePlaces(int id);
+  Future<void> deletePlaces(int? id);
 }
 
 class BlogDB implements BlogDbFunctions {
@@ -18,10 +18,15 @@ class BlogDB implements BlogDbFunctions {
   }
   ValueNotifier<List<BlogModel>> blogsallNotifier = ValueNotifier([]);
   @override
-  Future<void> deletePlaces(int id) async {
+  Future<void> deletePlaces(int? id) async {
     final blogDB = await Hive.openBox<BlogModel>(BLOG_DB_NAME);
-    await blogDB.delete(id);
-    // TODO: implement deletePlaces
+    final blogIndex =
+        blogDB.keys.toList().indexWhere((key) => blogDB.get(key)?.id == id);
+    if (blogIndex != -1) {
+      await blogDB.deleteAt(blogIndex);
+    }
+    await blogDB.close();
+    reFreshUIBlogs();
   }
 
   @override

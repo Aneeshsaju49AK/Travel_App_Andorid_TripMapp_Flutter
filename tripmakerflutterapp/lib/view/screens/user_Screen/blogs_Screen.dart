@@ -44,13 +44,21 @@ class BlogsScreenWidget extends StatelessWidget {
                 const SizedBox(
                   height: 40,
                 ),
-                Container(
+                SizedBox(
                   width: width / 1,
                   height: height / 1.3,
-                  color: Colors.amber,
                   child: ValueListenableBuilder(
                     valueListenable: BlogDB.instance.blogsallNotifier,
                     builder: (context, valueList, _) {
+                      if (valueList.isEmpty) {
+                        return Center(
+                          child: Text(
+                            "No blogs is created",
+                            style: GoogleFonts.abel(
+                                fontSize: 20, fontWeight: FontWeight.w500),
+                          ),
+                        );
+                      }
                       print("the values on ${valueList.length}");
                       return ListView.builder(
                         itemCount: valueList.length,
@@ -99,7 +107,7 @@ class BlogsScreenWidget extends StatelessWidget {
                                     child: IconButton(
                                       onPressed: () {
                                         BlogDB.instance
-                                            .deletePlaces(index)
+                                            .deletePlaces(place.id)
                                             .then((value) async {
                                           await BlogDB.instance
                                               .reFreshUIBlogs();
@@ -134,17 +142,25 @@ class BlogsScreenWidget extends StatelessWidget {
           //     return PopupScreen();
           //   },
           // );
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) {
-              return const Scaffold(
-                body: SafeArea(
-                  child: PopupScreen(),
-                ),
-              );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return Scaffold(
+                  body: SafeArea(
+                    child: Container(
+                      color: Colors.yellow[50],
+                      child: PopupScreen(),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ).then(
+            (value) async {
+              await BlogDB.instance.reFreshUIBlogs();
             },
-          )).then((value) async {
-            await BlogDB.instance.reFreshUIBlogs();
-          });
+          );
         },
         child: const Icon(
           Icons.add,
@@ -217,7 +233,7 @@ class _PopupScreenState extends State<PopupScreen> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
-          width: width / 1.1,
+          width: width / 1,
           child: Form(
             key: _formKey,
             child: Column(
