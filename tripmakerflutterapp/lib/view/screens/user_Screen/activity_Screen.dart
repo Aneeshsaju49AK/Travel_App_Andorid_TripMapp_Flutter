@@ -66,7 +66,10 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                     print("the values on ${valueList.length}");
                     return ListView.builder(
                       itemCount: valueList.length,
-                      itemBuilder: (context, index) {
+                      itemBuilder: (
+                        context,
+                        index,
+                      ) {
                         TripModel place = valueList[index];
 
                         return Padding(
@@ -136,11 +139,12 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                                   child: IconButton(
                                     onPressed: () {
                                       AddtripDB.instance
-                                          .deleteAddtrip(index)
-                                          .then((value) async {
-                                        await AddtripDB.instance
-                                            .refreshListUI();
-                                      });
+                                          .deleteAddtrip(place.id)
+                                          .then(
+                                        (value) {
+                                          AddtripDB.instance.refreshListUI();
+                                        },
+                                      );
                                     },
                                     icon: const Icon(
                                       Icons.delete,

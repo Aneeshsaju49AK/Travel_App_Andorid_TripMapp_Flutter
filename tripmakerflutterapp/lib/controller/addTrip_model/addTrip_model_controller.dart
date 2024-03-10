@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
 
-const PLACELISTADDTRIP_DB_NAME = "addtrip-database-01";
+const PLACELISTADDTRIP_DB_NAME = "addtrip-database-04";
 
 abstract class AddTripDbFunctions {
   Future<List<TripModel>> getAddtrip();
   Future<void> insertAddtrip(TripModel value);
-  Future<void> deleteAddtrip(int id);
+  Future<void> deleteAddtrip(String? id);
 }
 
 class AddtripDB implements AddTripDbFunctions {
@@ -21,9 +21,17 @@ class AddtripDB implements AddTripDbFunctions {
 
   ValueNotifier<List<TripModel>> planTripNotifier = ValueNotifier([]);
   @override
-  Future<void> deleteAddtrip(int id) async {
+  Future<void> deleteAddtrip(String? id) async {
     final addtripDB = await Hive.openBox<TripModel>(PLACELISTADDTRIP_DB_NAME);
-    await addtripDB.delete(id);
+    final tripIndex = addtripDB.keys
+        .toList()
+        .indexWhere((key) => addtripDB.get(key)?.id == id);
+    if (tripIndex != -1) {
+      await addtripDB
+          .deleteAt(tripIndex); // Delete the item at the specified index
+    }
+    await addtripDB.close();
+    refreshListUI();
   }
 
   @override
