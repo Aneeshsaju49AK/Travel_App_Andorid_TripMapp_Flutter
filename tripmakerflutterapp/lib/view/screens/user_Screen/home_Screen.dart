@@ -152,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       SizedBox(
-                        width: width / 2.2,
+                        width: width / 3.3,
                         height: height / 1,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,28 +195,62 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       SizedBox(
-                        width: width / 4,
+                        width: width / 2.5,
                         height: height / 1,
                         child: SizedBox(
                           width: width / 1,
                           height: height / 1.5,
-                          child: Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const FavoritePage(),
+                          child: SizedBox(
+                            width: width / 2,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 10,
                                   ),
-                                );
-                              },
-                              child: CircleAvatarWidget(
-                                radius: 23,
-                                location: _currentPosition,
-                                locationName: _currentLocationName,
-                                islocationwidget: false,
-                              ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const FavoritePage(),
+                                        ),
+                                      );
+                                    },
+                                    child: Icon(
+                                      Icons.favorite,
+                                      size: 40,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height / 1,
+                                  width: width / 3.9,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 35),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          // CircleAvatarWidget(
+                                          //   radius: 23,
+                                          //   location: _currentPosition,
+                                          //   locationName: _currentLocationName,
+                                          //   islocationwidget: false,
+                                          // ),
+                                          Icon(Icons.location_pin),
+                                          MapLocation(
+                                            islocationWidget: true,
+                                            location: _currentPosition,
+                                            locationName: _currentLocationName,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

@@ -176,6 +176,45 @@ class ButtonCommonWidget extends StatelessWidget {
   }
 }
 
+class MapLocation extends StatefulWidget {
+  final bool? islocationWidget;
+  final Position? location;
+  final String? locationName;
+  const MapLocation({
+    this.islocationWidget,
+    this.location,
+    this.locationName,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _MapLocationState createState() => _MapLocationState();
+}
+
+class _MapLocationState extends State<MapLocation> {
+  bool showFullText = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          showFullText = !showFullText;
+        });
+      },
+      child: Container(
+        child: widget.islocationWidget == true && widget.location != null
+            ? Text(
+                showFullText
+                    ? "${widget.locationName}"
+                    : "${widget.locationName!.substring(0, 10)}...", // Display only the first 10 characters
+              )
+            : Text("Location not available"),
+      ),
+    );
+  }
+}
+
 /*this circle avatar is created to reuse the widget with in home 
 drawer */
 class CircleAvatarWidget extends StatelessWidget {
