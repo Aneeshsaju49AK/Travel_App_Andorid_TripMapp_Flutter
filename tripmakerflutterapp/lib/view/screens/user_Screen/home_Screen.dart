@@ -265,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 20,
                 ),
                 SizedBox(
-                  width: width / 1,
+                  width: width / 1.1,
                   height: height / 3,
                   child: SilderViewWidget(),
                 ),

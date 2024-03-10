@@ -353,7 +353,7 @@ class _TabViewWidgetState extends State<TabViewWidget>
           padding: const EdgeInsets.only(top: 10),
           child: SizedBox(
             width: width / 1,
-            height: height / 2.9,
+            height: height / 3.5,
             child: TabBarView(
               controller: _tabController,
               children: [
@@ -418,15 +418,15 @@ class TabBarListWidget extends StatelessWidget {
                 },
                 child: Container(
                   clipBehavior: Clip.antiAlias,
-                  width: 200,
+                  width: 170,
                   height: 300,
                   decoration: BoxDecoration(
                     border: Border.all(),
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(20),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black,
-                        spreadRadius: 2,
+                        spreadRadius: 1,
                         blurRadius: 1,
                       ),
                     ],
@@ -440,7 +440,7 @@ class TabBarListWidget extends StatelessWidget {
                     ),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(20),
                     child: Stack(
                       fit: StackFit.expand,
                       clipBehavior: Clip.antiAlias,
@@ -459,14 +459,14 @@ class TabBarListWidget extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.2),
                             borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(30),
-                              bottomRight: Radius.circular(30),
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20),
                             ),
                           ),
                         ),
                         Positioned(
                           left: 10,
-                          top: 170,
+                          top: 140,
                           child: Text(
                             place.placeName ?? "placeName",
                             style: GoogleFonts.abel(
@@ -478,7 +478,7 @@ class TabBarListWidget extends StatelessWidget {
                         ),
                         Positioned(
                           left: 10,
-                          top: 195,
+                          top: 165,
                           child: Text(
                             place.subPlaceName ?? "district",
                             style: GoogleFonts.abel(
@@ -568,6 +568,7 @@ class SilderViewWidget extends StatelessWidget {
               child: Stack(
                 children: [
                   Container(
+                    width: 280,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
                       image: DecorationImage(
