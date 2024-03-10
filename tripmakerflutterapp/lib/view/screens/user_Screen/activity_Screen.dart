@@ -56,14 +56,24 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
               const SizedBox(
                 height: 40,
               ),
-              Container(
+              SizedBox(
                 width: width / 1,
                 height: height / 1.3,
-                color: Colors.amber,
                 child: ValueListenableBuilder(
                   valueListenable: AddtripDB.instance.planTripNotifier,
                   builder: (context, valueList, _) {
                     print("the values on ${valueList.length}");
+                    if (valueList.isEmpty) {
+                      return Center(
+                        child: Text(
+                          "No trip is planned",
+                          style: GoogleFonts.abel(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      );
+                    }
                     return ListView.builder(
                       itemCount: valueList.length,
                       itemBuilder: (
@@ -79,7 +89,6 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                             width: width / 1,
                             height: height / 3.5,
                             decoration: const BoxDecoration(
-                              color: Colors.amber,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
                               ),
@@ -279,7 +288,7 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
         child: SingleChildScrollView(
           child: Container(
             width: width / 1,
-            color: Colors.amber,
+            color: Colors.amber[50],
             child: Form(
               key: _formKey,
               child: Column(
@@ -335,8 +344,11 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
                             SizedBox(
                               width: width / 1.4,
                               height: height / 4,
-                              child: getImageWidget(place?.images?[0] ??
-                                  "asset/imges/navigation_img/home-icon-silhouette.png"),
+                              child: getImageWidget(
+                                place?.images?.isEmpty ?? true
+                                    ? "/home/aneesh/Travel_App_Andorid_TripMapp_Flutter/tripmakerflutterapp/asset/imges/images (1).png"
+                                    : place!.images![0],
+                              ),
                             ),
                           ],
                         ),
