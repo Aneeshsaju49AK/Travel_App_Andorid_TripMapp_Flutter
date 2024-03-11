@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
+import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
+
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
@@ -16,6 +17,11 @@ class FavoritePage extends StatefulWidget {
 class _FavoritePageState extends State<FavoritePage> {
   late ModelPlace currentPlace;
   bool isFavorite = true;
+
+  @override
+  void initState() {
+    FavoritesDB.instance.updateFavoriteList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +49,7 @@ class _FavoritePageState extends State<FavoritePage> {
                       ),
                     ),
                     HeadWritingWidget(
-                      label: "Category",
+                      label: "Favorites",
                       divideHeight: 9,
                       divideWidth: 1.2,
                     ),
@@ -62,8 +68,9 @@ class _FavoritePageState extends State<FavoritePage> {
                   width: width / 1,
                   height: height / 1.5,
                   child: ValueListenableBuilder(
-                    valueListenable: PlacesDB.favoriteListNotifier,
+                    valueListenable: FavoritesDB.favoriteListNotifier,
                     builder: (context, valueList, _) {
+                      print(valueList.length);
                       return ListView.builder(
                         itemCount: valueList.length,
                         itemBuilder: (context, index) {
@@ -94,10 +101,10 @@ class _FavoritePageState extends State<FavoritePage> {
                                     place: place,
                                     isFavorite: isFavorite,
                                     onFavoriteTapped: (isFavorite) {
-                                      PlacesDB.favoriteListNotifier.value
-                                          .remove(place);
+                                      FavoritesDB.instance
+                                          .removeFavorite(place);
                                       setState(() {
-                                        const FavoritePage();
+                                        FavoritePage();
                                       });
                                     },
                                   ),

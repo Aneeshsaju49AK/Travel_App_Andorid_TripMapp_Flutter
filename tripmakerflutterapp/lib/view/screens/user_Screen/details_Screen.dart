@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 
@@ -20,11 +21,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _currentPlace = widget.place;
-
-    isFavorite = PlacesDB.favoriteListNotifier.value.contains(_currentPlace);
+    setState(() {
+      isFavorite =
+          FavoritesDB.favoriteListNotifier.value.contains(_currentPlace);
+    });
   }
 
   @override

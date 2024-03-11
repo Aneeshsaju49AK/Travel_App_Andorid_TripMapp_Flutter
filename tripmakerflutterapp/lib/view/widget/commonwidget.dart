@@ -8,7 +8,11 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
+
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
+
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/category_place.dart';
 
@@ -854,9 +858,9 @@ class HeartButtonWidget extends StatefulWidget {
   final double sizeOfImage;
   final ModelPlace place;
   final Function(ModelPlace)? onFavoriteTapped;
-  final bool isFavorite;
+  bool isFavorite;
 
-  const HeartButtonWidget({
+  HeartButtonWidget({
     required this.sizeOfImage,
     required this.place,
     required this.isFavorite,
@@ -870,44 +874,39 @@ class HeartButtonWidget extends StatefulWidget {
 
 class _HeartButtonWidgetState extends State<HeartButtonWidget> {
   late ModelPlace _currentPlace;
-  bool isFavorite = false;
+  bool _isFavorite = false;
 
   @override
   void initState() {
     super.initState();
     _currentPlace = widget.place;
+    _isFavorite = widget.isFavorite;
   }
 
-  void _updateFavoriteStatus() {
-    setState(() {
-      isFavorite = PlacesDB.favoriteListNotifier.value.contains(_currentPlace);
-    });
+  void _toggleFavoriteStatus() async {
+    if (_isFavorite) {
+      await FavoritesDB.instance.removeFavorite(_currentPlace);
+      FavoritesDB.instance.updateFavoriteList();
+    } else {
+      await FavoritesDB.instance.addFavorite(_currentPlace);
+      FavoritesDB.instance.updateFavoriteList();
+    }
+    widget.onFavoriteTapped?.call(_currentPlace);
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Check if the current place is already in favorites
-        if (PlacesDB.favoriteListNotifier.value.contains(_currentPlace)) {
-          // It's already in favorites, so remove it
-          PlacesDB.favoriteListNotifier.value.remove(_currentPlace);
-        } else {
-          // It's not in favorites, so add it
-          PlacesDB.favoriteListNotifier.value.add(_currentPlace);
-        }
-
-        // Call the callback function to notify the parent with the current ModelPlace
-        widget.onFavoriteTapped?.call(_currentPlace);
-
-        // Toggle the color
-        _updateFavoriteStatus();
+        FavoritesDB.instance.removeFavorite(_currentPlace);
+        _toggleFavoriteStatus();
+        setState(() {
+          _isFavorite = !_isFavorite;
+        });
       },
       child: ColorFiltered(
         colorFilter: ColorFilter.mode(
-          widget.isFavorite
-              ? Colors.red
-              : Colors.grey, // Change color as needed
+          _isFavorite ? Colors.red : Colors.grey,
           BlendMode.srcIn,
         ),
         child: Image.asset(

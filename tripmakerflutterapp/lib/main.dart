@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/addTrip_model/addTrip_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
+import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
 import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
@@ -40,6 +41,7 @@ void main() async {
   await PlacesDB.instance.reFreshUI();
   await AddtripDB.instance.refreshListUI();
   await BlogDB.instance.reFreshUIBlogs();
+  await FavoritesDB.instance.updateFavoriteList();
 
   runApp(const MyApp());
 }
