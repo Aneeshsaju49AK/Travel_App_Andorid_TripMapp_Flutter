@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
@@ -23,11 +24,37 @@ class _DetailsScreenState extends State<DetailsScreen> {
   void initState() {
     super.initState();
     _currentPlace = widget.place;
+    // setState(() {
+    //   isFavorite =
+    //       FavoritesDB.favoriteListNotifier.value.contains(_currentPlace);
+    // });
+    // _checkFavoriteStatus();
+    _loadFavoriteStatus();
+  }
+
+  Future<void> _loadFavoriteStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      isFavorite =
-          FavoritesDB.favoriteListNotifier.value.contains(_currentPlace);
+      isFavorite = prefs.getBool('isFavorite_${_currentPlace.id}') ?? false;
     });
   }
+
+  Future<void> _toggleFavoriteStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isFavorite = !isFavorite;
+      prefs.setBool('isFavorite_${_currentPlace.id}', isFavorite);
+    });
+  }
+  // Future<void> _checkFavoriteStatus() async {
+  //   bool isPlaceFavorite =
+  //       await FavoritesDB.favoriteListNotifier.value.contains(_currentPlace);
+
+  //   setState(() {
+  //     isFavorite = isPlaceFavorite;
+  //   });
+  //   print("is $isPlaceFavorite");
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +97,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           place: _currentPlace,
                           isFavorite: isFavorite,
                           onFavoriteTapped: (p0) {
-                            setState(() {
-                              isFavorite = !isFavorite;
-                            });
+                            _toggleFavoriteStatus();
+                            print(isFavorite);
                           },
                         ),
                       ),

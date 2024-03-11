@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
@@ -21,6 +22,14 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   void initState() {
     FavoritesDB.instance.updateFavoriteList();
+  }
+
+  Future<void> _toggleFavoriteStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isFavorite = !isFavorite;
+      prefs.setBool('isFavorite_${currentPlace.id}', isFavorite);
+    });
   }
 
   @override
@@ -75,6 +84,7 @@ class _FavoritePageState extends State<FavoritePage> {
                         itemCount: valueList.length,
                         itemBuilder: (context, index) {
                           ModelPlace place = valueList[index];
+                          currentPlace = valueList[index];
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
@@ -103,6 +113,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                     onFavoriteTapped: (isFavorite) {
                                       FavoritesDB.instance
                                           .removeFavorite(place);
+                                      _toggleFavoriteStatus();
                                       setState(() {
                                         FavoritePage();
                                       });

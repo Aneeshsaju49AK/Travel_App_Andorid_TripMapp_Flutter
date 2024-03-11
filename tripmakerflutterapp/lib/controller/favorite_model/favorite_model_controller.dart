@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
@@ -37,6 +36,10 @@ class FavoritesDB {
 
   Future<void> updateFavoriteList() async {
     final allFavorites = await getFavorites();
-    favoriteListNotifier.value = allFavorites;
+    favoriteListNotifier.value.clear();
+    await Future.forEach(allFavorites, (ModelPlace element) {
+      favoriteListNotifier.value.add(element);
+    });
+    favoriteListNotifier.notifyListeners();
   }
 }

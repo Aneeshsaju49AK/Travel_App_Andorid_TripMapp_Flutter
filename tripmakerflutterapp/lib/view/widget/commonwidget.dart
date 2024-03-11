@@ -874,39 +874,40 @@ class HeartButtonWidget extends StatefulWidget {
 
 class _HeartButtonWidgetState extends State<HeartButtonWidget> {
   late ModelPlace _currentPlace;
-  bool _isFavorite = false;
 
   @override
   void initState() {
     super.initState();
     _currentPlace = widget.place;
-    _isFavorite = widget.isFavorite;
   }
 
-  void _toggleFavoriteStatus() async {
-    if (_isFavorite) {
-      await FavoritesDB.instance.removeFavorite(_currentPlace);
-      FavoritesDB.instance.updateFavoriteList();
-    } else {
-      await FavoritesDB.instance.addFavorite(_currentPlace);
-      FavoritesDB.instance.updateFavoriteList();
-    }
-    widget.onFavoriteTapped?.call(_currentPlace);
-  }
+  // void _toggleFavoriteStatus() async {
+  //   if (_isFavorite) {
+  //     await FavoritesDB.instance.removeFavorite(_currentPlace);
+  //     FavoritesDB.instance.updateFavoriteList();
+  //   } else {
+  //     await FavoritesDB.instance.addFavorite(_currentPlace);
+  //     FavoritesDB.instance.updateFavoriteList();
+  //   }
+  //   widget.onFavoriteTapped?.call(_currentPlace);
+  // }
 
   @override
   Widget build(BuildContext context) {
+    bool isFavorite = widget.isFavorite;
     return GestureDetector(
-      onTap: () {
-        FavoritesDB.instance.removeFavorite(_currentPlace);
-        _toggleFavoriteStatus();
-        setState(() {
-          _isFavorite = !_isFavorite;
-        });
+      onTap: () async {
+        if (isFavorite) {
+          await FavoritesDB.instance.removeFavorite(_currentPlace);
+        } else {
+          await FavoritesDB.instance.addFavorite(_currentPlace);
+        }
+        widget.onFavoriteTapped?.call(_currentPlace);
+        FavoritesDB.instance.updateFavoriteList();
       },
       child: ColorFiltered(
         colorFilter: ColorFilter.mode(
-          _isFavorite ? Colors.red : Colors.grey,
+          isFavorite ? Colors.red : Colors.grey,
           BlendMode.srcIn,
         ),
         child: Image.asset(
