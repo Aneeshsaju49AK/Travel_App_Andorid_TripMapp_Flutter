@@ -17,8 +17,11 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
+  bool showFullDescription = false;
   late ModelPlace _currentPlace;
   bool isFavorite = false;
+  bool showFullText = false;
+  bool showFullTextsub = false;
 
   @override
   void initState() {
@@ -113,7 +116,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     height: height / 1.5,
                     width: width / 1,
                     decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 236, 235, 235),
+                      color: Color.fromARGB(255, 243, 234, 234),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(50),
                       ),
@@ -132,46 +135,84 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 ),
                                 child: SizedBox(
                                   child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        "hi",
-                                        style: GoogleFonts.abel(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w900,
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            "asset/imges/navigation_img/location.png",
-                                            width: 15,
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            "hi",
-                                            style: GoogleFonts.abel(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w900,
+                                      SizedBox(
+                                          width: width / 2,
+                                          height: height / 17,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                showFullText = !showFullText;
+                                              });
+                                            },
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Container(
+                                                  child: Text(
+                                                showFullText
+                                                    ? "${_currentPlace.placeName}"
+                                                    : "${_currentPlace.placeName!.substring(0, 9)}...",
+                                                style: GoogleFonts.abel(
+                                                  fontSize: 30,
+                                                  fontWeight: FontWeight.w900,
+                                                ),
+                                              )),
                                             ),
-                                          ),
-                                        ],
+                                          )),
+                                      SizedBox(
+                                        height: height / 27,
+                                        width: width / 1.4,
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              "asset/imges/navigation_img/location.png",
+                                              width: 15,
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.vertical,
+                                              child: SizedBox(
+                                                width: width / 2.6,
+                                                child: SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Text(
+                                                    showFullText
+                                                        ? "${_currentPlace.subPlaceName}"
+                                                        : "${_currentPlace.subPlaceName!.substring(0, 7)}...",
+                                                    style: GoogleFonts.abel(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),
                                 ),
                               ),
                               SizedBox(
-                                width: width / 1.8,
+                                width: 10,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
                                   top: 20,
                                 ),
-                                child: Image.asset(
-                                  "asset/imges/discount.png",
-                                  width: 45,
+                                child: SizedBox(
+                                  child: Image.asset(
+                                    "asset/imges/discount.png",
+                                    width: 45,
+                                  ),
                                 ),
                               ),
                             ],
@@ -217,11 +258,30 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                             const SizedBox(
                                               width: 5,
                                             ),
-                                            Text(
-                                              "hi",
-                                              style: GoogleFonts.abel(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w900,
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  showFullTextsub =
+                                                      !showFullTextsub;
+                                                });
+                                              },
+                                              child: SizedBox(
+                                                width: width / 5,
+                                                height: height / 32,
+                                                child: SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Text(
+                                                    showFullTextsub
+                                                        ? "${_currentPlace.subPlaceName}"
+                                                        : "${_currentPlace.subPlaceName!.substring(0, 9)}...",
+                                                    style: GoogleFonts.abel(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -358,11 +418,30 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          width: width / 1.2,
-                          height: height / 4.5,
-                          child: Text(
-                            _currentPlace.description!,
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showFullDescription = !showFullDescription;
+                            });
+                          },
+                          child: SizedBox(
+                            width: width / 1.2,
+                            height: height / 4.7,
+                            // height: showFullDescription
+                            //     ? null
+                            //     : MediaQuery.of(context).size.height / 4.5,
+                            child: SingleChildScrollView(
+                              child: Text(
+                                _currentPlace.description!,
+                                // maxLines: showFullDescription
+                                //     ? null
+                                //     : 12, // Show all lines if full text is displayed
+                                // overflow: showFullDescription
+                                //     ? TextOverflow.visible
+                                //     : TextOverflow
+                                //         .ellipsis, // Show ellipsis if text is truncated
+                              ),
+                            ),
                           ),
                         ),
                         ButtonCommonWidget(
