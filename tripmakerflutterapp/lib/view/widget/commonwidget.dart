@@ -430,15 +430,21 @@ class _TabViewWidgetState extends State<TabViewWidget>
 /* this widget is used for the main view in TabBar 
   also enable the listview builder
  */
-class TabBarListWidget extends StatelessWidget {
+class TabBarListWidget extends StatefulWidget {
   final ValueNotifier<List<ModelPlace>> placeListNotifierCommon;
   const TabBarListWidget({required this.placeListNotifierCommon, Key? key})
       : super(key: key);
 
   @override
+  State<TabBarListWidget> createState() => _TabBarListWidgetState();
+}
+
+class _TabBarListWidgetState extends State<TabBarListWidget> {
+  bool showFullText = false;
+  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<List<ModelPlace>>(
-      valueListenable: placeListNotifierCommon,
+      valueListenable: widget.placeListNotifierCommon,
       builder: (context, placeList, _) {
         return ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -507,15 +513,29 @@ class TabBarListWidget extends StatelessWidget {
                             ),
                           ),
                         ),
+
                         Positioned(
                           left: 10,
                           top: 140,
-                          child: Text(
-                            place.placeName ?? "placeName",
-                            style: GoogleFonts.abel(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                showFullText = !showFullText;
+                              });
+                            },
+                            child: Container(
+                              child: place.placeName != null
+                                  ? Text(
+                                      showFullText
+                                          ? "${place.placeName}"
+                                          : "${place.placeName!.substring(0, 9)}...",
+                                      style: GoogleFonts.abel(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : Text("placeName"),
                             ),
                           ),
                         ),

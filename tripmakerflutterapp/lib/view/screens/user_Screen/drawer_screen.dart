@@ -194,15 +194,13 @@ class DrawerScreen extends StatelessWidget {
                                             actions: [
                                               TextButton(
                                                 onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // Close the dialog
+                                                  Navigator.of(context).pop();
                                                 },
                                                 child: Text("No"),
                                               ),
                                               TextButton(
                                                 onPressed: () {
-                                                  _logOutUser(
-                                                      context); // Perform logout operation
+                                                  _logOutUser(context);
                                                 },
                                                 child: Text("Yes"),
                                               ),
