@@ -184,7 +184,32 @@ class DrawerScreen extends StatelessWidget {
                                       );
                                       break;
                                     case 3:
-                                      _logOutUser(context);
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text("Logout"),
+                                            content: Text(
+                                                "Are you sure you want to logout?"),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(); // Close the dialog
+                                                },
+                                                child: Text("No"),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  _logOutUser(
+                                                      context); // Perform logout operation
+                                                },
+                                                child: Text("Yes"),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                       break;
                                   }
                                 },

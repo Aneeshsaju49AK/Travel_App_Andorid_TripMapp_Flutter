@@ -128,6 +128,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                       padding: const EdgeInsets.all(15.0),
                       child: CircleAvatarWidget(
                         radius: 80,
+                        islocationwidget: true,
                         imagePath: _profilePicturePath,
                         onpressed: () {
                           buttomSheet(context);
