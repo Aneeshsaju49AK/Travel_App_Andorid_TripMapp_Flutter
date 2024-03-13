@@ -120,35 +120,38 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: height / 7.5,
                   child: Row(
                     children: [
-                      SizedBox(
-                        width: width / 3.5,
-                        height: height / 11,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const DrawerScreen(),
-                              ),
-                            );
-                          },
-                          child: ValueListenableBuilder<List<ProfileModel>>(
-                            valueListenable: userListNotifier,
-                            builder: (context, userList, _) {
-                              if (userList.isNotEmpty) {
-                                return CircleAvatarWidget(
-                                  radius: 34,
-                                  islocationwidget: true,
-                                  imagePath: userList[0].profilePicturePath,
-                                );
-                              } else {
-                                return const CircleAvatarWidget(
-                                  radius: 34,
-                                  imagePath: null,
-                                  islocationwidget: true,
-                                );
-                              }
+                      Hero(
+                        tag: "drawer",
+                        child: SizedBox(
+                          width: width / 3.5,
+                          height: height / 11,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const DrawerScreen(),
+                                ),
+                              );
                             },
+                            child: ValueListenableBuilder<List<ProfileModel>>(
+                              valueListenable: userListNotifier,
+                              builder: (context, userList, _) {
+                                if (userList.isNotEmpty) {
+                                  return CircleAvatarWidget(
+                                    radius: 34,
+                                    islocationwidget: true,
+                                    imagePath: userList[0].profilePicturePath,
+                                  );
+                                } else {
+                                  return const CircleAvatarWidget(
+                                    radius: 34,
+                                    imagePath: null,
+                                    islocationwidget: true,
+                                  );
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ),

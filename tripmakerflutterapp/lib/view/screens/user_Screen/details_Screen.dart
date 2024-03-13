@@ -126,7 +126,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         SizedBox(
                           width: width / 1,
                           height: height / 8,
-                          child: Row(
+                          child: Wrap(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(
@@ -181,14 +181,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                 child: SingleChildScrollView(
                                                   scrollDirection:
                                                       Axis.horizontal,
-                                                  child: Text(
-                                                    showFullText
-                                                        ? "${_currentPlace.subPlaceName}"
-                                                        : "${_currentPlace.subPlaceName!.substring(0, 7)}...",
-                                                    style: GoogleFonts.abel(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.w900,
+                                                  child: FittedBox(
+                                                    child: Text(
+                                                      showFullText
+                                                          ? "${_currentPlace.subPlaceName}"
+                                                          : "${_currentPlace.subPlaceName!.substring(0, 7)}...",
+                                                      style: GoogleFonts.abel(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -271,14 +273,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                 child: SingleChildScrollView(
                                                   scrollDirection:
                                                       Axis.horizontal,
-                                                  child: Text(
-                                                    showFullTextsub
-                                                        ? "${_currentPlace.subPlaceName}"
-                                                        : "${_currentPlace.subPlaceName!.substring(0, 9)}...",
-                                                    style: GoogleFonts.abel(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w900,
+                                                  child: FittedBox(
+                                                    child: Text(
+                                                      showFullTextsub
+                                                          ? "${_currentPlace.subPlaceName}"
+                                                          : "${_currentPlace.subPlaceName!.substring(0, 9)}...",
+                                                      style: GoogleFonts.abel(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),

@@ -525,14 +525,16 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                             },
                             child: Container(
                               child: place.placeName != null
-                                  ? Text(
-                                      showFullText
-                                          ? "${place.placeName}"
-                                          : "${place.placeName!.substring(0, 9)}...",
-                                      style: GoogleFonts.abel(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
+                                  ? FittedBox(
+                                      child: Text(
+                                        showFullText
+                                            ? "${place.placeName}"
+                                            : "${place.placeName!.substring(0, 9)}...",
+                                        style: GoogleFonts.abel(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     )
                                   : Text("placeName"),
