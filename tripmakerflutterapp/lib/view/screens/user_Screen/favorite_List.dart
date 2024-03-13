@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
 
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
@@ -16,8 +18,11 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
+  String searchQuery = "";
+
   late ModelPlace currentPlace;
   bool isFavorite = true;
+  ValueNotifier<List<ModelPlace>> filteredList = ValueNotifier([]);
 
   @override
   void initState() {
@@ -67,8 +72,9 @@ class _FavoritePageState extends State<FavoritePage> {
                 const SizedBox(
                   height: 30,
                 ),
-                const SearchWidget(
+                SearchWidget(
                   isNavigation: false,
+                  onSearch: handleSearch,
                 ),
                 const SizedBox(
                   height: 28,
@@ -77,7 +83,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   width: width / 1,
                   height: height / 1.5,
                   child: ValueListenableBuilder(
-                    valueListenable: FavoritesDB.favoriteListNotifier,
+                    valueListenable: filteredList,
                     builder: (context, valueList, _) {
                       print(valueList.length);
                       return ListView.builder(
@@ -86,40 +92,80 @@ class _FavoritePageState extends State<FavoritePage> {
                           ModelPlace place = valueList[index];
                           currentPlace = valueList[index];
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(18.0),
                             child: Container(
                               clipBehavior: Clip.antiAlias,
                               width: width / 1,
                               height: height / 3.5,
-                              decoration: const BoxDecoration(
-                                color: Colors.amber,
+                              decoration: BoxDecoration(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
                               ),
-                              child: Stack(
-                                children: [
-                                  SizedBox(
-                                    width: width / 1,
-                                    height: height / 3.5,
-                                    child: getImageWidget(
-                                      place.images![0],
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailsScreen(
+                                        place: place,
+                                      ),
                                     ),
-                                  ),
-                                  HeartButtonWidget(
-                                    sizeOfImage: 30,
-                                    place: place,
-                                    isFavorite: isFavorite,
-                                    onFavoriteTapped: (isFavorite) {
-                                      FavoritesDB.instance
-                                          .removeFavorite(place);
-                                      _toggleFavoriteStatus();
-                                      setState(() {
-                                        FavoritePage();
-                                      });
-                                    },
-                                  ),
-                                ],
+                                  );
+                                },
+                                child: Stack(
+                                  children: [
+                                    SizedBox(
+                                      width: width / 1,
+                                      height: height / 3.5,
+                                      child: getImageWidget(
+                                        place.images![0],
+                                      ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.4),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: width / 1.3,
+                                      top: height / 20,
+                                      child: HeartButtonWidget(
+                                        sizeOfImage: 30,
+                                        place: place,
+                                        isFavorite: isFavorite,
+                                        onFavoriteTapped: (isFavorite) {
+                                          FavoritesDB.instance
+                                              .removeFavorite(place);
+                                          _toggleFavoriteStatus();
+                                          setState(() {
+                                            FavoritePage();
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: height / 5,
+                                      left: width / 20,
+                                      child: SizedBox(
+                                        width: width / 1.5,
+                                        height: height / 25,
+                                        child: FittedBox(
+                                          alignment:
+                                              AlignmentDirectional.centerStart,
+                                          child: Text(
+                                            place.placeName!,
+                                            style: GoogleFonts.abel(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -134,6 +180,28 @@ class _FavoritePageState extends State<FavoritePage> {
         ),
       ),
     );
+  }
+
+  void handleSearch(String searchText) {
+    searchQuery = searchText;
+
+    final placeList = FavoritesDB.favoriteListNotifier.value;
+
+    print(placeList.length);
+    print(searchText);
+
+    if (searchText.isEmpty) {
+      filteredList.value = placeList;
+    } else {
+      List<ModelPlace> filteredPlaces = placeList
+          .where(
+            (element) => element.placeName!.toLowerCase().contains(
+                  searchText.toLowerCase(),
+                ),
+          )
+          .toList();
+      filteredList.value = filteredPlaces;
+    }
   }
 
   Widget getImageWidget(String imagePath) {
