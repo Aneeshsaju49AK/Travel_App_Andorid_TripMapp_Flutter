@@ -115,17 +115,32 @@ class SignInPage extends StatelessWidget {
                     label: "Email",
                     validator: validateEmail,
                     controller: emailController,
+                    onChange: () {
+                      if (_formKey.currentState?.validate() == false) {
+                        _formKey.currentState?.reset();
+                      }
+                    },
                   ),
                   TextFieldWidget(
                     label: "Password",
                     validator: validatePassword,
                     controller: passwordController,
+                    // onChange: () {
+                    //   if (_formKey.currentState?.validate() == false) {
+                    //     _formKey.currentState?.reset();
+                    //   }
+                    // },
                   ),
                   TextFieldWidget(
                     keyboardType: TextInputType.phone,
                     label: "Phone",
                     validator: validatePhone,
                     controller: phoneController,
+                    // onChange: () {
+                    //   if (_formKey.currentState?.validate() == false) {
+                    //     _formKey.currentState?.reset();
+                    //   }
+                    // },
                   ),
                   ButtonCommonWidget(
                     label: "Signup",

@@ -64,14 +64,17 @@ signup/ and  login page */
 class TextFieldWidget extends StatefulWidget {
   final String label;
   final String? Function(String?)? validator;
+  final void Function()? onChange;
 
   final TextEditingController? controller;
   final TextInputType keyboardType;
+
   const TextFieldWidget({
     Key? key,
     required this.label,
     this.validator,
     this.controller,
+    this.onChange,
     this.keyboardType = TextInputType.text,
   }) : super(key: key);
 
@@ -84,10 +87,18 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
   bool showError = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = widget.controller ?? TextEditingController();
   }
+
+  // @override
+  // void dispose() {
+  //   // Dispose the controller if it was created in initState
+  //   if (widget.controller == null) {
+  //     _controller.dispose();
+  //   }
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +143,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                   ),
                 ),
                 validator: widget.validator,
+                onTap: widget.onChange,
               ),
             ),
           ),

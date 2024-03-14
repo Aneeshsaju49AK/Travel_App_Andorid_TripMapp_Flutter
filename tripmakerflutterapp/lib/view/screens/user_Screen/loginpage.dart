@@ -6,11 +6,17 @@ import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   // Controller for each TextFieldWidget
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   // Key for the Form widget
@@ -104,11 +110,21 @@ class LoginPage extends StatelessWidget {
                     label: "Email",
                     validator: validateEmail,
                     controller: emailController,
+                    onChange: () {
+                      if (_formKey.currentState?.validate() == false) {
+                        _formKey.currentState?.reset();
+                      }
+                    },
                   ),
                   TextFieldWidget(
                     label: "Password",
                     validator: validatePassword,
                     controller: passwordController,
+                    // onChange: () {
+                    //   if (_formKey.currentState?.validate() == false) {
+                    //     _formKey.currentState?.reset();
+                    //   }
+                    // },
                   ),
                   ButtonCommonWidget(
                     label: "Login",
