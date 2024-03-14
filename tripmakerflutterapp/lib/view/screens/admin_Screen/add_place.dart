@@ -113,11 +113,42 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                     children: [
                                       IconButton(
                                         onPressed: () {
-                                          PlacesDB.instance
-                                              .deletePlaces(index)
-                                              .then((value) async {
-                                            await PlacesDB.instance.reFreshUI();
-                                          });
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text("Delete"),
+                                                content: Text(
+                                                    "Are you sure you want to delete?"),
+                                                actions: [
+                                                  TextButton.icon(
+                                                    onPressed: () {
+                                                      PlacesDB.instance
+                                                          .deletePlaces(index)
+                                                          .then((value) async {
+                                                        await PlacesDB.instance
+                                                            .reFreshUI();
+                                                      });
+                                                    },
+                                                    icon: Icon(Icons.delete),
+                                                    label: Text("yes"),
+                                                  ),
+                                                  TextButton.icon(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      icon:
+                                                          Icon(Icons.back_hand),
+                                                      label: Text("no"))
+                                                ],
+                                              );
+                                            },
+                                          );
+                                          // PlacesDB.instance
+                                          //     .deletePlaces(index)
+                                          //     .then((value) async {
+                                          //   await PlacesDB.instance.reFreshUI();
+                                          // });
                                         },
                                         icon: const Icon(Icons.delete),
                                       ),
