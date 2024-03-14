@@ -29,7 +29,8 @@ class ScreenHomeAdmin extends StatelessWidget {
                 height: height / 1.1,
                 child: SizedBox(
                   child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
@@ -51,7 +52,8 @@ class ScreenHomeAdmin extends StatelessWidget {
                             ),
                           );
                         },
-                        child: SizedBox(
+                        child: Container(
+                          color: Colors.amber,
                           width: width / 2,
                           height: height / 3,
                           child: Center(

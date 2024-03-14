@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/view/screens/admin_Screen/update_admin_page.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class AddPlaceAdmin extends StatefulWidget {
@@ -27,21 +28,47 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
     num height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: width / 1,
           height: height / 1,
-          color: Colors.amber,
           child: Column(
             children: [
-              const Icon(Icons.back_hand),
-              const Text("Addpage"),
+              Container(
+                width: width / 1,
+                height: height / 13,
+                color: Colors.amber,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.back_hand)),
+                    SizedBox(
+                      width: 60,
+                    ),
+                    Text(
+                      "Addpage",
+                      style: GoogleFonts.abel(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               SingleChildScrollView(
-                child: Container(
+                child: SizedBox(
                   width: width / 1,
                   height: height / 1.2,
-                  color: Colors.blue,
                   child: ValueListenableBuilder<List<ModelPlace>>(
-                    valueListenable: PlacesDB.instance.alappuzhaListNotifier,
+                    valueListenable: PlacesDB.instance.placeListNotifier,
                     builder: (context, placeList, _) {
                       print('Number of places: ${placeList.length}');
                       print('Places: $placeList');
@@ -73,16 +100,40 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                           File(placeList[index].images![0]),
                                           fit: BoxFit.fill,
                                         ),
-                                  Text(placeList[index].placeName!),
-                                  IconButton(
-                                    onPressed: () {
-                                      PlacesDB.instance
-                                          .deletePlaces(index)
-                                          .then((value) async {
-                                        await PlacesDB.instance.reFreshUI();
-                                      });
-                                    },
-                                    icon: const Icon(Icons.delete),
+                                  Positioned(
+                                    top: height / 10,
+                                    left: width / 27,
+                                    child: Text(
+                                      placeList[index].placeName!,
+                                      style:
+                                          GoogleFonts.abel(color: Colors.white),
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          PlacesDB.instance
+                                              .deletePlaces(index)
+                                              .then((value) async {
+                                            await PlacesDB.instance.reFreshUI();
+                                          });
+                                        },
+                                        icon: const Icon(Icons.delete),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Updatepage_placeModel(),
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(Icons.update),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
