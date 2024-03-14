@@ -8,6 +8,7 @@ abstract class PlaceDbFunctions {
   Future<List<ModelPlace>> getPlaces();
   Future<void> insertPlaces(ModelPlace value);
   Future<void> deletePlaces(int id);
+  Future<void> updatePlace(ModelPlace updatedPlace);
 }
 
 class PlacesDB implements PlaceDbFunctions {
@@ -47,6 +48,18 @@ class PlacesDB implements PlaceDbFunctions {
   ValueNotifier<List<ModelPlace>> wayanadListNotifier = ValueNotifier([]);
   ValueNotifier<List<ModelPlace>> commonDistrictListNotifier =
       ValueNotifier([]);
+  @override
+  Future<void> updatePlace(ModelPlace updatedPlace) async {
+    final placeDB = await Hive.openBox<ModelPlace>(PLACE_DB_NAME);
+    final placeIndex = placeDB.values
+        .toList()
+        .indexWhere((element) => element.id == updatedPlace.id);
+
+    if (placeIndex != -1) {
+      await placeDB.putAt(placeIndex, updatedPlace);
+      await reFreshUI();
+    }
+  }
 
   @override
   Future<void> deletePlaces(int id) async {

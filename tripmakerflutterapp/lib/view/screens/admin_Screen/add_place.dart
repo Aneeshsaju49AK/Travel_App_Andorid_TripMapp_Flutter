@@ -126,9 +126,15 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Updatepage_placeModel(),
-                                            ),
+                                                builder: (context) {
+                                              return Scaffold(
+                                                body: SafeArea(
+                                                  child: Updatepage_placeModel(
+                                                    place: placeList[index],
+                                                  ),
+                                                ),
+                                              );
+                                            }),
                                           );
                                         },
                                         icon: Icon(Icons.update),
