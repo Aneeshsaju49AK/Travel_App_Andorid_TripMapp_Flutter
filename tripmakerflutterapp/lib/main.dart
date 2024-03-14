@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/addTrip_model/addTrip_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
@@ -11,8 +9,10 @@ import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
+import 'package:tripmakerflutterapp/provider/common_provider.dart';
+import 'package:tripmakerflutterapp/provider/main_dart_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,17 +43,24 @@ void main() async {
   await BlogDB.instance.reFreshUIBlogs();
   await FavoritesDB.instance.updateFavoriteList();
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ProviderMain_Page(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CommonProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,44 +73,15 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(
-      const Duration(seconds: 3),
-      () async {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-
-        if (isLoggedIn) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ScreenSelection(),
-            ),
-          );
-        } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginPage(),
-            ),
-          );
-        }
-      },
-    );
-  }
-
+  // @override
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<ProviderMain_Page>(context, listen: false);
+    authProvider.initializeMainPage(context);
+
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
 
@@ -171,3 +149,31 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+
+// @override
+  // void initState() {
+  //   super.initState();
+  //   Timer(
+  //     const Duration(seconds: 3),
+  //     () async {
+  //       final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //       final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+  //       if (isLoggedIn) {
+  //         Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //             builder: (context) => ScreenSelection(),
+  //           ),
+  //         );
+  //       } else {
+  //         Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //             builder: (context) => LoginPage(),
+  //           ),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
