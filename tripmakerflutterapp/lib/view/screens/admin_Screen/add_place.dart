@@ -15,6 +15,9 @@ class AddPlaceAdmin extends StatefulWidget {
 }
 
 class _AddPlaceAdminState extends State<AddPlaceAdmin> {
+  ValueNotifier<List<ModelPlace>> filteredList = ValueNotifier([]);
+  String searchQuery = "";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -31,176 +34,198 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
         child: SizedBox(
           width: width / 1,
           height: height / 1,
-          child: Column(
-            children: [
-              Container(
-                width: width / 1,
-                height: height / 13,
-                color: Colors.amber,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 20,
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.back_hand)),
-                    SizedBox(
-                      width: 60,
-                    ),
-                    Text(
-                      "Addpage",
-                      style: GoogleFonts.abel(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SingleChildScrollView(
-                child: SizedBox(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
                   width: width / 1,
-                  height: height / 1.2,
-                  child: ValueListenableBuilder<List<ModelPlace>>(
-                    valueListenable: PlacesDB.instance.placeListNotifier,
-                    builder: (context, placeList, _) {
-                      print('Number of places: ${placeList.length}');
-                      print('Places: $placeList');
-                      final one = placeList.toList();
-                      print(one[0].district.runtimeType);
-                      if (placeList.isNotEmpty) {
-                        return GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                          ),
-                          itemCount: placeList.length,
-                          itemBuilder: (context, index) {
-                            return SizedBox(
-                              width: width / 2,
-                              height: height / 2.5,
-                              child: Stack(
-                                children: [
-                                  placeList[index]
-                                          .images![0]
-                                          .startsWith("asset/")
-                                      ? Image.asset(
-                                          placeList[index].images![0],
-                                          fit: BoxFit.fill,
-                                        )
-                                      : Image.file(
-                                          File(placeList[index].images![0]),
-                                          fit: BoxFit.fill,
-                                        ),
-                                  Positioned(
-                                    top: height / 10,
-                                    left: width / 27,
-                                    child: Text(
-                                      placeList[index].placeName!,
-                                      style:
-                                          GoogleFonts.abel(color: Colors.white),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text("Delete"),
-                                                content: Text(
-                                                    "Are you sure you want to delete?"),
-                                                actions: [
-                                                  TextButton.icon(
-                                                    onPressed: () {
-                                                      PlacesDB.instance
-                                                          .deletePlaces(index)
-                                                          .then((value) async {
-                                                        await PlacesDB.instance
-                                                            .reFreshUI();
-                                                      });
-                                                    },
-                                                    icon: Icon(Icons.delete),
-                                                    label: Text("yes"),
-                                                  ),
-                                                  TextButton.icon(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      icon:
-                                                          Icon(Icons.back_hand),
-                                                      label: Text("no"))
-                                                ],
-                                              );
-                                            },
-                                          );
-                                          // PlacesDB.instance
-                                          //     .deletePlaces(index)
-                                          //     .then((value) async {
-                                          //   await PlacesDB.instance.reFreshUI();
-                                          // });
-                                        },
-                                        icon: const Icon(Icons.delete),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                              return Scaffold(
-                                                body: SafeArea(
-                                                  child: Updatepage_placeModel(
-                                                    place: placeList[index],
-                                                  ),
-                                                ),
-                                              );
-                                            }),
-                                          );
-                                        },
-                                        icon: Icon(Icons.update),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
+                  height: height / 14,
+                  color: Colors.amber,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
                           },
-                        );
-                      } else {
-                        return GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                          ),
-                          itemCount: 0,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              color: const Color.fromARGB(255, 58, 243, 33),
-                              width: width / 2,
-                              height: height / 2.5,
-                              child: const Text("No value"),
-                            );
-                          },
-                        );
-                      }
-                    },
+                          icon: Icon(Icons.back_hand)),
+                      SizedBox(
+                        width: 60,
+                      ),
+                      Text(
+                        "Addpage",
+                        style: GoogleFonts.abel(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              )
-            ],
+                SizedBox(
+                  width: width / 1,
+                  height: height / 11,
+                  child: SearchWidget(
+                    isNavigation: false,
+                    onSearch: handleSearch,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                SingleChildScrollView(
+                  child: SizedBox(
+                    width: width / 1,
+                    height: height / 1.2,
+                    child: ValueListenableBuilder<List<ModelPlace>>(
+                      valueListenable: filteredList.value.isNotEmpty
+                          ? filteredList
+                          : PlacesDB.instance.placeListNotifier,
+                      builder: (context, placeList, _) {
+                        print('Number of places: ${placeList.length}');
+                        print('Places: $placeList');
+                        final one = placeList.toList();
+                        print(one[0].district.runtimeType);
+                        if (placeList.isNotEmpty) {
+                          return GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                            ),
+                            itemCount: placeList.length,
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                width: width / 2,
+                                height: height / 2.5,
+                                child: Stack(
+                                  children: [
+                                    placeList[index]
+                                            .images![0]
+                                            .startsWith("asset/")
+                                        ? Image.asset(
+                                            placeList[index].images![0],
+                                            fit: BoxFit.fill,
+                                          )
+                                        : Image.file(
+                                            File(placeList[index].images![0]),
+                                            fit: BoxFit.fill,
+                                          ),
+                                    Positioned(
+                                      top: height / 10,
+                                      left: width / 27,
+                                      child: Text(
+                                        placeList[index].placeName!,
+                                        style: GoogleFonts.abel(
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Text("Delete"),
+                                                  content: Text(
+                                                      "Are you sure you want to delete?"),
+                                                  actions: [
+                                                    TextButton.icon(
+                                                      onPressed: () {
+                                                        PlacesDB.instance
+                                                            .deletePlaces(index)
+                                                            .then(
+                                                                (value) async {
+                                                          await PlacesDB
+                                                              .instance
+                                                              .reFreshUI();
+                                                        });
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.delete,
+                                                        color: Colors.red,
+                                                      ),
+                                                      label: Text("yes"),
+                                                    ),
+                                                    TextButton.icon(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.back_hand,
+                                                          color: Colors.green,
+                                                        ),
+                                                        label: Text("no"))
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                                return Scaffold(
+                                                  body: SafeArea(
+                                                    child:
+                                                        Updatepage_placeModel(
+                                                      place: placeList[index],
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.update,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          return GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                            ),
+                            itemCount: 0,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                color: const Color.fromARGB(255, 58, 243, 33),
+                                width: width / 2,
+                                height: height / 2.5,
+                                child: const Text("No value"),
+                              );
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -224,6 +249,26 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
         child: const Text("Add"),
       ),
     );
+  }
+
+  void handleSearch(String searchText) {
+    searchQuery = searchText;
+
+    final placeList = PlacesDB.instance.placeListNotifier.value;
+    print(searchText);
+    print(placeList.length);
+    if (searchText.isEmpty) {
+      filteredList.value = placeList;
+    } else {
+      List<ModelPlace> filteredPlaces = placeList
+          .where(
+            (element) => element.placeName!.toLowerCase().contains(
+                  searchText.toLowerCase(),
+                ),
+          )
+          .toList();
+      filteredList.value = filteredPlaces;
+    }
   }
 }
 
