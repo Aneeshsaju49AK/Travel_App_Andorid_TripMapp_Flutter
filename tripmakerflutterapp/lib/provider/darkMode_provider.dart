@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DarkModeProvider extends ChangeNotifier {
-  bool _value = true;
+  bool _value = false;
 
   bool get value => _value;
 

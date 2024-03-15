@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
+import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogView_screen.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
@@ -61,7 +63,13 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                           child: Text(
                             "No blogs is created",
                             style: GoogleFonts.abel(
-                                fontSize: 20, fontWeight: FontWeight.w500),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color:
+                                  Provider.of<DarkModeProvider>(context).value
+                                      ? const Color.fromARGB(255, 33, 39, 43)
+                                      : Color.fromARGB(255, 230, 234, 212),
+                            ),
                           ),
                         );
                       }
@@ -121,7 +129,13 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                         place.name!,
                                         style: TextStyle(
                                           fontSize: 24,
-                                          color: Colors.white,
+                                          color: Provider.of<DarkModeProvider>(
+                                                      context)
+                                                  .value
+                                              ? const Color.fromARGB(
+                                                  255, 33, 39, 43)
+                                              : Color.fromARGB(
+                                                  255, 230, 234, 212),
                                           fontWeight: FontWeight.w900,
                                         ),
                                       ),
@@ -196,7 +210,9 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                 return Scaffold(
                   body: SafeArea(
                     child: Container(
-                      color: Colors.yellow[50],
+                      color: Provider.of<DarkModeProvider>(context).value
+                          ? const Color.fromARGB(255, 33, 39, 43)
+                          : Color.fromARGB(255, 230, 234, 212),
                       child: PopupScreen(),
                     ),
                   ),
@@ -287,8 +303,11 @@ class _PopupScreenState extends State<PopupScreen> {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
+        child: Container(
           width: width / 1,
+          color: Provider.of<DarkModeProvider>(context).value
+              ? const Color.fromARGB(255, 33, 39, 43)
+              : Color.fromARGB(255, 230, 234, 212),
           child: Form(
             key: _formKey,
             child: Column(
@@ -299,6 +318,9 @@ class _PopupScreenState extends State<PopupScreen> {
                     style: GoogleFonts.abel(
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
+                      color: Provider.of<DarkModeProvider>(context).value
+                          ? Color.fromARGB(255, 212, 223, 231)
+                          : Color.fromARGB(255, 60, 61, 57),
                     ),
                   ),
                 ),
@@ -338,16 +360,26 @@ class _PopupScreenState extends State<PopupScreen> {
                                       countImage--;
                                     });
                                   },
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.remove,
+                                    color:
+                                        Provider.of<DarkModeProvider>(context)
+                                                .value
+                                            ? Color.fromARGB(255, 143, 170, 188)
+                                            : Color.fromARGB(255, 60, 61, 57),
                                   ),
                                 ),
                                 IconButton(
                                   onPressed: () {
                                     buttomSheet(context);
                                   },
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.add,
+                                    color:
+                                        Provider.of<DarkModeProvider>(context)
+                                                .value
+                                            ? Color.fromARGB(255, 150, 178, 196)
+                                            : Color.fromARGB(255, 60, 61, 57),
                                   ),
                                 ),
                               ],
@@ -364,7 +396,9 @@ class _PopupScreenState extends State<PopupScreen> {
                       countImage++;
                     });
                   },
-                  icon: const Icon(Icons.add_a_photo),
+                  icon: const Icon(
+                    Icons.add_a_photo,
+                  ),
                   label: const Text("Add Image"),
                 ),
                 const SizedBox(

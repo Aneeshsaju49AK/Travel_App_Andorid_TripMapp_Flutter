@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/addTrip_model/addTrip_model_controller.dart';
 import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/addtrip_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
@@ -357,14 +359,15 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
     num height = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
+      child: SizedBox(
         width: width / 1,
         height: height / 2,
-        color: Colors.red,
         child: SingleChildScrollView(
           child: Container(
             width: width / 1,
-            color: Colors.amber[50],
+            color: Provider.of<DarkModeProvider>(context).value
+                ? const Color.fromARGB(255, 33, 39, 43)
+                : Color.fromARGB(255, 230, 234, 212),
             child: Form(
               key: _formKey,
               child: Column(
@@ -422,7 +425,7 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
                               height: height / 4,
                               child: getImageWidget(
                                 place?.images?.isEmpty ?? true
-                                    ? "/home/aneesh/Travel_App_Andorid_TripMapp_Flutter/tripmakerflutterapp/asset/imges/images (1).png"
+                                    ? "asset/imges/heart-in-a-circle.png"
                                     : place!.images![0],
                               ),
                             ),
@@ -545,7 +548,7 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
   }
 
   Widget getImageWidget(String imagePath) {
-    if (imagePath.startsWith("assets/")) {
+    if (imagePath.startsWith("asset/")) {
       return Image.asset(
         imagePath,
         fit: BoxFit.cover,

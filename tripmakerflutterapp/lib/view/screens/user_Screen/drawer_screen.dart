@@ -101,6 +101,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                 style: GoogleFonts.abel(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
+                                  color: Provider.of<DarkModeProvider>(context)
+                                          .value
+                                      ? Colors.blue
+                                      : Colors.black,
                                 ),
                               );
                             } else {
@@ -109,6 +113,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                 style: GoogleFonts.abel(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
+                                  color: Provider.of<DarkModeProvider>(context)
+                                          .value
+                                      ? Colors.blue
+                                      : Colors.black,
                                 ),
                               );
                             }
@@ -132,6 +140,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                 style: GoogleFonts.abel(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
+                                  color: Provider.of<DarkModeProvider>(context)
+                                          .value
+                                      ? Colors.blue
+                                      : Colors.black,
                                 ),
                               );
                             } else {
@@ -140,6 +152,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                 style: GoogleFonts.abel(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
+                                  color: Provider.of<DarkModeProvider>(context)
+                                          .value
+                                      ? Colors.blue
+                                      : Colors.black,
                                 ),
                               );
                             }
@@ -225,6 +241,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                   style: GoogleFonts.abel(
                                     fontSize: 26,
                                     fontWeight: FontWeight.w700,
+                                    color:
+                                        Provider.of<DarkModeProvider>(context)
+                                                .value
+                                            ? Colors.blue
+                                            : Colors.black,
                                   ),
                                 ),
                               ),
@@ -246,10 +267,14 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       style: GoogleFonts.abel(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
+                        color: Provider.of<DarkModeProvider>(context).value
+                            ? Colors.blue
+                            : Colors.black,
                       ),
                     ),
                     Switch(
                       value: Provider.of<DarkModeProvider>(context).value,
+
                       // value: isDarkModeEnabled.value,
                       onChanged: (value) {
                         Provider.of<DarkModeProvider>(context, listen: false)

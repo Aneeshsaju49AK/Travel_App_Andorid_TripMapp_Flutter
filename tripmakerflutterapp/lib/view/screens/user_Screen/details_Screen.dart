@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_Screen.dart';
 
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
@@ -116,8 +118,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   child: Container(
                     height: height / 1.5,
                     width: width / 1,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 243, 234, 234),
+                    decoration: BoxDecoration(
+                      color: Provider.of<DarkModeProvider>(context).value
+                          ? const Color.fromARGB(255, 33, 39, 43)
+                          : Color.fromARGB(255, 230, 234, 212),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(50),
                       ),

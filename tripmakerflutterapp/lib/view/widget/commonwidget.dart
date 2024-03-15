@@ -9,11 +9,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/category_place.dart';
 
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
@@ -264,6 +266,9 @@ class CircleAvatarWidget extends StatelessWidget {
                 ? Image.asset(
                     "asset/imges/navigation_img/home-icon-silhouette.png",
                     width: 20,
+                    color: Provider.of<DarkModeProvider>(context).value
+                        ? Colors.blue
+                        : Colors.black,
                   )
                 : null
             : location != null
@@ -385,9 +390,13 @@ class _TabViewWidgetState extends State<TabViewWidget>
             width: width / 1,
             height: height / 19,
             child: TabBar(
-              labelColor: Colors.black,
-              labelStyle: const TextStyle(
-                color: Colors.black,
+              labelColor: Provider.of<DarkModeProvider>(context).value
+                  ? Colors.white
+                  : Colors.black,
+              labelStyle: TextStyle(
+                color: Provider.of<DarkModeProvider>(context).value
+                    ? Colors.white
+                    : Colors.black,
               ),
               controller: _tabController,
               tabs: const [
@@ -483,7 +492,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                   height: 300,
                   decoration: BoxDecoration(
                     border: Border.all(),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(30),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black,
@@ -883,6 +892,9 @@ class BackButtonWidget extends StatelessWidget {
       child: Image.asset(
         "asset/imges/back-button.png",
         width: sizeOfImage,
+        color: Provider.of<DarkModeProvider>(context).value
+            ? Colors.blue
+            : Colors.black,
       ),
     );
   }
