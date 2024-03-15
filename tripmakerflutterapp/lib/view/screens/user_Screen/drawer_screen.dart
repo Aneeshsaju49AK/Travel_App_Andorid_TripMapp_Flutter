@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
+import 'package:tripmakerflutterapp/main.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
+import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/about_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 
 import 'package:tripmakerflutterapp/view/screens/user_Screen/profile_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
-class DrawerScreen extends StatelessWidget {
+class DrawerScreen extends StatefulWidget {
   const DrawerScreen({Key? key}) : super(key: key);
 
+  @override
+  State<DrawerScreen> createState() => _DrawerScreenState();
+}
+
+class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     final links = [
@@ -22,6 +30,7 @@ class DrawerScreen extends StatelessWidget {
     ];
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SafeArea(
@@ -223,6 +232,32 @@ class DrawerScreen extends StatelessWidget {
                           );
                         },
                       ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Dark Mode',
+                      style: GoogleFonts.abel(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Switch(
+                      value: Provider.of<DarkModeProvider>(context).value,
+                      // value: isDarkModeEnabled.value,
+                      onChanged: (value) {
+                        Provider.of<DarkModeProvider>(context, listen: false)
+                            .setValue(value);
+                        // setState(() {
+                        //   isDarkModeEnabled.value = value;
+                        // });
+                      },
                     ),
                   ],
                 ),

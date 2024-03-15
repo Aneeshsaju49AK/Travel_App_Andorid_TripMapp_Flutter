@@ -11,8 +11,11 @@ import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
+import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/drawer_screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +46,11 @@ void main() async {
   await BlogDB.instance.reFreshUIBlogs();
   await FavoritesDB.instance.updateFavoriteList();
 
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) => DarkModeProvider(),
+    ),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -56,11 +63,20 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
-      routes: {
-        "LoginPage": (context) => LoginPage(),
+    return Consumer<DarkModeProvider>(
+      builder: (context, darkmodeProvider, child) {
+        return MaterialApp(
+          title: "TripMapp",
+          theme: ThemeData(
+            brightness:
+                darkmodeProvider.value ? Brightness.dark : Brightness.light,
+          ),
+          debugShowCheckedModeBanner: false,
+          home: const SplashScreen(),
+          routes: {
+            "LoginPage": (context) => LoginPage(),
+          },
+        );
       },
     );
   }
