@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/admin_Screen/admin_Home_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/signinpage.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
@@ -6,14 +8,9 @@ import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
   // Controller for each TextFieldWidget
   final emailController = TextEditingController();
 
@@ -93,73 +90,77 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Container(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const HeadWritingWidget(
-                    label: "Login",
-                    divideHeight: 6,
-                    divideWidth: 1,
-                  ),
-                  TextFieldWidget(
-                    label: "Email",
-                    validator: validateEmail,
-                    controller: emailController,
-                    onChange: () {
-                      if (_formKey.currentState?.validate() == false) {
-                        _formKey.currentState?.reset();
-                      }
-                    },
-                  ),
-                  TextFieldWidget(
-                    label: "Password",
-                    validator: validatePassword,
-                    controller: passwordController,
-                    // onChange: () {
-                    //   if (_formKey.currentState?.validate() == false) {
-                    //     _formKey.currentState?.reset();
-                    //   }
-                    // },
-                  ),
-                  ButtonCommonWidget(
-                    label: "Login",
-                    onPressed: () {
-                      // Call the function to handle login button press
-                      handleLoginButtonPress(context);
-                    },
-                  ),
-                  Row(
+    return Consumer<CommonProvider>(
+      builder: (context, value, child) {
+        return Scaffold(
+          body: SingleChildScrollView(
+            child: SafeArea(
+              child: Container(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(
-                          left: 60,
-                        ),
-                        child: Text("If you don't have an account?"),
+                      const HeadWritingWidget(
+                        label: "Login",
+                        divideHeight: 6,
+                        divideWidth: 1,
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignInPage(),
-                            ),
-                          );
+                      TextFieldWidget(
+                        label: "Email",
+                        validator: value.validateValue,
+                        controller: emailController,
+                        onChange: () {
+                          if (_formKey.currentState?.validate() == false) {
+                            _formKey.currentState?.reset();
+                          }
                         },
-                        child: const Text("SignIn"),
+                      ),
+                      TextFieldWidget(
+                        label: "Password",
+                        validator: value.validateValue,
+                        controller: passwordController,
+                        // onChange: () {
+                        //   if (_formKey.currentState?.validate() == false) {
+                        //     _formKey.currentState?.reset();
+                        //   }
+                        // },
+                      ),
+                      ButtonCommonWidget(
+                        label: "Login",
+                        onPressed: () {
+                          // Call the function to handle login button press
+                          handleLoginButtonPress(context);
+                        },
+                      ),
+                      Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(
+                              left: 60,
+                            ),
+                            child: Text("If you don't have an account?"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SignInPage(),
+                                ),
+                              );
+                            },
+                            child: const Text("SignIn"),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

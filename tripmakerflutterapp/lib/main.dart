@@ -9,8 +9,10 @@ import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
+import 'package:tripmakerflutterapp/provider/activity_page_provider.dart';
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/main_dart_provider.dart';
+import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
 import 'package:provider/provider.dart';
 
@@ -47,10 +49,16 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => ProviderMain_Page(),
+          create: (context) => ProviderMainPage(),
         ),
         ChangeNotifierProvider(
           create: (context) => CommonProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProfilePageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ActivityPageProvider(),
         ),
       ],
       child: const MyApp(),
@@ -79,7 +87,7 @@ class SplashScreen extends StatelessWidget {
   // @override
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<ProviderMain_Page>(context, listen: false);
+    final authProvider = Provider.of<ProviderMainPage>(context, listen: false);
     authProvider.initializeMainPage(context);
 
     num width = MediaQuery.of(context).size.width;

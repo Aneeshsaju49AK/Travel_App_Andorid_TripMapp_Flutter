@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
@@ -36,27 +38,27 @@ class SignInPage extends StatelessWidget {
         .hasMatch(email);
   }
 
-  // Validation function for each TextFieldWidget
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Please enter a valid email";
-    }
-    return null;
-  }
+  // // Validation function for each TextFieldWidget
+  // String? validateEmail(String? value) {
+  //   if (value == null || value.isEmpty) {
+  //     return "Please enter a valid email";
+  //   }
+  //   return null;
+  // }
 
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Please enter a valid password";
-    }
-    return null;
-  }
+  // String? validatePassword(String? value) {
+  //   if (value == null || value.isEmpty) {
+  //     return "Please enter a valid password";
+  //   }
+  //   return null;
+  // }
 
-  String? validatePhone(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Please enter a valid phone number";
-    }
-    return null;
-  }
+  // String? validatePhone(String? value) {
+  //   if (value == null || value.isEmpty) {
+  //     return "Please enter a valid phone number";
+  //   }
+  //   return null;
+  // }
 
   // Function to handle signup button press
   void handleSignupButtonPress(BuildContext context) async {
@@ -98,6 +100,7 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviderCommon = Provider.of<CommonProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -113,7 +116,7 @@ class SignInPage extends StatelessWidget {
                   ),
                   TextFieldWidget(
                     label: "Email",
-                    validator: validateEmail,
+                    validator: authProviderCommon.validateValue,
                     controller: emailController,
                     onChange: () {
                       if (_formKey.currentState?.validate() == false) {
@@ -123,7 +126,7 @@ class SignInPage extends StatelessWidget {
                   ),
                   TextFieldWidget(
                     label: "Password",
-                    validator: validatePassword,
+                    validator: authProviderCommon.validateValue,
                     controller: passwordController,
                     // onChange: () {
                     //   if (_formKey.currentState?.validate() == false) {
@@ -134,7 +137,7 @@ class SignInPage extends StatelessWidget {
                   TextFieldWidget(
                     keyboardType: TextInputType.phone,
                     label: "Phone",
-                    validator: validatePhone,
+                    validator: authProviderCommon.validateValue,
                     controller: phoneController,
                     // onChange: () {
                     //   if (_formKey.currentState?.validate() == false) {

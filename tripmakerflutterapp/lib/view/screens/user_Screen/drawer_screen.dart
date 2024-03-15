@@ -167,7 +167,7 @@ class DrawerScreen extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) {
-                                              return const Scaffold(
+                                              return Scaffold(
                                                 body: SafeArea(
                                                   child: ProfileSetupWidget(),
                                                 ),
