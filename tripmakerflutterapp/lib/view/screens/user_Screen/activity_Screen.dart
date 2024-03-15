@@ -83,14 +83,14 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                         TripModel place = valueList[index];
 
                         return Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(20),
                           child: Container(
                             clipBehavior: Clip.antiAlias,
                             width: width / 1,
                             height: height / 3.5,
                             decoration: const BoxDecoration(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(20),
+                                Radius.circular(30),
                               ),
                             ),
                             child: Stack(
@@ -102,64 +102,140 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                                     place.selectedPlace!.images![0],
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 20,
-                                    top: 30,
-                                  ),
-                                  child: Text(place.selectedPlace!.placeName!),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 20,
-                                    top: 50,
-                                  ),
-                                  child: Text(place.name!),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 20,
-                                    top: 70,
-                                  ),
-                                  child: Text(place.startDate!.toString()),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 20,
-                                    top: 90,
-                                  ),
-                                  child: Text(place.endDate!.toString()),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 280,
-                                    top: 20,
-                                  ),
-                                  child: HeartButtonWidget(
-                                    sizeOfImage: 40,
-                                    place: place.selectedPlace!,
-                                    isFavorite: true,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 120,
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      AddtripDB.instance
-                                          .deleteAddtrip(place.id)
-                                          .then(
-                                        (value) {
-                                          AddtripDB.instance.refreshListUI();
-                                        },
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      size: 30,
-                                      color: Colors.red,
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.2),
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
                                     ),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: height / 7,
+                                  left: 20,
+                                  child: SizedBox(
+                                    width: width / 1.5,
+                                    child: FittedBox(
+                                        child: Text(
+                                      place.selectedPlace!.placeName!,
+                                      style: GoogleFonts.abel(
+                                        color: Colors.white,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    )),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: height / 5.5,
+                                  child: SizedBox(
+                                    width: width / 2,
+                                    height: height / 23,
+                                    child: FittedBox(
+                                        child: Text(
+                                      place.name!,
+                                      style: GoogleFonts.abel(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    )),
+                                  ),
+                                ),
+                                // Text(place.startDate!.toString()),
+                                Positioned(
+                                  top: height / 4.5,
+                                  child: SizedBox(
+                                    width: width / 2,
+                                    height: height / 35,
+                                    child: FittedBox(
+                                        child: Text(
+                                      place.startDate!
+                                          .toString()
+                                          .substring(0, 10),
+                                      style: GoogleFonts.abel(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    )),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: height / 4,
+                                  child: SizedBox(
+                                    width: width / 2,
+                                    height: height / 35,
+                                    child: FittedBox(
+                                        child: Text(
+                                      place.endDate!
+                                          .toString()
+                                          .substring(0, 10),
+                                      style: GoogleFonts.abel(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    )),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: width / 1.7,
+                                  top: height / 30,
+                                  child: Row(
+                                    children: [
+                                      HeartButtonWidget(
+                                        sizeOfImage: 40,
+                                        place: place.selectedPlace!,
+                                        isFavorite: true,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Logout"),
+                                                content: Text(
+                                                    "Are you sure you want to remove Trip?"),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text("No"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      AddtripDB.instance
+                                                          .deleteAddtrip(
+                                                              place.id)
+                                                          .then(
+                                                        (value) {
+                                                          AddtripDB.instance
+                                                              .refreshListUI();
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Text("Yes"),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          size: 30,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

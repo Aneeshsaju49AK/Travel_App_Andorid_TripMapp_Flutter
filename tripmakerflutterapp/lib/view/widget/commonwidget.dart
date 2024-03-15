@@ -863,7 +863,7 @@ class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
 
 class BackButtonWidget extends StatelessWidget {
   final double sizeOfImage;
-  final bool isCHecked;
+  final bool? isCHecked;
   const BackButtonWidget(
       {required this.sizeOfImage, required this.isCHecked, super.key});
 
@@ -874,8 +874,10 @@ class BackButtonWidget extends StatelessWidget {
         if (isCHecked == true) {
           ScreenSelection.selectedIndexNotifier.value = 0;
           Navigator.pop(context);
-        } else {
+        } else if (isCHecked == false) {
           ScreenSelection.selectedIndexNotifier.value = 0;
+        } else {
+          Navigator.pop(context);
         }
       },
       child: Image.asset(

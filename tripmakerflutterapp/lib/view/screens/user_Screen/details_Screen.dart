@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_Screen.dart';
 
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
@@ -412,11 +413,21 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               const SizedBox(
                                 width: 6,
                               ),
-                              Text(
-                                "Watch \nvlogs",
-                                style: GoogleFonts.abel(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BlogsScreenWidget(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Watch \nvlogs",
+                                  style: GoogleFonts.abel(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               )
                             ],

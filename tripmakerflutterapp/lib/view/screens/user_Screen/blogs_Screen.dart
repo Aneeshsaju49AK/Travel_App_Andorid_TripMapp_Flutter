@@ -5,11 +5,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/blogView_screen.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
-class BlogsScreenWidget extends StatelessWidget {
+class BlogsScreenWidget extends StatefulWidget {
   const BlogsScreenWidget({super.key});
 
+  @override
+  State<BlogsScreenWidget> createState() => _BlogsScreenWidgetState();
+}
+
+class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
   @override
   Widget build(BuildContext context) {
     num width = MediaQuery.of(context).size.width;
@@ -59,68 +65,109 @@ class BlogsScreenWidget extends StatelessWidget {
                           ),
                         );
                       }
-                      print("the values on ${valueList.length}");
+
                       return ListView.builder(
                         itemCount: valueList.length,
-                        itemBuilder: (context, index) {
+                        itemBuilder: (
+                          context,
+                          index,
+                        ) {
                           BlogModel place = valueList[index];
 
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              clipBehavior: Clip.antiAlias,
-                              width: width / 1,
-                              height: height / 3.5,
-                              decoration: const BoxDecoration(
-                                color: Colors.amber,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
+                            padding: const EdgeInsets.all(20.0),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BlogViewPage(
+                                      place: place,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                clipBehavior: Clip.antiAlias,
+                                width: width / 1,
+                                height: height / 3.5,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
                                 ),
-                              ),
-                              child: Stack(
-                                children: [
-                                  SizedBox(
-                                    width: width / 1,
-                                    height: height / 3.5,
-                                    child: getImageWidget(
-                                      place.images![0],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 20,
-                                      top: 30,
-                                    ),
-                                    child: Text(place.name!),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 20,
-                                      top: 90,
-                                    ),
-                                    child: Text(place.content!),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 120,
-                                    ),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        BlogDB.instance
-                                            .deletePlaces(place.id)
-                                            .then((value) async {
-                                          await BlogDB.instance
-                                              .reFreshUIBlogs();
-                                        });
-                                      },
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        size: 30,
-                                        color: Colors.red,
+                                child: Stack(
+                                  children: [
+                                    SizedBox(
+                                      width: width / 1,
+                                      height: height / 3.5,
+                                      child: getImageWidget(
+                                        place.images![0],
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.2),
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(20),
+                                          bottomRight: Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 20,
+                                      top: 170,
+                                      child: Text(
+                                        place.name!,
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: width / 1.4,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Remove"),
+                                                content: Text(
+                                                    "Are you sure you want to remove your blog?"),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text("No"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      BlogDB.instance
+                                                          .deletePlaces(
+                                                              place.id);
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text("Yes"),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          size: 30,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -196,6 +243,14 @@ class _PopupScreenState extends State<PopupScreen> {
   final List<String> _images = [];
   TextEditingController nameController = TextEditingController();
   TextEditingController contentController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    nameController.dispose();
+    contentController.dispose();
+  }
 
   final _formKey = GlobalKey<FormState>();
   String? validateError(String? value) {
@@ -320,6 +375,7 @@ class _PopupScreenState extends State<PopupScreen> {
                   width: width / 1.2,
                   height: height / 12,
                   child: TextFormField(
+                    controller: nameController,
                     validator: validateError,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -335,6 +391,7 @@ class _PopupScreenState extends State<PopupScreen> {
                   width: width / 1.2,
                   height: height / 4,
                   child: TextFormField(
+                    controller: contentController,
                     validator: validateError,
                     maxLines: null,
                     expands: true,
