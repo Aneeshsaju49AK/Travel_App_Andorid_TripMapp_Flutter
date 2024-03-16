@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/view/screens/admin_Screen/update_admin_page.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class AddPlaceAdmin extends StatefulWidget {
@@ -36,10 +37,9 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   width: width / 1,
                   height: height / 14,
-                  color: Colors.amber,
                   child: Row(
                     children: [
                       const SizedBox(
@@ -52,10 +52,10 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                         icon: const Icon(Icons.back_hand),
                       ),
                       const SizedBox(
-                        width: 60,
+                        width: 40,
                       ),
                       Text(
-                        "Addpage",
+                        "Add page Admin",
                         style: GoogleFonts.abel(
                           fontSize: 30,
                           fontWeight: FontWeight.w600,
@@ -84,7 +84,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                           ? filteredList
                           : PlacesDB.instance.placeListNotifier,
                       builder: (context, placeList, _) {
-                        //  final one = placeList.toList();
+                        final one = placeList.toList();
                         if (placeList.isNotEmpty) {
                           return GridView.builder(
                             gridDelegate:
@@ -95,105 +95,137 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                             ),
                             itemCount: placeList.length,
                             itemBuilder: (context, index) {
-                              return SizedBox(
-                                width: width / 2,
-                                height: height / 2.5,
-                                child: Stack(
-                                  children: [
-                                    placeList[index]
-                                            .images![0]
-                                            .startsWith("asset/")
-                                        ? Image.asset(
-                                            placeList[index].images![0],
-                                            fit: BoxFit.fill,
-                                          )
-                                        : Image.file(
-                                            File(placeList[index].images![0]),
-                                            fit: BoxFit.fill,
-                                          ),
-                                    Positioned(
-                                      top: height / 10,
-                                      left: width / 27,
-                                      child: Text(
-                                        placeList[index].placeName!,
-                                        style: GoogleFonts.abel(
-                                            color: Colors.white),
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailsScreen(
+                                        place: placeList[index],
                                       ),
                                     ),
-                                    Row(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  title: const Text("Delete"),
-                                                  content: const Text(
-                                                      "Are you sure you want to delete?"),
-                                                  actions: [
-                                                    TextButton.icon(
-                                                      onPressed: () {
-                                                        PlacesDB.instance
-                                                            .deletePlaces(index)
-                                                            .then(
-                                                                (value) async {
-                                                          await PlacesDB
-                                                              .instance
-                                                              .reFreshUI();
-                                                        });
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.delete,
-                                                        color: Colors.red,
-                                                      ),
-                                                      label: const Text("yes"),
-                                                    ),
-                                                    TextButton.icon(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.back_hand,
-                                                        color: Colors.green,
-                                                      ),
-                                                      label: const Text("no"),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.delete,
-                                            color: Colors.red,
+                                  );
+                                },
+                                child: SizedBox(
+                                  width: width / 2,
+                                  height: height / 2.5,
+                                  child: Stack(
+                                    children: [
+                                      SizedBox(
+                                        width: width / 2,
+                                        height: height / 2.5,
+                                        child: placeList[index]
+                                                .images![0]
+                                                .startsWith("asset/")
+                                            ? Image.asset(
+                                                placeList[index].images![0],
+                                                fit: BoxFit.fill,
+                                              )
+                                            : Image.file(
+                                                File(placeList[index]
+                                                    .images![0]),
+                                                fit: BoxFit.fill,
+                                              ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.2),
+                                          borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(20),
                                           ),
                                         ),
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                                return Scaffold(
-                                                  body: SafeArea(
-                                                    child:
-                                                        Updatepage_placeModel(
-                                                      place: placeList[index],
-                                                    ),
-                                                  ),
-                                                );
-                                              }),
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.update,
-                                            color: Colors.green,
+                                      ),
+                                      Positioned(
+                                        top: height / 10,
+                                        left: width / 27,
+                                        child: Text(
+                                          placeList[index].placeName!,
+                                          style: GoogleFonts.abel(
+                                            color: Colors.white,
+                                            fontSize: 23,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: const Text("Delete"),
+                                                    content: const Text(
+                                                        "Are you sure you want to delete?"),
+                                                    actions: [
+                                                      TextButton.icon(
+                                                        onPressed: () {
+                                                          PlacesDB.instance
+                                                              .deletePlaces(
+                                                                  index)
+                                                              .then(
+                                                                  (value) async {
+                                                            await PlacesDB
+                                                                .instance
+                                                                .reFreshUI();
+                                                          });
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.delete,
+                                                          color: Colors.red,
+                                                        ),
+                                                        label:
+                                                            const Text("yes"),
+                                                      ),
+                                                      TextButton.icon(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.back_hand,
+                                                          color: Colors.green,
+                                                        ),
+                                                        label: const Text("no"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                                  return Scaffold(
+                                                    body: SafeArea(
+                                                      child:
+                                                          Updatepage_placeModel(
+                                                        place: placeList[index],
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              Icons.update,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
