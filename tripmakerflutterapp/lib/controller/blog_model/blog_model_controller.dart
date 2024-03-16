@@ -33,12 +33,10 @@ class BlogDB implements BlogDbFunctions {
   Future<List<BlogModel>> getBlogs() async {
     final blogDB = await Hive.openBox<BlogModel>(BLOG_DB_NAME);
     return blogDB.values.toList();
-    // TODO: implement getPlaces
   }
 
   @override
   Future<void> insertBlog(BlogModel value) async {
-    // TODO: implement insertPlaces
     final blogDB = await Hive.openBox<BlogModel>(BLOG_DB_NAME);
     await blogDB.add(value);
 

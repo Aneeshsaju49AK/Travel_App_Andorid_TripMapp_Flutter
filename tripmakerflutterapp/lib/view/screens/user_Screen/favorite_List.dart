@@ -1,13 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
-
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
-
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class FavoritePage extends StatefulWidget {
@@ -26,6 +23,7 @@ class _FavoritePageState extends State<FavoritePage> {
 
   @override
   void initState() {
+    super.initState();
     FavoritesDB.instance.updateFavoriteList();
   }
 
@@ -85,7 +83,6 @@ class _FavoritePageState extends State<FavoritePage> {
                   child: ValueListenableBuilder(
                     valueListenable: filteredList,
                     builder: (context, valueList, _) {
-                      print(valueList.length);
                       return ListView.builder(
                         itemCount: valueList.length,
                         itemBuilder: (context, index) {
@@ -97,7 +94,7 @@ class _FavoritePageState extends State<FavoritePage> {
                               clipBehavior: Clip.antiAlias,
                               width: width / 1,
                               height: height / 3.5,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
@@ -140,7 +137,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                               .removeFavorite(place);
                                           _toggleFavoriteStatus();
                                           setState(() {
-                                            FavoritePage();
+                                            const FavoritePage();
                                           });
                                         },
                                       ),
@@ -186,9 +183,6 @@ class _FavoritePageState extends State<FavoritePage> {
     searchQuery = searchText;
 
     final placeList = FavoritesDB.favoriteListNotifier.value;
-
-    print(placeList.length);
-    print(searchText);
 
     if (searchText.isEmpty) {
       filteredList.value = placeList;

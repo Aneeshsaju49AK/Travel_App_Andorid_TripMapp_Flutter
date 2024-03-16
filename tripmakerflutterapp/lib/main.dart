@@ -12,7 +12,6 @@ import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/drawer_screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
 import 'package:provider/provider.dart';

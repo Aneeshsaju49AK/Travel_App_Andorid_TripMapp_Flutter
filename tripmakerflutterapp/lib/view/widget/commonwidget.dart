@@ -1,23 +1,17 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
-
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
-
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/category_place.dart';
-
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 
@@ -227,7 +221,7 @@ class _MapLocationState extends State<MapLocation> {
                     ? "${widget.locationName}"
                     : "${widget.locationName!.substring(0, 10)}...", // Display only the first 10 characters
               )
-            : Text("Location not available"),
+            : const Text("Location not available"),
       ),
     );
   }
@@ -500,7 +494,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                         blurRadius: 1,
                       ),
                     ],
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [
                         Colors.blue,
                         Colors.green,
@@ -528,7 +522,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.2),
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(20),
                               bottomRight: Radius.circular(20),
                             ),
@@ -558,7 +552,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                                         ),
                                       ),
                                     )
-                                  : Text("placeName"),
+                                  : const Text("placeName"),
                             ),
                           ),
                         ),
@@ -663,7 +657,7 @@ class SilderViewWidget extends StatelessWidget {
                         ),
                         fit: BoxFit.cover,
                       ),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: [
                           Colors.blue,
                           Colors.green,
@@ -802,7 +796,6 @@ class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _pageController.dispose();
     super.dispose();
   }
@@ -902,6 +895,7 @@ class BackButtonWidget extends StatelessWidget {
 
 /*in this widget is try to acheive the add favorite list according to the value */
 
+// ignore: must_be_immutable
 class HeartButtonWidget extends StatefulWidget {
   final double sizeOfImage;
   final ModelPlace place;

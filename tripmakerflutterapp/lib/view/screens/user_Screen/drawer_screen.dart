@@ -3,12 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
-import 'package:tripmakerflutterapp/main.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/about_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
-
 import 'package:tripmakerflutterapp/view/screens/user_Screen/profile_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
@@ -213,21 +211,21 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title: Text("Logout"),
-                                            content: Text(
+                                            title: const Text("Logout"),
+                                            content: const Text(
                                                 "Are you sure you want to logout?"),
                                             actions: [
                                               TextButton(
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                 },
-                                                child: Text("No"),
+                                                child: const Text("No"),
                                               ),
                                               TextButton(
                                                 onPressed: () {
                                                   _logOutUser(context);
                                                 },
-                                                child: Text("Yes"),
+                                                child: const Text("Yes"),
                                               ),
                                             ],
                                           );

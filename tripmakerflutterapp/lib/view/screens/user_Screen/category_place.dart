@@ -73,10 +73,7 @@ class _TypePlaceScreenState extends State<TypePlaceScreen> {
 
   void handleSearch(String searchText) {
     searchQuery = searchText;
-
     final placeList = widget.placeListNotifierTypePlace.value;
-    print(searchText);
-
     if (searchText.isEmpty) {
       filteredList.value = placeList;
     } else {

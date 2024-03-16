@@ -20,7 +20,6 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     PlacesDB.instance.reFreshUI();
   }
@@ -43,15 +42,16 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                   color: Colors.amber,
                   child: Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(Icons.back_hand)),
-                      SizedBox(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.back_hand),
+                      ),
+                      const SizedBox(
                         width: 60,
                       ),
                       Text(
@@ -72,7 +72,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                     onSearch: handleSearch,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 SingleChildScrollView(
@@ -84,10 +84,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                           ? filteredList
                           : PlacesDB.instance.placeListNotifier,
                       builder: (context, placeList, _) {
-                        print('Number of places: ${placeList.length}');
-                        print('Places: $placeList');
-                        final one = placeList.toList();
-                        print(one[0].district.runtimeType);
+                        //  final one = placeList.toList();
                         if (placeList.isNotEmpty) {
                           return GridView.builder(
                             gridDelegate:
@@ -131,8 +128,8 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                               context: context,
                                               builder: (context) {
                                                 return AlertDialog(
-                                                  title: Text("Delete"),
-                                                  content: Text(
+                                                  title: const Text("Delete"),
+                                                  content: const Text(
                                                       "Are you sure you want to delete?"),
                                                   actions: [
                                                     TextButton.icon(
@@ -146,22 +143,22 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                                               .reFreshUI();
                                                         });
                                                       },
-                                                      icon: Icon(
+                                                      icon: const Icon(
                                                         Icons.delete,
                                                         color: Colors.red,
                                                       ),
-                                                      label: Text("yes"),
+                                                      label: const Text("yes"),
                                                     ),
                                                     TextButton.icon(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        icon: Icon(
-                                                          Icons.back_hand,
-                                                          color: Colors.green,
-                                                        ),
-                                                        label: Text("no"))
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.back_hand,
+                                                        color: Colors.green,
+                                                      ),
+                                                      label: const Text("no"),
+                                                    ),
                                                   ],
                                                 );
                                               },
@@ -189,7 +186,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                               }),
                                             );
                                           },
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.update,
                                             color: Colors.green,
                                           ),
@@ -253,10 +250,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
 
   void handleSearch(String searchText) {
     searchQuery = searchText;
-
     final placeList = PlacesDB.instance.placeListNotifier.value;
-    print(searchText);
-    print(placeList.length);
     if (searchText.isEmpty) {
       filteredList.value = placeList;
     } else {

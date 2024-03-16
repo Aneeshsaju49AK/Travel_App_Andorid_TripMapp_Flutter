@@ -5,7 +5,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/activity_Screen.dart';
@@ -217,11 +216,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => FavoritePage(),
+                                          builder: (context) =>
+                                              const FavoritePage(),
                                         ),
                                       );
                                     },
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.favorite,
                                       size: 40,
                                       color: Colors.red,
@@ -242,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           //   locationName: _currentLocationName,
                                           //   islocationwidget: false,
                                           // ),
-                                          Icon(Icons.location_pin),
+                                          const Icon(Icons.location_pin),
                                           MapLocation(
                                             islocationWidget: true,
                                             location: _currentPosition,

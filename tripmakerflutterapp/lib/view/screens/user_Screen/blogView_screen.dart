@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
-import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class BlogViewPage extends StatefulWidget {
@@ -15,7 +14,6 @@ class BlogViewPage extends StatefulWidget {
 class _BlogViewPageState extends State<BlogViewPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _currentPlace = widget.place;
   }
@@ -99,7 +97,7 @@ class _BlogViewPageState extends State<BlogViewPage> {
                                             height: height / 17,
                                             child: SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
-                                              child: Container(
+                                              child: SizedBox(
                                                   child: Text(
                                                 "${_currentPlace.name}",
                                                 style: GoogleFonts.abel(
@@ -120,7 +118,7 @@ class _BlogViewPageState extends State<BlogViewPage> {
                             height: height / 14,
                             child: Row(
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   width: 30,
                                 ),
                                 Text(

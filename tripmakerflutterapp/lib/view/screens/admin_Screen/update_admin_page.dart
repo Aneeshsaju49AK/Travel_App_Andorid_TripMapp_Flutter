@@ -120,7 +120,7 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
                           child: Row(
                             children: [
                               Padding(
-                                padding: EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(10.0),
                                 child: Container(
                                   width: width / 1.4,
                                   height: height / 4,
