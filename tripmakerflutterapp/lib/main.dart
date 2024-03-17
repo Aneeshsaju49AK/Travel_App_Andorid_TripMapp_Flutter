@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +8,7 @@ import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
+import 'package:tripmakerflutterapp/firebase_options.dart';
 import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
@@ -15,9 +17,11 @@ import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Hive.initFlutter();
   if (!Hive.isAdapterRegistered(ProfileModelAdapter().typeId)) {
     Hive.registerAdapter(ProfileModelAdapter());
@@ -73,7 +77,10 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           home: const SplashScreen(),
           routes: {
-            "LoginPage": (context) => LoginPage(),
+            "LoginPage": (
+              context,
+            ) =>
+                LoginPage(),
           },
         );
       },

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "113245347636",
+    "project_id": "travelapp-53000",
+    "storage_bucket": "travelapp-53000.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113245347636:android:2d840b90aec289fa0bcf61",
+        "android_client_info": {
+          "package_name": "com.example.tripmakerflutterapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAx_FD2TSUM5tW2CND5sTl4Jyw--aEpB0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

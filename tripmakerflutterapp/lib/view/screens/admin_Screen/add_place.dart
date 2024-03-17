@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,6 +19,9 @@ class AddPlaceAdmin extends StatefulWidget {
 class _AddPlaceAdminState extends State<AddPlaceAdmin> {
   ValueNotifier<List<ModelPlace>> filteredList = ValueNotifier([]);
   String searchQuery = "";
+
+  final CollectionReference places =
+      FirebaseFirestore.instance.collection('places');
 
   @override
   void initState() {
@@ -79,13 +83,10 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                   child: SizedBox(
                     width: width / 1,
                     height: height / 1.2,
-                    child: ValueListenableBuilder<List<ModelPlace>>(
-                      valueListenable: filteredList.value.isNotEmpty
-                          ? filteredList
-                          : PlacesDB.instance.placeListNotifier,
-                      builder: (context, placeList, _) {
-                        final one = placeList.toList();
-                        if (placeList.isNotEmpty) {
+                    child: StreamBuilder(
+                      stream: places.snapshots(),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
                           return GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
@@ -93,18 +94,22 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
                             ),
-                            itemCount: placeList.length,
+                            itemCount: snapshot.data!.docs.length,
                             itemBuilder: (context, index) {
+                              final DocumentSnapshot placeDetails =
+                                  snapshot.data.docs[index];
+                              final List<dynamic> imageUrl =
+                                  placeDetails['images'];
                               return InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailsScreen(
-                                        place: placeList[index],
-                                      ),
-                                    ),
-                                  );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => DetailsScreen(
+                                  //       place: placeList[index],
+                                  //     ),
+                                  //   ),
+                                  // );
                                 },
                                 child: SizedBox(
                                   width: width / 2,
@@ -114,18 +119,14 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                       SizedBox(
                                         width: width / 2,
                                         height: height / 2.5,
-                                        child: placeList[index]
-                                                .images![0]
-                                                .startsWith("asset/")
-                                            ? Image.asset(
-                                                placeList[index].images![0],
-                                                fit: BoxFit.fill,
-                                              )
-                                            : Image.file(
-                                                File(placeList[index]
-                                                    .images![0]),
-                                                fit: BoxFit.fill,
-                                              ),
+                                        // child: Image.network(
+                                        //   imageUrl[0],
+                                        //   fit: BoxFit.cover,
+                                        // ),
+                                        child: Image.asset(
+                                          imageUrl[0],
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                       Container(
                                         decoration: BoxDecoration(
@@ -140,7 +141,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                         top: height / 10,
                                         left: width / 27,
                                         child: Text(
-                                          placeList[index].placeName!,
+                                          placeDetails['PlaceName'],
                                           style: GoogleFonts.abel(
                                             color: Colors.white,
                                             fontSize: 23,
@@ -200,28 +201,28 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                               color: Colors.red,
                                             ),
                                           ),
-                                          IconButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                                  return Scaffold(
-                                                    body: SafeArea(
-                                                      child:
-                                                          Updatepage_placeModel(
-                                                        place: placeList[index],
-                                                      ),
-                                                    ),
-                                                  );
-                                                }),
-                                              );
-                                            },
-                                            icon: const Icon(
-                                              Icons.update,
-                                              color: Colors.green,
-                                            ),
-                                          ),
+                                          // IconButton(
+                                          //   onPressed: () {
+                                          //     Navigator.push(
+                                          //       context,
+                                          //       MaterialPageRoute(
+                                          //           builder: (context) {
+                                          //         return Scaffold(
+                                          //           body: SafeArea(
+                                          //             child:
+                                          //                 Updatepage_placeModel(
+                                          //               place: placeList[index],
+                                          //             ),
+                                          //           ),
+                                          //         );
+                                          //       }),
+                                          //     );
+                                          //   },
+                                          //   icon: const Icon(
+                                          //     Icons.update,
+                                          //     color: Colors.green,
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     ],
@@ -231,22 +232,9 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                             },
                           );
                         } else {
-                          return GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                            ),
-                            itemCount: 0,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                color: const Color.fromARGB(255, 58, 243, 33),
-                                width: width / 2,
-                                height: height / 2.5,
-                                child: const Text("No value"),
-                              );
-                            },
+                          return Container(
+                            color: Colors.amber,
+                            child: Text("No data"),
                           );
                         }
                       },
@@ -306,6 +294,8 @@ class PopupAddPlace extends StatefulWidget {
 }
 
 class _PopupAddPlaceState extends State<PopupAddPlace> {
+  final CollectionReference places =
+      FirebaseFirestore.instance.collection('places');
   int countImage = 0;
   final List<String> _images = [];
   final districtController = TextEditingController();
@@ -329,18 +319,28 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
 
   void handleAddPlaceSaveButtonPress(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      final place = ModelPlace(
-        id: DateTime.now().microsecond.toString(),
-        district: selectedDistrict,
-        category: selectedCategory,
-        placeName: placeNameController.text,
-        subPlaceName: subLocationController.text,
-        price: priceController.text,
-        durations: durationController.text,
-        description: descriptionController.text,
-        images: _images,
-      );
-      await PlacesDB.instance.insertPlaces(place);
+      final Place = {
+        'PlaceName': placeNameController.text,
+        'SubName': subLocationController.text,
+        'price': priceController.text,
+        'selectedCategory': selectedCategory.toString(),
+        'selectedDistrict': selectedDistrict.toString(),
+        'Duration': durationController.text,
+        'Description': descriptionController.text,
+        'images': _images,
+      };
+      // final place = ModelPlace(
+      //   id: DateTime.now().microsecond.toString(),
+      //   district: selectedDistrict,
+      //   category: selectedCategory,
+      //   placeName: placeNameController.text,
+      //   subPlaceName: subLocationController.text,
+      //   price: priceController.text,
+      //   durations: durationController.text,
+      //   description: descriptionController.text,
+      //   images: _images,
+      // );
+      await places.add(Place);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text("Place added successfully"),
