@@ -18,7 +18,7 @@ class ProfileModel {
   String? profilePicturePath;
 
   ProfileModel({
-    this.id,
+    required this.id,
     required this.name,
     required this.email,
     required this.userName,

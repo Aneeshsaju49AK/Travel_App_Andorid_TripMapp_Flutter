@@ -19,6 +19,9 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  if (!Hive.isAdapterRegistered(ProfileModelAdapter().typeId)) {
+    Hive.registerAdapter(ProfileModelAdapter());
+  }
   if (!Hive.isAdapterRegistered(BlogModelAdapter().typeId)) {
     Hive.registerAdapter(BlogModelAdapter());
   }
@@ -32,14 +35,11 @@ void main() async {
     Hive.registerAdapter(PlaceCategoryAdapter());
   }
 
-  if (!Hive.isAdapterRegistered(ProfileModelAdapter().typeId)) {
-    Hive.registerAdapter(ProfileModelAdapter());
-  }
   if (!Hive.isAdapterRegistered(ModelPlaceAdapter().typeId)) {
     Hive.registerAdapter(ModelPlaceAdapter());
   }
 
-  await getUserValue();
+  await ProfileDB.instance.reFreshUI();
   await PlacesDB.instance.reFreshUI();
   await AddtripDB.instance.refreshListUI();
   await BlogDB.instance.reFreshUIBlogs();

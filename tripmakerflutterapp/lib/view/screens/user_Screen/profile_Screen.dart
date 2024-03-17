@@ -16,6 +16,13 @@ class ProfileSetupWidget extends StatefulWidget {
 }
 
 class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ProfileDB.userListNotifier;
+  }
+
   final nameController = TextEditingController();
 
   final emailController = TextEditingController();
@@ -58,16 +65,40 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
     return null;
   }
 
-  void handleProfileSaveButtonPress(BuildContext context) async {
+  void handleProfileUpdateButtonPress(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       final profile = ProfileModel(
+        id: ProfileDB.userListNotifier.value[0].id,
         name: nameController.text,
         email: emailController.text,
         userName: userNameController.text,
         phone: phoneController.text,
         profilePicturePath: _profilePicturePath,
       );
-      await addValue(profile);
+      await ProfileDB.instance.updateProfile(profile);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Updated Profile successfully'),
+          backgroundColor: Colors.green[200],
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      Navigator.pop(context);
+    }
+  }
+
+  void handleProfileSaveButtonPress(BuildContext context) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      final profile = ProfileModel(
+        id: DateTime.now().microsecond.toInt(),
+        name: nameController.text,
+        email: emailController.text,
+        userName: userNameController.text,
+        phone: phoneController.text,
+        profilePicturePath: _profilePicturePath,
+      );
+      await ProfileDB.instance.insertProfile(profile);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -126,43 +157,70 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                     height: height / 4,
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: CircleAvatarWidget(
-                        radius: 80,
-                        islocationwidget: true,
-                        imagePath: _profilePicturePath,
-                        onpressed: () {
-                          buttomSheet(context);
+                      child: ValueListenableBuilder(
+                        valueListenable: ProfileDB.userListNotifier,
+                        builder: (context, value, _) {
+                          if (value.isNotEmpty) {
+                            return CircleAvatarWidget(
+                              radius: 80,
+                              islocationwidget: true,
+                              imagePath: value[0].profilePicturePath,
+                              onpressed: () {
+                                buttomSheet(context);
+                              },
+                            );
+                          } else {
+                            return CircleAvatarWidget(
+                              radius: 80,
+                              islocationwidget: true,
+                              imagePath: _profilePicturePath,
+                              onpressed: () {
+                                buttomSheet(context);
+                              },
+                            );
+                          }
                         },
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: width / 1,
-                    height: height / 1.7,
-                    child: Column(
-                      children: [
-                        TextFieldWidget(
-                          label: "Name",
-                          validator: validateName,
-                          controller: nameController,
+                  ValueListenableBuilder(
+                    valueListenable: ProfileDB.userListNotifier,
+                    builder: (context, value, _) {
+                      ProfileModel pro = value[0];
+                      nameController.text = pro.name! ?? '';
+                      emailController.text = pro.email! ?? "";
+                      userNameController.text = pro.userName! ?? "";
+                      phoneController.text = pro.phone! ?? "";
+
+                      return SizedBox(
+                        width: width / 1,
+                        height: height / 1.7,
+                        child: Column(
+                          children: [
+                            TextFieldWidget(
+                              label: "Name",
+                              validator: validateName,
+                              controller: nameController,
+                            ),
+                            TextFieldWidget(
+                              label: "Email",
+                              validator: validateEmail,
+                              controller: emailController,
+                            ),
+                            TextFieldWidget(
+                              label: "User Name",
+                              validator: validateUserName,
+                              controller: userNameController,
+                            ),
+                            TextFieldWidget(
+                              label: "Phone",
+                              validator: validatePhone,
+                              controller: phoneController,
+                            ),
+                          ],
                         ),
-                        TextFieldWidget(
-                          label: "Email",
-                          validator: validateEmail,
-                          controller: emailController,
-                        ),
-                        TextFieldWidget(
-                          label: "User Name",
-                          validator: validateUserName,
-                          controller: userNameController,
-                        ),
-                        TextFieldWidget(
-                          label: "Phone",
-                          validator: validatePhone,
-                          controller: phoneController,
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                   SizedBox(
                     width: width / 1,
@@ -173,15 +231,35 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                           padding: const EdgeInsets.only(
                             left: 30,
                           ),
-                          child: InkWell(
-                            onTap: () {
-                              handleProfileSaveButtonPress(context);
+                          child: ValueListenableBuilder(
+                            valueListenable: ProfileDB.userListNotifier,
+                            builder: (context, value, _) {
+                              if (value.isEmpty) {
+                                return InkWell(
+                                  onTap: () {
+                                    handleProfileSaveButtonPress(context);
+                                  },
+                                  child: const RoundButton(
+                                    imagePath:
+                                        "asset/imges/navigation_img/eye.png",
+                                    label: "Add",
+                                    buttonColor: Colors.blue,
+                                  ),
+                                );
+                              } else {
+                                return InkWell(
+                                  onTap: () {
+                                    handleProfileUpdateButtonPress(context);
+                                  },
+                                  child: const RoundButton(
+                                    imagePath:
+                                        "asset/imges/navigation_img/eye.png",
+                                    label: "Update",
+                                    buttonColor: Colors.blue,
+                                  ),
+                                );
+                              }
                             },
-                            child: const RoundButton(
-                              imagePath: "asset/imges/navigation_img/eye.png",
-                              label: "Add",
-                              buttonColor: Colors.blue,
-                            ),
                           ),
                         ),
                         const SizedBox(
@@ -239,6 +317,8 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                         image = img;
                       });
                       _profilePicturePath = image!.path;
+                      ProfileDB.userListNotifier.value[0].profilePicturePath =
+                          image!.path;
                       Navigator.pop(context);
                     },
                     icon: const Icon(Icons.camera),
@@ -253,6 +333,8 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                         image = img;
                       });
                       _profilePicturePath = image!.path;
+                      ProfileDB.userListNotifier.value[0].profilePicturePath =
+                          image!.path;
                       Navigator.pop(context);
                     },
                     icon: const Icon(Icons.image),

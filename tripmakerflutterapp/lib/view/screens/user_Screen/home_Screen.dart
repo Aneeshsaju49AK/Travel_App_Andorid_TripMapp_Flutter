@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             },
                             child: ValueListenableBuilder<List<ProfileModel>>(
-                              valueListenable: userListNotifier,
+                              valueListenable: ProfileDB.userListNotifier,
                               builder: (context, userList, _) {
                                 if (userList.isNotEmpty) {
                                   return CircleAvatarWidget(
@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             ValueListenableBuilder<List<ProfileModel>>(
-                              valueListenable: userListNotifier,
+                              valueListenable: ProfileDB.userListNotifier,
                               builder: (context, userList, _) {
                                 if (userList.isNotEmpty) {
                                   return Text(
