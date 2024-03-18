@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 
-const PLACE_DB_NAME = 'place-database';
+const PLACE_DB_NAME_01 = 'place-database';
 
 abstract class PlaceDbFunctions {
   Future<List<ModelPlace>> getPlaces();
@@ -50,7 +50,7 @@ class PlacesDB implements PlaceDbFunctions {
       ValueNotifier([]);
   @override
   Future<void> updatePlace(ModelPlace updatedPlace) async {
-    final placeDB = await Hive.openBox<ModelPlace>(PLACE_DB_NAME);
+    final placeDB = await Hive.openBox<ModelPlace>(PLACE_DB_NAME_01);
     final placeIndex = placeDB.values
         .toList()
         .indexWhere((element) => element.id == updatedPlace.id);
@@ -63,19 +63,19 @@ class PlacesDB implements PlaceDbFunctions {
 
   @override
   Future<void> deletePlaces(int id) async {
-    final placeDB = await Hive.openBox<ModelPlace>(PLACE_DB_NAME);
+    final placeDB = await Hive.openBox<ModelPlace>(PLACE_DB_NAME_01);
     await placeDB.delete(id);
   }
 
   @override
   Future<List<ModelPlace>> getPlaces() async {
-    final placeDB = await Hive.openBox<ModelPlace>(PLACE_DB_NAME);
+    final placeDB = await Hive.openBox<ModelPlace>(PLACE_DB_NAME_01);
     return placeDB.values.toList();
   }
 
   @override
   Future<void> insertPlaces(ModelPlace value) async {
-    final placesDB = await Hive.openBox<ModelPlace>(PLACE_DB_NAME);
+    final placesDB = await Hive.openBox<ModelPlace>(PLACE_DB_NAME_01);
     await placesDB.add(value);
   }
 

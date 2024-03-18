@@ -424,13 +424,13 @@ class _TabViewWidgetState extends State<TabViewWidget>
                 SizedBox(
                   child: TabBarListWidget(
                     placeListNotifierCommon:
-                        PlacesDB.instance.beachCategoryNotifier,
+                        PlacesDB.instance.momumentsCategoryListNotifier,
                   ),
                 ),
                 SizedBox(
                   child: TabBarListWidget(
                     placeListNotifierCommon:
-                        PlacesDB.instance.alappuzhaListNotifier,
+                        PlacesDB.instance.beachCategoryNotifier,
                   ),
                 ),
               ],
@@ -544,7 +544,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                                       child: Text(
                                         showFullText
                                             ? "${place.placeName}"
-                                            : "${place.placeName!.substring(0, 9)}...",
+                                            : "${place.placeName!.substring(0, 6)}...",
                                         style: GoogleFonts.abel(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,

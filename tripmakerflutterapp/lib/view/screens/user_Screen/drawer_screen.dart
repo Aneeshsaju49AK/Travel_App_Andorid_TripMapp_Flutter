@@ -22,7 +22,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    ProfileDB.instance.reFreshUI();
+    ProfileDB.instance.reFreshUIProfile();
   }
 
   @override
@@ -62,7 +62,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 child: SizedBox(
                   width: width / 1,
                   height: height / 7,
-                  child: ValueListenableBuilder<List<ProfileModel>>(
+                  child: ValueListenableBuilder<List<ProfileModels>>(
                     valueListenable: ProfileDB.userListNotifier,
                     builder: (context, userList, _) {
                       if (userList.isNotEmpty) {
@@ -97,7 +97,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       child: SizedBox(
                         width: width / 2,
                         height: height / 30,
-                        child: ValueListenableBuilder<List<ProfileModel>>(
+                        child: ValueListenableBuilder<List<ProfileModels>>(
                           valueListenable: ProfileDB.userListNotifier,
                           builder: (context, userList, _) {
                             if (userList.isNotEmpty) {
@@ -136,7 +136,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       child: SizedBox(
                         width: width / 2,
                         height: height / 31,
-                        child: ValueListenableBuilder<List<ProfileModel>>(
+                        child: ValueListenableBuilder<List<ProfileModels>>(
                           valueListenable: ProfileDB.userListNotifier,
                           builder: (context, userList, _) {
                             if (userList.isNotEmpty) {

@@ -6,17 +6,17 @@ part of 'user_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
+class ProfileModelsAdapter extends TypeAdapter<ProfileModels> {
   @override
-  final int typeId = 2;
+  final int typeId = 10;
 
   @override
-  ProfileModel read(BinaryReader reader) {
+  ProfileModels read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ProfileModel(
+    return ProfileModels(
       id: fields[0] as int?,
       name: fields[1] as String?,
       email: fields[2] as String?,
@@ -27,7 +27,7 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
   }
 
   @override
-  void write(BinaryWriter writer, ProfileModel obj) {
+  void write(BinaryWriter writer, ProfileModels obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -50,7 +50,7 @@ class ProfileModelAdapter extends TypeAdapter<ProfileModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ProfileModelAdapter &&
+      other is ProfileModelsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
