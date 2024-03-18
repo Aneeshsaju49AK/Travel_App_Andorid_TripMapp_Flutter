@@ -5,9 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/view/screens/admin_Screen/update_admin_page.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
 
 class AddPlaceAdmin extends StatefulWidget {
   const AddPlaceAdmin({Key? key}) : super(key: key);
@@ -123,7 +123,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                         //   imageUrl[0],
                                         //   fit: BoxFit.cover,
                                         // ),
-                                        child: Image.asset(
+                                        child: Image.network(
                                           imageUrl[0],
                                           fit: BoxFit.cover,
                                         ),
@@ -234,7 +234,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                         } else {
                           return Container(
                             color: Colors.amber,
-                            child: Text("No data"),
+                            child: const Text("No data"),
                           );
                         }
                       },
@@ -296,6 +296,9 @@ class PopupAddPlace extends StatefulWidget {
 class _PopupAddPlaceState extends State<PopupAddPlace> {
   final CollectionReference places =
       FirebaseFirestore.instance.collection('places');
+
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
   int countImage = 0;
   final List<String> _images = [];
   final districtController = TextEditingController();
@@ -319,6 +322,22 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
 
   void handleAddPlaceSaveButtonPress(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
+      List<String> uploadedImageUrls = [];
+      // Upload each image to Firebase storage
+      for (String imagePath in _images) {
+        try {
+          final String fileName = basename(imagePath);
+          final ref = storage.ref().child('placeImages/$fileName');
+          final uploadTask = ref.putFile(File(imagePath));
+          final downloadUrl = await uploadTask;
+          final String imageUrl = await downloadUrl.ref.getDownloadURL();
+          uploadedImageUrls.add(imageUrl);
+        } catch (e) {
+          print('Error uploading image: $e');
+        }
+      }
+
+      // Save place details with uploaded image URLs
       final Place = {
         'PlaceName': placeNameController.text,
         'SubName': subLocationController.text,
@@ -327,30 +346,59 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
         'selectedDistrict': selectedDistrict.toString(),
         'Duration': durationController.text,
         'Description': descriptionController.text,
-        'images': _images,
+        'images': uploadedImageUrls,
       };
-      // final place = ModelPlace(
-      //   id: DateTime.now().microsecond.toString(),
-      //   district: selectedDistrict,
-      //   category: selectedCategory,
-      //   placeName: placeNameController.text,
-      //   subPlaceName: subLocationController.text,
-      //   price: priceController.text,
-      //   durations: durationController.text,
-      //   description: descriptionController.text,
-      //   images: _images,
-      // );
-      await places.add(Place);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text("Place added successfully"),
-          backgroundColor: Colors.green[200],
-          duration: const Duration(seconds: 3),
-        ),
-      );
-      Navigator.pop(context);
+
+      try {
+        await places.add(Place);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("Place added successfully"),
+            backgroundColor: Colors.green[200],
+            duration: const Duration(seconds: 3),
+          ),
+        );
+        Navigator.pop(context);
+      } catch (e) {
+        print('Error saving place details: $e');
+      }
     }
   }
+
+  // void handleAddPlaceSaveButtonPress(BuildContext context) async {
+  //   if (_formKey.currentState?.validate() ?? false) {
+  //     final Place = {
+  //       'PlaceName': placeNameController.text,
+  //       'SubName': subLocationController.text,
+  //       'price': priceController.text,
+  //       'selectedCategory': selectedCategory.toString(),
+  //       'selectedDistrict': selectedDistrict.toString(),
+  //       'Duration': durationController.text,
+  //       'Description': descriptionController.text,
+  //       'images': _images,
+  //     };
+  //     // final place = ModelPlace(
+  //     //   id: DateTime.now().microsecond.toString(),
+  //     //   district: selectedDistrict,
+  //     //   category: selectedCategory,
+  //     //   placeName: placeNameController.text,
+  //     //   subPlaceName: subLocationController.text,
+  //     //   price: priceController.text,
+  //     //   durations: durationController.text,
+  //     //   description: descriptionController.text,
+  //     //   images: _images,
+  //     // );
+  //     await places.add(Place);
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: const Text("Place added successfully"),
+  //         backgroundColor: Colors.green[200],
+  //         duration: const Duration(seconds: 3),
+  //       ),
+  //     );
+  //     Navigator.pop(context);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

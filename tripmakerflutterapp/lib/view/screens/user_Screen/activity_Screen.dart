@@ -107,7 +107,7 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                                 Container(
                                   decoration: BoxDecoration(
                                     color: Colors.black.withOpacity(0.2),
-                                    borderRadius: BorderRadius.only(
+                                    borderRadius: const BorderRadius.only(
                                       bottomLeft: Radius.circular(20),
                                       bottomRight: Radius.circular(20),
                                     ),
@@ -192,7 +192,7 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                                         place: place.selectedPlace!,
                                         isFavorite: true,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
                                       IconButton(
@@ -201,8 +201,8 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: Text("Logout"),
-                                                content: Text(
+                                                title: const Text("Logout"),
+                                                content: const Text(
                                                     "Are you sure you want to remove Trip?"),
                                                 actions: [
                                                   TextButton(
@@ -210,7 +210,7 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                                                       Navigator.of(context)
                                                           .pop();
                                                     },
-                                                    child: Text("No"),
+                                                    child: const Text("No"),
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
@@ -224,7 +224,7 @@ class _ActivityScreenWidgetState extends State<ActivityScreenWidget> {
                                                         },
                                                       );
                                                     },
-                                                    child: Text("Yes"),
+                                                    child: const Text("Yes"),
                                                   ),
                                                 ],
                                               );
@@ -367,7 +367,7 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
             width: width / 1,
             color: Provider.of<DarkModeProvider>(context).value
                 ? const Color.fromARGB(255, 33, 39, 43)
-                : Color.fromARGB(255, 230, 234, 212),
+                : const Color.fromARGB(255, 230, 234, 212),
             child: Form(
               key: _formKey,
               child: Column(

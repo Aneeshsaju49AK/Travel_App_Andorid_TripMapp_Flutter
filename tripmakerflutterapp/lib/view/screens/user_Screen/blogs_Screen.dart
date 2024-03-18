@@ -68,7 +68,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                               color:
                                   Provider.of<DarkModeProvider>(context).value
                                       ? const Color.fromARGB(255, 33, 39, 43)
-                                      : Color.fromARGB(255, 230, 234, 212),
+                                      : const Color.fromARGB(255, 230, 234, 212),
                             ),
                           ),
                         );
@@ -116,7 +116,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                     Container(
                                       decoration: BoxDecoration(
                                         color: Colors.black.withOpacity(0.2),
-                                        borderRadius: BorderRadius.only(
+                                        borderRadius: const BorderRadius.only(
                                           bottomLeft: Radius.circular(20),
                                           bottomRight: Radius.circular(20),
                                         ),
@@ -134,7 +134,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                                   .value
                                               ? const Color.fromARGB(
                                                   255, 33, 39, 43)
-                                              : Color.fromARGB(
+                                              : const Color.fromARGB(
                                                   255, 230, 234, 212),
                                           fontWeight: FontWeight.w900,
                                         ),
@@ -148,8 +148,8 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: Text("Remove"),
-                                                content: Text(
+                                                title: const Text("Remove"),
+                                                content: const Text(
                                                     "Are you sure you want to remove your blog?"),
                                                 actions: [
                                                   TextButton(
@@ -157,7 +157,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                                       Navigator.of(context)
                                                           .pop();
                                                     },
-                                                    child: Text("No"),
+                                                    child: const Text("No"),
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
@@ -166,7 +166,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                                               place.id);
                                                       Navigator.pop(context);
                                                     },
-                                                    child: Text("Yes"),
+                                                    child: const Text("Yes"),
                                                   ),
                                                 ],
                                               );
@@ -212,8 +212,8 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                     child: Container(
                       color: Provider.of<DarkModeProvider>(context).value
                           ? const Color.fromARGB(255, 33, 39, 43)
-                          : Color.fromARGB(255, 230, 234, 212),
-                      child: PopupScreen(),
+                          : const Color.fromARGB(255, 230, 234, 212),
+                      child: const PopupScreen(),
                     ),
                   ),
                 );
@@ -307,7 +307,7 @@ class _PopupScreenState extends State<PopupScreen> {
           width: width / 1,
           color: Provider.of<DarkModeProvider>(context).value
               ? const Color.fromARGB(255, 33, 39, 43)
-              : Color.fromARGB(255, 230, 234, 212),
+              : const Color.fromARGB(255, 230, 234, 212),
           child: Form(
             key: _formKey,
             child: Column(
@@ -319,8 +319,8 @@ class _PopupScreenState extends State<PopupScreen> {
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
                       color: Provider.of<DarkModeProvider>(context).value
-                          ? Color.fromARGB(255, 212, 223, 231)
-                          : Color.fromARGB(255, 60, 61, 57),
+                          ? const Color.fromARGB(255, 212, 223, 231)
+                          : const Color.fromARGB(255, 60, 61, 57),
                     ),
                   ),
                 ),
@@ -365,8 +365,8 @@ class _PopupScreenState extends State<PopupScreen> {
                                     color:
                                         Provider.of<DarkModeProvider>(context)
                                                 .value
-                                            ? Color.fromARGB(255, 143, 170, 188)
-                                            : Color.fromARGB(255, 60, 61, 57),
+                                            ? const Color.fromARGB(255, 143, 170, 188)
+                                            : const Color.fromARGB(255, 60, 61, 57),
                                   ),
                                 ),
                                 IconButton(
@@ -378,8 +378,8 @@ class _PopupScreenState extends State<PopupScreen> {
                                     color:
                                         Provider.of<DarkModeProvider>(context)
                                                 .value
-                                            ? Color.fromARGB(255, 150, 178, 196)
-                                            : Color.fromARGB(255, 60, 61, 57),
+                                            ? const Color.fromARGB(255, 150, 178, 196)
+                                            : const Color.fromARGB(255, 60, 61, 57),
                                   ),
                                 ),
                               ],
