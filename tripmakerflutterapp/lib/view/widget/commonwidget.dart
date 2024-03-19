@@ -541,7 +541,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                                       child: Text(
                                         showFullText
                                             ? "${place.placeName}"
-                                            : "${place.placeName!.substring(0, 9)}...",
+                                            : "${place.placeName!.substring(0, 5)}...",
                                         style: GoogleFonts.abel(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,

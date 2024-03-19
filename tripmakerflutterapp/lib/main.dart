@@ -11,6 +11,7 @@ import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
 import 'package:tripmakerflutterapp/provider/activity_page_provider.dart';
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
+import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
 import 'package:tripmakerflutterapp/provider/main_dart_provider.dart';
 import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
@@ -59,6 +60,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => ActivityPageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FavoriteButton(),
         ),
       ],
       child: const MyApp(),
