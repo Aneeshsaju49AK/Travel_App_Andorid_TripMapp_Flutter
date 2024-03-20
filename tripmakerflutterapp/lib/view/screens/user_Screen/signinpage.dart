@@ -38,28 +38,6 @@ class SignInPage extends StatelessWidget {
         .hasMatch(email);
   }
 
-  // // Validation function for each TextFieldWidget
-  // String? validateEmail(String? value) {
-  //   if (value == null || value.isEmpty) {
-  //     return "Please enter a valid email";
-  //   }
-  //   return null;
-  // }
-
-  // String? validatePassword(String? value) {
-  //   if (value == null || value.isEmpty) {
-  //     return "Please enter a valid password";
-  //   }
-  //   return null;
-  // }
-
-  // String? validatePhone(String? value) {
-  //   if (value == null || value.isEmpty) {
-  //     return "Please enter a valid phone number";
-  //   }
-  //   return null;
-  // }
-
   // Function to handle signup button press
   void handleSignupButtonPress(BuildContext context) async {
     // Trigger validation for each TextFieldWidget

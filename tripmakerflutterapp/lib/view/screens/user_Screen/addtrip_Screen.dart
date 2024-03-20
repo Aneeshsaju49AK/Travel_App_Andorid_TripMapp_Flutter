@@ -77,7 +77,6 @@ class AddTripScreen extends StatelessWidget {
     searchQuery = searchText;
 
     final placeList = PlacesDB.instance.placeListNotifier.value;
-    print(searchText);
 
     if (searchText.isEmpty) {
       filteredList.value = placeList;

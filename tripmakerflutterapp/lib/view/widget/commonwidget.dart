@@ -6,9 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
+import 'package:tripmakerflutterapp/provider/searchwidget_provider.dart';
+import 'package:tripmakerflutterapp/provider/texiFieldWidget_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/category_place.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
@@ -55,7 +59,7 @@ class HeadWritingWidget extends StatelessWidget {
 /*this widget is used for create textfield for
 signup/ and  login page */
 
-class TextFieldWidget extends StatefulWidget {
+class TextFieldWidget extends StatelessWidget {
   final String label;
   final String? Function(String?)? validator;
   final void Function()? onChange;
@@ -63,7 +67,7 @@ class TextFieldWidget extends StatefulWidget {
   final TextEditingController? controller;
   final TextInputType keyboardType;
 
-  const TextFieldWidget({
+  TextFieldWidget({
     Key? key,
     required this.label,
     this.validator,
@@ -72,30 +76,14 @@ class TextFieldWidget extends StatefulWidget {
     this.keyboardType = TextInputType.text,
   }) : super(key: key);
 
-  @override
-  State<TextFieldWidget> createState() => _TextFieldWidgetState();
-}
-
-class _TextFieldWidgetState extends State<TextFieldWidget> {
-  late TextEditingController _controller;
+  // late TextEditingController _controller;
   bool showError = false;
-  @override
-  void initState() {
-    super.initState();
-    _controller = widget.controller ?? TextEditingController();
-  }
 
   // @override
-  // void dispose() {
-  //   // Dispose the controller if it was created in initState
-  //   if (widget.controller == null) {
-  //     _controller.dispose();
-  //   }
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<TextFieldProvider>(context);
+    auth.initController(controller);
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
 
@@ -110,7 +98,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             child: Padding(
               padding: const EdgeInsets.only(left: 20),
               child: Text(
-                widget.label,
+                label,
                 style: GoogleFonts.abel(
                   fontSize: 19,
                   fontWeight: FontWeight.w600,
@@ -124,10 +112,10 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
               width: width / 1.1,
               height: height / 13,
               child: TextFormField(
-                keyboardType: widget.keyboardType,
-                controller: _controller,
+                keyboardType: keyboardType,
+                controller: auth.controller,
                 decoration: InputDecoration(
-                  hintText: widget.label,
+                  hintText: label,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: const BorderSide(
@@ -136,8 +124,8 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                     ),
                   ),
                 ),
-                validator: widget.validator,
-                onTap: widget.onChange,
+                validator: validator,
+                onTap: onChange,
               ),
             ),
           ),
@@ -186,41 +174,41 @@ class ButtonCommonWidget extends StatelessWidget {
   }
 }
 
-class MapLocation extends StatefulWidget {
+class MapLocation extends StatelessWidget {
   final bool? islocationWidget;
   final Position? location;
   final String? locationName;
-  const MapLocation({
+  MapLocation({
     this.islocationWidget,
     this.location,
     this.locationName,
     Key? key,
   }) : super(key: key);
 
-  @override
-  _MapLocationState createState() => _MapLocationState();
-}
-
-class _MapLocationState extends State<MapLocation> {
   bool showFullText = false;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          showFullText = !showFullText;
-        });
+    return Consumer<MapLocationProvider>(
+      builder: (context, value, child) {
+        return GestureDetector(
+          onTap: () {
+            value.changeValue();
+            // setState(() {
+            //   showFullText = !showFullText;
+            // });
+          },
+          child: Container(
+            child: islocationWidget == true && location != null
+                ? Text(
+                    value.showFullText
+                        ? "$locationName"
+                        : "${locationName!.substring(0, 10)}...", // Display only the first 10 characters
+                  )
+                : const Text("Location not available"),
+          ),
+        );
       },
-      child: Container(
-        child: widget.islocationWidget == true && widget.location != null
-            ? Text(
-                showFullText
-                    ? "${widget.locationName}"
-                    : "${widget.locationName!.substring(0, 10)}...", // Display only the first 10 characters
-              )
-            : Text("Location not available"),
-      ),
     );
   }
 }
@@ -270,40 +258,23 @@ class CircleAvatarWidget extends StatelessWidget {
 
 /*this widet is used to build the search bar
 maimly in the home and search page */
-class SearchWidget extends StatefulWidget {
+class SearchWidget extends StatelessWidget {
   final bool isNavigation;
   final void Function(String)? onSearch;
 
-  const SearchWidget({
+  SearchWidget({
     required this.isNavigation,
     this.onSearch,
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<SearchWidget> createState() => _SearchWidgetState();
-  void updateSearchText(String searchText) {
-    // Call the provided callback function to send the value
-    if (onSearch != null) {
-      onSearch!(searchText);
-    }
-  }
-}
+  // TextEditingController searchController = TextEditingController();
 
-class _SearchWidgetState extends State<SearchWidget> {
-  TextEditingController searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    searchController.addListener(() {
-      // Call the callback function with the current text value
-      widget.updateSearchText(searchController.text);
-    });
-  }
-
+  // @override
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<SearchProvider>(context);
+    auth.listenText();
     return SizedBox(
       child: Padding(
         padding: const EdgeInsets.only(
@@ -313,7 +284,7 @@ class _SearchWidgetState extends State<SearchWidget> {
           bottom: 0,
         ),
         child: TextField(
-          controller: searchController,
+          controller: auth.searchController,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
@@ -321,7 +292,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             labelText: 'Search for the Destinations',
             prefixIcon: IconButton(
               onPressed: () {
-                if (widget.isNavigation == true) {
+                if (isNavigation == true) {
                   ScreenSelection.selectedIndexNotifier.value = 1;
                 }
               },
@@ -335,6 +306,13 @@ class _SearchWidgetState extends State<SearchWidget> {
       ),
     );
   }
+
+  // void updateSearchText(String searchText) {
+  //   // Call the provided callback function to send the value
+  //   if (onSearch != null) {
+  //     onSearch!(searchText);
+  //   }
+  // }
 }
 
 /* this Widget is create to have the Tabbar
@@ -485,7 +463,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                         blurRadius: 1,
                       ),
                     ],
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [
                         Colors.blue,
                         Colors.green,
@@ -513,7 +491,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.2),
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(20),
                               bottomRight: Radius.circular(20),
                             ),
@@ -543,7 +521,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                                         ),
                                       ),
                                     )
-                                  : Text("placeName"),
+                                  : const Text("placeName"),
                             ),
                           ),
                         ),
@@ -648,7 +626,7 @@ class SilderViewWidget extends StatelessWidget {
                         ),
                         fit: BoxFit.cover,
                       ),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: [
                           Colors.blue,
                           Colors.green,
@@ -908,17 +886,6 @@ class _HeartButtonWidgetState extends State<HeartButtonWidget> {
     super.initState();
     _currentPlace = widget.place;
   }
-
-  // void _toggleFavoriteStatus() async {
-  //   if (_isFavorite) {
-  //     await FavoritesDB.instance.removeFavorite(_currentPlace);
-  //     FavoritesDB.instance.updateFavoriteList();
-  //   } else {
-  //     await FavoritesDB.instance.addFavorite(_currentPlace);
-  //     FavoritesDB.instance.updateFavoriteList();
-  //   }
-  //   widget.onFavoriteTapped?.call(_currentPlace);
-  // }
 
   @override
   Widget build(BuildContext context) {

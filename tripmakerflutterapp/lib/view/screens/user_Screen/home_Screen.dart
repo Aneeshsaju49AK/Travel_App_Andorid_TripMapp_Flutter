@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -80,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _getCurrentLocation();
         } else {
           // Permission denied
-          print('Location permission denied');
+          stdout.write('Location permission denied');
         }
 
         if (isProfileSet != true) {
@@ -220,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       );
                                     },
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.favorite,
                                       size: 40,
                                       color: Colors.red,
@@ -235,13 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: SingleChildScrollView(
                                       child: Column(
                                         children: [
-                                          // CircleAvatarWidget(
-                                          //   radius: 23,
-                                          //   location: _currentPosition,
-                                          //   locationName: _currentLocationName,
-                                          //   islocationwidget: false,
-                                          // ),
-                                          Icon(Icons.location_pin),
+                                          const Icon(Icons.location_pin),
                                           MapLocation(
                                             islocationWidget: true,
                                             location: _currentPosition,
@@ -293,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                const SearchWidget(
+                SearchWidget(
                   isNavigation: true,
                 ),
                 const TabViewWidget(),
@@ -331,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
             "${placemarks.first.name}, ${placemarks.first.locality}";
       });
     } catch (e) {
-      print(e);
+      stdout.write(e);
     }
   }
 }

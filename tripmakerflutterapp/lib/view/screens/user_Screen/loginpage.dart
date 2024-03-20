@@ -95,7 +95,7 @@ class LoginPage extends StatelessWidget {
         return Scaffold(
           body: SingleChildScrollView(
             child: SafeArea(
-              child: Container(
+              child: SizedBox(
                 child: Form(
                   key: _formKey,
                   child: Column(

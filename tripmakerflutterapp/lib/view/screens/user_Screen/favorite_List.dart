@@ -72,7 +72,6 @@ class FavoritePage extends StatelessWidget {
                         ? FavoritesDB.favoriteListNotifier
                         : filteredList,
                     builder: (context, valueList, _) {
-                      print(valueList.length);
                       return ListView.builder(
                         itemCount: valueList.length,
                         itemBuilder: (context, index) {
@@ -87,7 +86,7 @@ class FavoritePage extends StatelessWidget {
                               clipBehavior: Clip.antiAlias,
                               width: width / 1,
                               height: height / 3.5,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
@@ -128,9 +127,6 @@ class FavoritePage extends StatelessWidget {
                                             place: place,
                                             isFavorite: value.isFavorite,
                                             onFavoriteTapped: (isFavorite) {
-                                              // FavoritesDB.instance
-                                              //     .removeFavorite(place);
-                                              // _toggleFavoriteStatus();
                                               final currentIndex = filteredList
                                                   .value
                                                   .indexWhere((element) =>
@@ -139,7 +135,7 @@ class FavoritePage extends StatelessWidget {
                                                 filteredList.value
                                                     .removeAt(currentIndex);
                                               }
-                                              print(value.isFavorite);
+
                                               value.setFavoriteStatus(
                                                   currentPlace);
                                             },
@@ -188,9 +184,6 @@ class FavoritePage extends StatelessWidget {
     searchQuery = searchText;
 
     final placeList = FavoritesDB.favoriteListNotifier.value;
-
-    print(placeList.length);
-    print(searchText);
 
     if (searchText.isEmpty) {
       filteredList.value = placeList;

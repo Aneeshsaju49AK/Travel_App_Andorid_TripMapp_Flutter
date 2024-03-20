@@ -182,7 +182,7 @@ class ProfileSetupWidget extends StatelessWidget {
                             userNameController.text = "";
                             phoneController.text = "";
                           },
-                          child: RoundButton(
+                          child: const RoundButton(
                             imagePath:
                                 "asset/imges/navigation_img/location.png",
                             label: "clear",

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +12,6 @@ import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 class ActivityScreenWidget extends StatelessWidget {
   const ActivityScreenWidget({super.key});
 
-  // @override
   @override
   Widget build(BuildContext context) {
     Provider.of<ActivityPageProvider>(context).reFreshListUI();
@@ -54,7 +52,6 @@ class ActivityScreenWidget extends StatelessWidget {
                 child: ValueListenableBuilder(
                   valueListenable: AddtripDB.instance.planTripNotifier,
                   builder: (context, valueList, _) {
-                    print("the values on ${valueList.length}");
                     if (valueList.isEmpty) {
                       return Center(
                         child: Text(
@@ -97,41 +94,42 @@ class ActivityScreenWidget extends StatelessWidget {
                                       ),
                                     );
                                   },
-                                  // child: SizedBox(
-                                  //   width: width / 1,
-                                  //   height: height / 3.5,
-                                  //   child: getImageWidget(
-                                  //     place.selectedPlace!.images![0],
-                                  //   ),
-                                  // ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
                                     left: 20,
                                     top: 30,
                                   ),
-                                  child: Text(place.selectedPlace!.placeName!),
+                                  child: Text(
+                                    place.selectedPlace!.placeName!,
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
                                     left: 20,
                                     top: 50,
                                   ),
-                                  child: Text(place.name!),
+                                  child: Text(
+                                    place.name!,
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
                                     left: 20,
                                     top: 70,
                                   ),
-                                  child: Text(place.startDate!.toString()),
+                                  child: Text(
+                                    place.startDate!.toString(),
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
                                     left: 20,
                                     top: 90,
                                   ),
-                                  child: Text(place.endDate!.toString()),
+                                  child: Text(
+                                    place.endDate!.toString(),
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
@@ -193,20 +191,6 @@ class ActivityScreenWidget extends StatelessWidget {
       ),
     );
   }
-
-  // Widget getImageWidget(String imagePath) {
-  //   if (imagePath.startsWith("assets/")) {
-  //     return Image.asset(
-  //       imagePath,
-  //       fit: BoxFit.cover,
-  //     );
-  //   } else {
-  //     return Image.file(
-  //       File(imagePath),
-  //       fit: BoxFit.cover,
-  //     );
-  //   }
-  // }
 }
 
 class PopScreenAddTrip extends StatelessWidget {
@@ -222,7 +206,6 @@ class PopScreenAddTrip extends StatelessWidget {
   // String? validateName(String? value) {
   void handleActivitySaveButtonPress(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      print("im here");
       final trip = TripModel(
         id: DateTime.now().microsecond.toString(),
         name: nameController.text,
@@ -275,7 +258,7 @@ class PopScreenAddTrip extends StatelessWidget {
                           size: 40,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         child: Text(
                           "Add Place",
                           style: GoogleFonts.abel(
@@ -293,14 +276,8 @@ class PopScreenAddTrip extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => AddTripScreen(
                                   onPlace: (selectedPlace) {
-                                    // Call the onPlace callback function with the selected place
-                                    // setState(() {
-                                    //   place = selectedPlace;
-                                    // });
                                     place =
                                         value.setStateModelPlace(selectedPlace);
-                                    print(
-                                        "Selected place on addtirp: ${selectedPlace.placeName}");
                                   },
                                 ),
                               ),
@@ -331,7 +308,9 @@ class PopScreenAddTrip extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Text("Name your Trip"),
+                      const Text(
+                        "Name your Trip",
+                      ),
                       SizedBox(
                         width: width / 1.2,
                         height: height / 12,
@@ -347,13 +326,14 @@ class PopScreenAddTrip extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          const Text("Select you start date"),
+                          const Text(
+                            "Select you start date",
+                          ),
                           SizedBox(
                             width: width / 2.2,
                           ),
                           GestureDetector(
                             onTap: () {
-                              // _showDatePicker(true);
                               value.showDatePickerUI(
                                 true,
                                 context,
@@ -388,7 +368,6 @@ class PopScreenAddTrip extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // _showDatePicker(false);
                               value.showDatePickerUI(false, context);
                             },
                             child: Image.asset(

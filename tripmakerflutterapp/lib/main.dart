@@ -13,7 +13,10 @@ import 'package:tripmakerflutterapp/provider/activity_page_provider.dart';
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
 import 'package:tripmakerflutterapp/provider/main_dart_provider.dart';
+import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
 import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
+import 'package:tripmakerflutterapp/provider/searchwidget_provider.dart';
+import 'package:tripmakerflutterapp/provider/texiFieldWidget_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
 import 'package:provider/provider.dart';
 
@@ -63,6 +66,15 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => FavoriteButton(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TextFieldProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MapLocationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SearchProvider(),
         ),
       ],
       child: const MyApp(),
@@ -161,31 +173,3 @@ class SplashScreen extends StatelessWidget {
     );
   }
 }
-
-// @override
-  // void initState() {
-  //   super.initState();
-  //   Timer(
-  //     const Duration(seconds: 3),
-  //     () async {
-  //       final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //       final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-
-  //       if (isLoggedIn) {
-  //         Navigator.pushReplacement(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => ScreenSelection(),
-  //           ),
-  //         );
-  //       } else {
-  //         Navigator.pushReplacement(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => LoginPage(),
-  //           ),
-  //         );
-  //       }
-  //     },
-  //   );
-  // }

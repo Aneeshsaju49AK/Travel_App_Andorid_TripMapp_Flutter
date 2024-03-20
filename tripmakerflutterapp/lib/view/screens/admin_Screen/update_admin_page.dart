@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
@@ -13,7 +11,6 @@ class UpdatepageplaceModel extends StatelessWidget {
   final ModelPlace place;
   UpdatepageplaceModel({required this.place, Key? key}) : super(key: key);
 
-  // int countImage = 0;
   final _formKey = GlobalKey<FormState>();
 
   String? validateError(String? value) {
@@ -69,7 +66,7 @@ class UpdatepageplaceModel extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.all(10.0),
+                                    padding: const EdgeInsets.all(10.0),
                                     child: Container(
                                       width: width / 1.4,
                                       height: height / 4,
@@ -94,10 +91,6 @@ class UpdatepageplaceModel extends StatelessWidget {
                                       IconButton(
                                         onPressed: () {
                                           value.decreaseCount(index);
-                                          // setState(() {
-                                          //   _images.remove(index);
-                                          //   countImage--;
-                                          // });
                                         },
                                         icon: const Icon(
                                           Icons.remove,
@@ -105,7 +98,6 @@ class UpdatepageplaceModel extends StatelessWidget {
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          // buttomSheet(context);
                                           value.buttomSheet(context, true);
                                         },
                                         icon: const Icon(
@@ -125,9 +117,6 @@ class UpdatepageplaceModel extends StatelessWidget {
                   TextButton.icon(
                     onPressed: () {
                       authProfileProvider.increament();
-                      // setState(() {
-                      //   countImage++;
-                      // });
                     },
                     icon: const Icon(Icons.add_a_photo),
                     label: const Text("Add Image"),
@@ -156,11 +145,6 @@ class UpdatepageplaceModel extends StatelessWidget {
                       value: authProfileProvider.selectedDistrict,
                       onChanged: (District? newvalue) {
                         authProfileProvider.onchagedDistrict(newvalue);
-                        // setState(
-                        //   () {
-                        //     selectedDistrict = newvalue;
-                        //   },
-                        // );
                       },
                     ),
                   ),
@@ -187,9 +171,6 @@ class UpdatepageplaceModel extends StatelessWidget {
                       },
                       value: authProfileProvider.selectedCategory,
                       onChanged: (PlaceCategory? newValue) {
-                        // setState(() {
-                        //   selectedCategory = newValue;
-                        // });
                         authProfileProvider.onchagedCategory(newValue);
                       },
                     ),

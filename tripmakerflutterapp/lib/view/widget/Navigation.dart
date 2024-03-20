@@ -35,7 +35,6 @@ class NavigationBarWidget extends StatelessWidget {
                   child: TextButton(
                     onPressed: () {
                       ScreenSelection.selectedIndexNotifier.value = index;
-                      print("$index");
                     },
                     child: Image.asset(
                       items[index].iconPath,

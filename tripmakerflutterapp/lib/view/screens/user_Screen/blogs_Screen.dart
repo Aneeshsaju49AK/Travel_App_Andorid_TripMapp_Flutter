@@ -59,7 +59,7 @@ class BlogsScreenWidget extends StatelessWidget {
                           ),
                         );
                       }
-                      print("the values on ${valueList.length}");
+
                       return ListView.builder(
                         itemCount: valueList.length,
                         itemBuilder: (context, index) {

@@ -71,7 +71,6 @@ class TypePlaceScreen extends StatelessWidget {
     searchQuery = searchText;
 
     final placeList = placeListNotifierTypePlace.value;
-    print(searchText);
 
     if (searchText.isEmpty) {
       filteredList.value = placeList;

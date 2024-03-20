@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
-import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
-
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -29,37 +25,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   void initState() {
     super.initState();
     _currentPlace = widget.place;
-    // setState(() {
-    //   isFavorite =
-    //       FavoritesDB.favoriteListNotifier.value.contains(_currentPlace);
-    // });
-    // _checkFavoriteStatus();
-    // _loadFavoriteStatus();
   }
-
-  // Future<void> _loadFavoriteStatus() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     isFavorite = prefs.getBool('isFavorite_${_currentPlace.id}') ?? false;
-  //   });
-  // }
-
-  // Future<void> _toggleFavoriteStatus() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     isFavorite = !isFavorite;
-  //     prefs.setBool('isFavorite_${_currentPlace.id}', isFavorite);
-  //   });
-  // }
-  // Future<void> _checkFavoriteStatus() async {
-  //   bool isPlaceFavorite =
-  //       await FavoritesDB.favoriteListNotifier.value.contains(_currentPlace);
-
-  //   setState(() {
-  //     isFavorite = isPlaceFavorite;
-  //   });
-  //   print("is $isPlaceFavorite");
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +72,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               isFavorite: value.isFavorite,
                               onFavoriteTapped: (p0) {
                                 value.setFavoriteStatus(_currentPlace);
-                                print(isFavorite);
                               },
                             );
                           },
@@ -147,18 +112,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                          width: width / 2,
-                                          height: height / 17,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                showFullText = !showFullText;
-                                              });
-                                            },
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Container(
-                                                  child: Text(
+                                        width: width / 2,
+                                        height: height / 17,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              showFullText = !showFullText;
+                                            });
+                                          },
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: SizedBox(
+                                              child: Text(
                                                 showFullText
                                                     ? "${_currentPlace.placeName}"
                                                     : "${_currentPlace.placeName!.substring(0, 6)}...",
@@ -166,9 +131,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                   fontSize: 30,
                                                   fontWeight: FontWeight.w900,
                                                 ),
-                                              )),
+                                              ),
                                             ),
-                                          )),
+                                          ),
+                                        ),
+                                      ),
                                       SizedBox(
                                         height: height / 27,
                                         width: width / 1.4,
@@ -210,7 +177,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Padding(
@@ -462,7 +429,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

@@ -190,21 +190,21 @@ class DrawerScreen extends StatelessWidget {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              title: Text("Logout"),
-                                              content: Text(
+                                              title: const Text("Logout"),
+                                              content: const Text(
                                                   "Are you sure you want to logout?"),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
-                                                  child: Text("No"),
+                                                  child: const Text("No"),
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
                                                     _logOutUser(context);
                                                   },
-                                                  child: Text("Yes"),
+                                                  child: const Text("Yes"),
                                                 ),
                                               ],
                                             );
