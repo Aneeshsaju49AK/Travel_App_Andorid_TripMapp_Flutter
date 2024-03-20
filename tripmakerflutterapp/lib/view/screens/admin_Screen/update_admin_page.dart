@@ -3,48 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
-class Updatepage_placeModel extends StatefulWidget {
+class UpdatepageplaceModel extends StatelessWidget {
   final ModelPlace place;
-  const Updatepage_placeModel({required this.place, Key? key})
-      : super(key: key);
+  UpdatepageplaceModel({required this.place, Key? key}) : super(key: key);
 
-  @override
-  State<Updatepage_placeModel> createState() => _Updatepage_placeModelState();
-}
-
-class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
-  int countImage = 0;
-  late ModelPlace _currentPlace;
-  final List<String> _images = [];
-  final districtController = TextEditingController();
-  final placeNameController = TextEditingController();
-  final subLocationController = TextEditingController();
-  final priceController = TextEditingController();
-  final durationController = TextEditingController();
-  final descriptionController = TextEditingController();
-  PlaceCategory? selectedCategory;
-  District? selectedDistrict;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentPlace = widget.place;
-
-    _images.addAll(_currentPlace.images ?? []);
-    countImage = _images.length;
-    placeNameController.text = _currentPlace.placeName ?? '';
-    subLocationController.text = _currentPlace.subPlaceName ?? '';
-    priceController.text = _currentPlace.price ?? '';
-    durationController.text = _currentPlace.durations ?? '';
-    descriptionController.text = _currentPlace.description ?? '';
-    selectedDistrict = _currentPlace.district;
-    selectedCategory = _currentPlace.category;
-  }
-
+  // int countImage = 0;
   final _formKey = GlobalKey<FormState>();
 
   String? validateError(String? value) {
@@ -54,35 +23,13 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
     return null;
   }
 
-  void handleUpdatePlaceSaveButtonPress(BuildContext context) async {
-    if (_formKey.currentState?.validate() ?? false) {
-      final place = ModelPlace(
-        id: _currentPlace.id,
-        district: selectedDistrict,
-        category: selectedCategory,
-        placeName: placeNameController.text,
-        subPlaceName: subLocationController.text,
-        price: priceController.text,
-        durations: durationController.text,
-        description: descriptionController.text,
-        images: _images,
-      );
-      await PlacesDB.instance
-          .updatePlace(place)
-          .then((value) => PlacesDB.instance.reFreshUI());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text("Place updated successfully"),
-          backgroundColor: Colors.green[200],
-          duration: const Duration(seconds: 3),
-        ),
-      );
-      Navigator.pop(context);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final authProfileProvider = Provider.of<ProfilePageProvider>(
+      context,
+      listen: false,
+    );
+    authProfileProvider.initModelPlace(place);
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
     return SizedBox(
@@ -105,75 +52,82 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
                   ),
                   SizedBox(
                     child: Text(
-                      "Add place",
+                      "Edit place",
                       style: GoogleFonts.abel(
                         fontSize: 26,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
-                  Column(
-                    children: List.generate(
-                      countImage,
-                      (index) {
-                        return Visibility(
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Container(
-                                  width: width / 1.4,
-                                  height: height / 4,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(
-                                      image: index < _images.length
-                                          ? FileImage(
-                                              File(_images[index]),
-                                            )
-                                          : FileImage(
-                                              File(""),
-                                            ),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Column(
+                  Consumer<ProfilePageProvider>(
+                    builder: (context, value, child) {
+                      return Column(
+                        children: List.generate(
+                          authProfileProvider.countImage,
+                          (index) {
+                            return Visibility(
+                              child: Row(
                                 children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _images.remove(index);
-                                        countImage--;
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.remove,
+                                  Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Container(
+                                      width: width / 1.4,
+                                      height: height / 4,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                          image: index < value.images.length
+                                              ? FileImage(
+                                                  File(value.images[index]),
+                                                )
+                                              : FileImage(
+                                                  File(""),
+                                                ),
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  IconButton(
-                                    onPressed: () {
-                                      buttomSheet(context);
-                                    },
-                                    icon: const Icon(
-                                      Icons.add,
-                                    ),
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          value.decreaseCount(index);
+                                          // setState(() {
+                                          //   _images.remove(index);
+                                          //   countImage--;
+                                          // });
+                                        },
+                                        icon: const Icon(
+                                          Icons.remove,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          // buttomSheet(context);
+                                          value.buttomSheet(context, true);
+                                        },
+                                        icon: const Icon(
+                                          Icons.add,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                   TextButton.icon(
                     onPressed: () {
-                      setState(() {
-                        countImage++;
-                      });
+                      authProfileProvider.increament();
+                      // setState(() {
+                      //   countImage++;
+                      // });
                     },
                     icon: const Icon(Icons.add_a_photo),
                     label: const Text("Add Image"),
@@ -199,13 +153,14 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
                         }
                         return null;
                       },
-                      value: selectedDistrict,
+                      value: authProfileProvider.selectedDistrict,
                       onChanged: (District? newvalue) {
-                        setState(
-                          () {
-                            selectedDistrict = newvalue;
-                          },
-                        );
+                        authProfileProvider.onchagedDistrict(newvalue);
+                        // setState(
+                        //   () {
+                        //     selectedDistrict = newvalue;
+                        //   },
+                        // );
                       },
                     ),
                   ),
@@ -230,11 +185,12 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
                         }
                         return null;
                       },
-                      value: selectedCategory,
+                      value: authProfileProvider.selectedCategory,
                       onChanged: (PlaceCategory? newValue) {
-                        setState(() {
-                          selectedCategory = newValue;
-                        });
+                        // setState(() {
+                        //   selectedCategory = newValue;
+                        // });
+                        authProfileProvider.onchagedCategory(newValue);
                       },
                     ),
                   ),
@@ -246,7 +202,7 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
                     height: height / 7,
                     child: TextFieldWidget(
                       label: "PlaceName",
-                      controller: placeNameController,
+                      controller: authProfileProvider.placeNameController,
                       validator: validateError,
                     ),
                   ),
@@ -258,7 +214,7 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
                     height: height / 7,
                     child: TextFieldWidget(
                       label: "subname",
-                      controller: subLocationController,
+                      controller: authProfileProvider.subLocationController,
                       validator: validateError,
                     ),
                   ),
@@ -270,7 +226,7 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
                     height: height / 7,
                     child: TextFieldWidget(
                       label: "Price",
-                      controller: priceController,
+                      controller: authProfileProvider.priceController,
                       validator: validateError,
                     ),
                   ),
@@ -282,7 +238,7 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
                     height: height / 7,
                     child: TextFieldWidget(
                       label: "Durations",
-                      controller: durationController,
+                      controller: authProfileProvider.durationController,
                       validator: validateError,
                     ),
                   ),
@@ -294,7 +250,7 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
                     width: width / 1.2,
                     height: height / 4,
                     child: TextFormField(
-                      controller: descriptionController,
+                      controller: authProfileProvider.descriptionController,
                       validator: validateError,
                       maxLines: null,
                       expands: true,
@@ -343,70 +299,34 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
     );
   }
 
-  buttomSheet(BuildContext context) {
-    num width = MediaQuery.of(context).size.width;
-    num height = MediaQuery.of(context).size.height;
-    return showBottomSheet(
-      context: context,
-      builder: (context) {
-        return SizedBox(
-          width: width / 1,
-          height: height / 5,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Select the image source",
-                  style: GoogleFonts.abel(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton.icon(
-                    onPressed: () async {
-                      XFile? img = await ImagePicker().pickImage(
-                        source: ImageSource.camera,
-                      );
-                      if (img != null) {
-                        setState(() {
-                          _images.add(img.path);
-                        });
-
-                        Navigator.pop(context);
-                      }
-                    },
-                    icon: const Icon(Icons.camera),
-                    label: const Text("Camera"),
-                  ),
-                  TextButton.icon(
-                    onPressed: () async {
-                      XFile? img = await ImagePicker().pickImage(
-                        source: ImageSource.gallery,
-                      );
-                      if (img != null) {
-                        setState(() {
-                          _images.add(img.path);
-                        });
-
-                        Navigator.pop(context);
-                      }
-                    },
-                    icon: const Icon(Icons.image),
-                    label: const Text("Galley"),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
+  void handleUpdatePlaceSaveButtonPress(BuildContext context) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      final profileProvider = Provider.of<ProfilePageProvider>(
+        context,
+        listen: false,
+      );
+      final place = ModelPlace(
+        id: profileProvider.places.id,
+        district: profileProvider.district,
+        category: profileProvider.place,
+        placeName: profileProvider.placeNameController.text,
+        subPlaceName: profileProvider.subLocationController.text,
+        price: profileProvider.priceController.text,
+        durations: profileProvider.durationController.text,
+        description: profileProvider.descriptionController.text,
+        images: profileProvider.images,
+      );
+      await PlacesDB.instance
+          .updatePlace(place)
+          .then((value) => PlacesDB.instance.reFreshUI());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("Place updated successfully"),
+          backgroundColor: Colors.green[200],
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      Navigator.pop(context);
+    }
   }
 }

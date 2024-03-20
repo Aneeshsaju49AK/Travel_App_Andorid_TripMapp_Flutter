@@ -2,8 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/common_provider.dart';
+import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/admin_Screen/update_admin_page.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
@@ -18,15 +21,16 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
   ValueNotifier<List<ModelPlace>> filteredList = ValueNotifier([]);
   String searchQuery = "";
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    PlacesDB.instance.reFreshUI();
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   PlacesDB.instance.reFreshUI();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<CommonProvider>(context).callRefreshUI();
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -118,7 +122,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                       top: height / 10,
                                       left: width / 27,
                                       child: Text(
-                                        placeList[index].placeName!,
+                                        placeList[index].district!.toString(),
                                         style: GoogleFonts.abel(
                                             color: Colors.white),
                                       ),
@@ -180,8 +184,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                                   builder: (context) {
                                                 return Scaffold(
                                                   body: SafeArea(
-                                                    child:
-                                                        Updatepage_placeModel(
+                                                    child: UpdatepageplaceModel(
                                                       place: placeList[index],
                                                     ),
                                                   ),
@@ -280,8 +283,8 @@ class PopupAddPlace extends StatefulWidget {
 }
 
 class _PopupAddPlaceState extends State<PopupAddPlace> {
-  int countImage = 0;
-  final List<String> _images = [];
+  // int countImage = 0;
+  // final List<String> _images = [];
   final districtController = TextEditingController();
 
   final placeNameController = TextEditingController();
@@ -305,16 +308,23 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
     if (_formKey.currentState?.validate() ?? false) {
       final place = ModelPlace(
         id: DateTime.now().microsecond.toString(),
-        district: selectedDistrict,
-        category: selectedCategory,
+        district:
+            Provider.of<ProfilePageProvider>(context, listen: false).district,
+        category:
+            Provider.of<ProfilePageProvider>(context, listen: false).place,
         placeName: placeNameController.text,
         subPlaceName: subLocationController.text,
         price: priceController.text,
         durations: durationController.text,
         description: descriptionController.text,
-        images: _images,
+        images: Provider.of<ProfilePageProvider>(context, listen: false).images,
       );
+
       await PlacesDB.instance.insertPlaces(place);
+      Provider.of<ProfilePageProvider>(
+        context,
+        listen: false,
+      ).countImage = 0;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text("Place added successfully"),
@@ -328,6 +338,9 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
 
   @override
   Widget build(BuildContext context) {
+    final authProfileProvider = Provider.of<ProfilePageProvider>(
+      context,
+    );
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
     return SizedBox(
@@ -359,7 +372,7 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                   ),
                   Column(
                     children: List.generate(
-                      countImage,
+                      authProfileProvider.countImage,
                       (index) {
                         return Visibility(
                           child: Row(
@@ -373,9 +386,11 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                                     color: Colors.black,
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
-                                      image: index < _images.length
+                                      image: index <
+                                              authProfileProvider.images.length
                                           ? FileImage(
-                                              File(_images[index]),
+                                              File(authProfileProvider
+                                                  .images[index]),
                                             )
                                           : FileImage(
                                               File(""),
@@ -389,10 +404,11 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                                 children: [
                                   IconButton(
                                     onPressed: () {
-                                      setState(() {
-                                        _images.removeAt(index);
-                                        countImage--;
-                                      });
+                                      authProfileProvider.decreaseCount(index);
+                                      // setState(() {
+                                      //   _images.removeAt(index);
+                                      //   countImage--;
+                                      // });
                                     },
                                     icon: const Icon(
                                       Icons.remove,
@@ -400,7 +416,10 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      buttomSheet(context);
+                                      // Provider.of<ProfilePageProvider>(context)
+                                      //     .buttomSheet(context);
+                                      authProfileProvider.buttomSheet(
+                                          context, true);
                                     },
                                     icon: const Icon(
                                       Icons.add,
@@ -416,9 +435,10 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                   ),
                   TextButton.icon(
                     onPressed: () {
-                      setState(() {
-                        countImage++;
-                      });
+                      authProfileProvider.increament();
+                      // setState(() {
+                      //   countImage++;
+                      // });
                     },
                     icon: const Icon(Icons.add_a_photo),
                     label: const Text("Add Image"),
@@ -445,11 +465,12 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                         return null;
                       },
                       onChanged: (District? value) {
-                        setState(
-                          () {
-                            selectedDistrict = value;
-                          },
-                        );
+                        // setState(
+                        //   () {
+                        //     selectedDistrict = value;
+                        //   },
+                        // );
+                        authProfileProvider.onchagedDistrict(value);
                       },
                     ),
                   ),
@@ -476,9 +497,10 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                       },
                       value: selectedCategory,
                       onChanged: (PlaceCategory? newValue) {
-                        setState(() {
-                          selectedCategory = newValue;
-                        });
+                        // setState(() {
+                        //   selectedCategory = newValue;
+                        // });
+                        authProfileProvider.onchagedCategory(newValue);
                       },
                     ),
                   ),
@@ -587,70 +609,70 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
     );
   }
 
-  buttomSheet(BuildContext context) {
-    num width = MediaQuery.of(context).size.width;
-    num height = MediaQuery.of(context).size.height;
-    return showBottomSheet(
-      context: context,
-      builder: (context) {
-        return SizedBox(
-          width: width / 1,
-          height: height / 5,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Select the image source",
-                  style: GoogleFonts.abel(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton.icon(
-                    onPressed: () async {
-                      XFile? img = await ImagePicker().pickImage(
-                        source: ImageSource.camera,
-                      );
-                      if (img != null) {
-                        setState(() {
-                          _images.add(img.path);
-                        });
+  // buttomSheet(BuildContext context) {
+  //   num width = MediaQuery.of(context).size.width;
+  //   num height = MediaQuery.of(context).size.height;
+  //   return showBottomSheet(
+  //     context: context,
+  //     builder: (context) {
+  //       return SizedBox(
+  //         width: width / 1,
+  //         height: height / 5,
+  //         child: Column(
+  //           children: [
+  //             Padding(
+  //               padding: const EdgeInsets.all(8.0),
+  //               child: Text(
+  //                 "Select the image source",
+  //                 style: GoogleFonts.abel(
+  //                   fontSize: 20,
+  //                 ),
+  //               ),
+  //             ),
+  //             const SizedBox(
+  //               height: 30,
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //               children: [
+  //                 TextButton.icon(
+  //                   onPressed: () async {
+  //                     XFile? img = await ImagePicker().pickImage(
+  //                       source: ImageSource.camera,
+  //                     );
+  //                     if (img != null) {
+  //                       setState(() {
+  //                         _images.add(img.path);
+  //                       });
 
-                        Navigator.pop(context);
-                      }
-                    },
-                    icon: const Icon(Icons.camera),
-                    label: const Text("Camera"),
-                  ),
-                  TextButton.icon(
-                    onPressed: () async {
-                      XFile? img = await ImagePicker().pickImage(
-                        source: ImageSource.gallery,
-                      );
-                      if (img != null) {
-                        setState(() {
-                          _images.add(img.path);
-                        });
+  //                       Navigator.pop(context);
+  //                     }
+  //                   },
+  //                   icon: const Icon(Icons.camera),
+  //                   label: const Text("Camera"),
+  //                 ),
+  //                 TextButton.icon(
+  //                   onPressed: () async {
+  //                     XFile? img = await ImagePicker().pickImage(
+  //                       source: ImageSource.gallery,
+  //                     );
+  //                     if (img != null) {
+  //                       setState(() {
+  //                         _images.add(img.path);
+  //                       });
 
-                        Navigator.pop(context);
-                      }
-                    },
-                    icon: const Icon(Icons.image),
-                    label: const Text("Galley"),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  //                       Navigator.pop(context);
+  //                     }
+  //                   },
+  //                   icon: const Icon(Icons.image),
+  //                   label: const Text("Galley"),
+  //                 ),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }

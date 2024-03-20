@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
+import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class BlogsScreenWidget extends StatelessWidget {
@@ -184,20 +184,19 @@ class BlogsScreenWidget extends StatelessWidget {
   }
 }
 
-class PopupScreen extends StatefulWidget {
-  const PopupScreen({super.key});
+class PopupScreen extends StatelessWidget {
+  PopupScreen({super.key});
 
-  @override
-  State<PopupScreen> createState() => _PopupScreenState();
-}
-
-class _PopupScreenState extends State<PopupScreen> {
   int countImage = 0;
+
   final List<String> _images = [];
+
   TextEditingController nameController = TextEditingController();
+
   TextEditingController contentController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
   String? validateError(String? value) {
     if (value == null || value.isEmpty) {
       return "Please enter a valid value";
@@ -227,6 +226,9 @@ class _PopupScreenState extends State<PopupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authProfileProvider = Provider.of<ProfilePageProvider>(
+      context,
+    );
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
@@ -263,9 +265,11 @@ class _PopupScreenState extends State<PopupScreen> {
                                   color: Colors.black,
                                   borderRadius: BorderRadius.circular(20),
                                   image: DecorationImage(
-                                    image: index < _images.length
+                                    image: index <
+                                            authProfileProvider.images.length
                                         ? FileImage(
-                                            File(_images[index]),
+                                            File(authProfileProvider
+                                                .images[index]),
                                           )
                                         : FileImage(
                                             File(""),
@@ -279,9 +283,10 @@ class _PopupScreenState extends State<PopupScreen> {
                               children: [
                                 IconButton(
                                   onPressed: () {
-                                    setState(() {
-                                      countImage--;
-                                    });
+                                    authProfileProvider.decreaseCount(index);
+                                    // setState(() {
+                                    //   countImage--;
+                                    // });
                                   },
                                   icon: const Icon(
                                     Icons.remove,
@@ -289,7 +294,9 @@ class _PopupScreenState extends State<PopupScreen> {
                                 ),
                                 IconButton(
                                   onPressed: () {
-                                    buttomSheet(context);
+                                    authProfileProvider.buttomSheet(
+                                        context, true);
+                                    // buttomSheet(context);
                                   },
                                   icon: const Icon(
                                     Icons.add,
@@ -305,9 +312,10 @@ class _PopupScreenState extends State<PopupScreen> {
                 ),
                 TextButton.icon(
                   onPressed: () {
-                    setState(() {
-                      countImage++;
-                    });
+                    authProfileProvider.increament();
+                    // setState(() {
+                    //   countImage++;
+                    // });
                   },
                   icon: const Icon(Icons.add_a_photo),
                   label: const Text("Add Image"),
@@ -379,73 +387,6 @@ class _PopupScreenState extends State<PopupScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  buttomSheet(BuildContext context) {
-    num width = MediaQuery.of(context).size.width;
-    num height = MediaQuery.of(context).size.height;
-    return showBottomSheet(
-      context: context,
-      builder: (context) {
-        return SizedBox(
-          width: width / 1,
-          height: height / 5,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Select the image source",
-                  style: GoogleFonts.abel(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton.icon(
-                    onPressed: () async {
-                      XFile? img = await ImagePicker().pickImage(
-                        source: ImageSource.camera,
-                      );
-                      if (img != null) {
-                        setState(() {
-                          _images.add(img.path);
-                        });
-
-                        Navigator.pop(context);
-                      }
-                    },
-                    icon: const Icon(Icons.camera),
-                    label: const Text("Camera"),
-                  ),
-                  TextButton.icon(
-                    onPressed: () async {
-                      XFile? img = await ImagePicker().pickImage(
-                        source: ImageSource.gallery,
-                      );
-                      if (img != null) {
-                        setState(() {
-                          _images.add(img.path);
-                        });
-
-                        Navigator.pop(context);
-                      }
-                    },
-                    icon: const Icon(Icons.image),
-                    label: const Text("Galley"),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

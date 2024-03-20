@@ -4,14 +4,9 @@ import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 /* This class is for making the navigation possible through
 the ValueListenerBuilder the no need to navigator.push */
 
-class NavigationBarWidget extends StatefulWidget {
+class NavigationBarWidget extends StatelessWidget {
   const NavigationBarWidget({super.key});
 
-  @override
-  State<NavigationBarWidget> createState() => _NavigationBarWidgetState();
-}
-
-class _NavigationBarWidgetState extends State<NavigationBarWidget> {
   @override
   Widget build(BuildContext context) {
     List<NavigationItem> items = [

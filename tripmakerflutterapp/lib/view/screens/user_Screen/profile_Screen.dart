@@ -33,7 +33,8 @@ class ProfileSetupWidget extends StatelessWidget {
         userName: userNameController.text,
         phone: phoneController.text,
         profilePicturePath:
-            Provider.of<ProfilePageProvider>(context).profilePicturePath,
+            Provider.of<ProfilePageProvider>(context, listen: false)
+                .profilePicturePath,
       );
       await addValue(profile);
 
@@ -52,7 +53,8 @@ class ProfileSetupWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
-    final authProviderCommon = Provider.of<CommonProvider>(context);
+    final authProviderCommon =
+        Provider.of<CommonProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -102,7 +104,7 @@ class ProfileSetupWidget extends StatelessWidget {
                             islocationwidget: true,
                             imagePath: value.profilePicturePath,
                             onpressed: () {
-                              value.buttomSheet(context);
+                              value.buttomSheet(context, false);
                             },
                           );
                         },

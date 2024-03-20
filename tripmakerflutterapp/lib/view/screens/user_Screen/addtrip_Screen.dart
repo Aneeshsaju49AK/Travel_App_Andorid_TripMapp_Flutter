@@ -4,15 +4,10 @@ import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
-class AddTripScreen extends StatefulWidget {
+class AddTripScreen extends StatelessWidget {
   final void Function(ModelPlace)? onPlace;
-  const AddTripScreen({this.onPlace, super.key});
+  AddTripScreen({this.onPlace, super.key});
 
-  @override
-  State<AddTripScreen> createState() => _AddTripScreenState();
-}
-
-class _AddTripScreenState extends State<AddTripScreen> {
   String searchQuery = "";
 
   ValueNotifier<List<ModelPlace>> filteredList = ValueNotifier([]);
@@ -65,7 +60,7 @@ class _AddTripScreenState extends State<AddTripScreen> {
                     placeListNotifierPopular: filteredList,
                     onPlaceSelected: (selectedPlace) {
                       // Handle the selected place here
-                      widget.onPlace?.call(selectedPlace);
+                      onPlace?.call(selectedPlace);
                       // print("Selected place: ${selectedPlace.placeName}");
                     },
                   ),

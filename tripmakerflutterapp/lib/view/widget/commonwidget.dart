@@ -1,21 +1,15 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
-
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
-
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/category_place.dart';
-
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 

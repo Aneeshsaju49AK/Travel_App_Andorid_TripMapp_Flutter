@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 
 class CommonProvider extends ChangeNotifier {
   //common validator for all page
@@ -27,5 +28,9 @@ class CommonProvider extends ChangeNotifier {
         fit: BoxFit.cover,
       );
     }
+  }
+
+  void callRefreshUI() {
+    PlacesDB.instance.reFreshUI();
   }
 }
