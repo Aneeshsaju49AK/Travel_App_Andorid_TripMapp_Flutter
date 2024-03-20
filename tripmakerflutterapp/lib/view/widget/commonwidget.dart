@@ -306,13 +306,6 @@ class SearchWidget extends StatelessWidget {
       ),
     );
   }
-
-  // void updateSearchText(String searchText) {
-  //   // Call the provided callback function to send the value
-  //   if (onSearch != null) {
-  //     onSearch!(searchText);
-  //   }
-  // }
 }
 
 /* this Widget is create to have the Tabbar
@@ -414,21 +407,17 @@ class _TabViewWidgetState extends State<TabViewWidget>
 /* this widget is used for the main view in TabBar 
   also enable the listview builder
  */
-class TabBarListWidget extends StatefulWidget {
+class TabBarListWidget extends StatelessWidget {
   final ValueNotifier<List<ModelPlace>> placeListNotifierCommon;
   const TabBarListWidget({required this.placeListNotifierCommon, Key? key})
       : super(key: key);
 
-  @override
-  State<TabBarListWidget> createState() => _TabBarListWidgetState();
-}
-
-class _TabBarListWidgetState extends State<TabBarListWidget> {
-  bool showFullText = false;
+  // bool showFullText = false;
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<MapLocationProvider>(context);
     return ValueListenableBuilder<List<ModelPlace>>(
-      valueListenable: widget.placeListNotifierCommon,
+      valueListenable: placeListNotifierCommon,
       builder: (context, placeList, _) {
         return ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -503,15 +492,16 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                           top: 140,
                           child: GestureDetector(
                             onTap: () {
-                              setState(() {
-                                showFullText = !showFullText;
-                              });
+                              auth.changeValue();
+                              // setState(() {
+                              //   showFullText = !showFullText;
+                              // });
                             },
                             child: Container(
                               child: place.placeName != null
                                   ? FittedBox(
                                       child: Text(
-                                        showFullText
+                                        auth.showFullText
                                             ? "${place.placeName}"
                                             : "${place.placeName!.substring(0, 5)}...",
                                         style: GoogleFonts.abel(
@@ -860,7 +850,7 @@ class BackButtonWidget extends StatelessWidget {
 
 /*in this widget is try to acheive the add favorite list according to the value */
 
-class HeartButtonWidget extends StatefulWidget {
+class HeartButtonWidget extends StatelessWidget {
   final double sizeOfImage;
   final ModelPlace place;
   final Function(ModelPlace)? onFavoriteTapped;
@@ -874,40 +864,32 @@ class HeartButtonWidget extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  @override
-  _HeartButtonWidgetState createState() => _HeartButtonWidgetState();
-}
-
-class _HeartButtonWidgetState extends State<HeartButtonWidget> {
-  late ModelPlace _currentPlace;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentPlace = widget.place;
-  }
-
+  // @override
   @override
   Widget build(BuildContext context) {
-    bool isFavorite = widget.isFavorite;
+    final auth = Provider.of<MapLocationProvider>(context);
+    auth.initValue(place);
+    auth.currentPlace;
+
+    auth.checkIsFavorite(isFavorite);
     return GestureDetector(
       onTap: () async {
-        if (isFavorite) {
-          await FavoritesDB.instance.removeFavorite(_currentPlace);
+        if (auth.isFavorite) {
+          await FavoritesDB.instance.removeFavorite(auth.currentPlace);
         } else {
-          await FavoritesDB.instance.addFavorite(_currentPlace);
+          await FavoritesDB.instance.addFavorite(auth.currentPlace);
         }
-        widget.onFavoriteTapped?.call(_currentPlace);
+        onFavoriteTapped?.call(auth.currentPlace);
         FavoritesDB.instance.updateFavoriteList();
       },
       child: ColorFiltered(
         colorFilter: ColorFilter.mode(
-          isFavorite ? Colors.red : Colors.grey,
+          auth.isFavorite ? Colors.red : Colors.grey,
           BlendMode.srcIn,
         ),
         child: Image.asset(
           "asset/imges/heart-in-a-circle.png",
-          width: widget.sizeOfImage,
+          width: sizeOfImage,
         ),
       ),
     );
