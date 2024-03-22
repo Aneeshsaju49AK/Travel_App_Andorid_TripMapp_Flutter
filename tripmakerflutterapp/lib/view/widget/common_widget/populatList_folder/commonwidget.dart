@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,8 +9,10 @@ import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
 import 'package:tripmakerflutterapp/provider/searchwidget_provider.dart';
+import 'package:tripmakerflutterapp/provider/tab_view_provider.dart';
 import 'package:tripmakerflutterapp/provider/texiFieldWidget_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/category_place.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
@@ -67,7 +68,7 @@ class TextFieldWidget extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType keyboardType;
 
-  TextFieldWidget({
+  const TextFieldWidget({
     Key? key,
     required this.label,
     this.validator,
@@ -77,7 +78,7 @@ class TextFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   // late TextEditingController _controller;
-  bool showError = false;
+  final bool showError = false;
 
   // @override
   @override
@@ -178,14 +179,14 @@ class MapLocation extends StatelessWidget {
   final bool? islocationWidget;
   final Position? location;
   final String? locationName;
-  MapLocation({
+  const MapLocation({
     this.islocationWidget,
     this.location,
     this.locationName,
     Key? key,
   }) : super(key: key);
 
-  bool showFullText = false;
+//  final bool showFullText = false;
 
   @override
   Widget build(BuildContext context) {
@@ -262,7 +263,7 @@ class SearchWidget extends StatelessWidget {
   final bool isNavigation;
   final void Function(String)? onSearch;
 
-  SearchWidget({
+  const SearchWidget({
     required this.isNavigation,
     this.onSearch,
     Key? key,
@@ -338,6 +339,8 @@ class _TabViewWidgetState extends State<TabViewWidget>
 
   @override
   Widget build(BuildContext context) {
+    // final auth = Provider.of<TabViewProvider>(context, listen: false);
+    // auth.initTabController(this);
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
     return Column(
@@ -356,14 +359,20 @@ class _TabViewWidgetState extends State<TabViewWidget>
               ),
               controller: _tabController,
               tabs: const [
-                Tab(
-                  text: 'Most Popular',
+                FittedBox(
+                  child: Tab(
+                    text: 'Most Popular',
+                  ),
                 ),
-                Tab(
-                  text: 'Recommended',
+                FittedBox(
+                  child: Tab(
+                    text: 'Recommended',
+                  ),
                 ),
-                Tab(
-                  text: 'Trending',
+                FittedBox(
+                  child: Tab(
+                    text: 'Trending',
+                  ),
                 )
               ],
             ),
@@ -497,7 +506,7 @@ class TabBarListWidget extends StatelessWidget {
                               //   showFullText = !showFullText;
                               // });
                             },
-                            child: Container(
+                            child: SizedBox(
                               child: place.placeName != null
                                   ? FittedBox(
                                       child: Text(
@@ -727,42 +736,15 @@ class RoundButton extends StatelessWidget {
 /*So this widget is used for create a slider of image
 to view with pageindicator  */
 
-class SliderImageViewWidget extends StatefulWidget {
+class SliderImageViewWidget extends StatelessWidget {
   final List<String> imagePathList;
   const SliderImageViewWidget({required this.imagePathList, Key? key})
       : super(key: key);
 
-  @override
-  State<SliderImageViewWidget> createState() => _SliderImageViewWidgetState();
-}
-
-class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
-  late PageController _pageController;
-  double _currentIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(
-      initialPage: 0,
-    );
-    _pageController.addListener(() {
-      setState(() {
-        _currentIndex = _pageController.page!;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _pageController.dispose();
-    super.dispose();
-  }
-
+  // late PageController _pageController;
   @override
   Widget build(BuildContext context) {
-    final List<String> imagePath = widget.imagePathList;
+    final List<String> imagePath = imagePathList;
 
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
@@ -770,51 +752,56 @@ class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
     return SizedBox(
       height: height / 2,
       width: width / 1,
-      child: Stack(
-        children: [
-          ListView.builder(
-            controller: _pageController,
-            itemCount: imagePath.length,
-            itemBuilder: (context, index) {
-              return SizedBox(
-                height: height / 2,
-                width: width / 1,
-                child: imagePath[index].startsWith("asset/")
-                    ? Image.asset(
-                        imagePath[index],
-                        fit: BoxFit.fill,
-                      )
-                    : Image.file(
-                        File(imagePath[index]),
-                        fit: BoxFit.fill,
+      child: Consumer<TabViewProvider>(
+        builder: (context, value, _) {
+          value.initPageController();
+          return Stack(
+            children: [
+              ListView.builder(
+                controller: value.controllerpage,
+                itemCount: imagePath.length,
+                itemBuilder: (context, index) {
+                  return SizedBox(
+                    height: height / 2,
+                    width: width / 1,
+                    child: imagePath[index].startsWith("asset/")
+                        ? Image.asset(
+                            imagePath[index],
+                            fit: BoxFit.fill,
+                          )
+                        : Image.file(
+                            File(imagePath[index]),
+                            fit: BoxFit.fill,
+                          ),
+                  );
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  top: 160,
+                ),
+                child: SizedBox(
+                  child: DotsIndicator(
+                    axis: Axis.vertical,
+                    dotsCount: imagePath.length,
+                    position: value.currentIdex.round(),
+                    decorator: DotsDecorator(
+                      color: Colors.grey,
+                      activeColor: Colors.blue,
+                      size: const Size.square(12.0),
+                      activeSize: const Size(18.0, 19.0),
+                      spacing: const EdgeInsets.all(5.0),
+                      activeShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
-              );
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              top: 160,
-            ),
-            child: SizedBox(
-              child: DotsIndicator(
-                axis: Axis.vertical,
-                dotsCount: imagePath.length,
-                position: _currentIndex.round(),
-                decorator: DotsDecorator(
-                  color: Colors.grey,
-                  activeColor: Colors.blue,
-                  size: const Size.square(12.0),
-                  activeSize: const Size(18.0, 19.0),
-                  spacing: const EdgeInsets.all(5.0),
-                  activeShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }
@@ -854,9 +841,9 @@ class HeartButtonWidget extends StatelessWidget {
   final double sizeOfImage;
   final ModelPlace place;
   final Function(ModelPlace)? onFavoriteTapped;
-  bool isFavorite;
+  final bool isFavorite;
 
-  HeartButtonWidget({
+  const HeartButtonWidget({
     required this.sizeOfImage,
     required this.place,
     required this.isFavorite,
@@ -936,27 +923,31 @@ class PopularListViewWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                        width: width / 1,
-                        height: height / 1,
-                        child: getImageWidget(place.images![0]),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 30,
-                          left: 30,
-                        ),
-                        child: Text(
-                          place.placeName!,
-                          style: GoogleFonts.abel(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w800,
+                  child: Consumer<CommonProvider>(
+                    builder: (context, value, child) {
+                      return Stack(
+                        children: [
+                          SizedBox(
+                            width: width / 1,
+                            height: height / 1,
+                            child: value.getImageWidget(place.images![0]),
                           ),
-                        ),
-                      ),
-                    ],
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 30,
+                              left: 30,
+                            ),
+                            child: Text(
+                              place.placeName!,
+                              style: GoogleFonts.abel(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),
@@ -967,17 +958,17 @@ class PopularListViewWidget extends StatelessWidget {
     );
   }
 
-  Widget getImageWidget(String imagePath) {
-    if (imagePath.startsWith("assets/")) {
-      return Image.asset(
-        imagePath,
-        fit: BoxFit.cover,
-      );
-    } else {
-      return Image.file(
-        File(imagePath),
-        fit: BoxFit.cover,
-      );
-    }
-  }
+  // Widget getImageWidget(String imagePath) {
+  //   if (imagePath.startsWith("assets/")) {
+  //     return Image.asset(
+  //       imagePath,
+  //       fit: BoxFit.cover,
+  //     );
+  //   } else {
+  //     return Image.file(
+  //       File(imagePath),
+  //       fit: BoxFit.cover,
+  //     );
+  //   }
+  // }
 }

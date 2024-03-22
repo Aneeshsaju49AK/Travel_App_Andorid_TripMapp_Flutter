@@ -14,6 +14,7 @@ class MapLocationProvider extends ChangeNotifier {
 
   void checkIsFavorite(bool isFavoriteWidget) {
     _isFavorite = isFavoriteWidget;
+    notifyListeners();
   }
 
   void changeValue() {

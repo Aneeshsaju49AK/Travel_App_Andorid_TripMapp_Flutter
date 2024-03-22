@@ -7,6 +7,7 @@ import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/activity_page_provider.dart';
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/addtrip_Screen.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/headWwite_widget/headwrite_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class ActivityScreenWidget extends StatelessWidget {

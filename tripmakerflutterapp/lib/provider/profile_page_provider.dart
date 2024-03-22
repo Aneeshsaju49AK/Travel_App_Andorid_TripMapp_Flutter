@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 
 class ProfilePageProvider extends ChangeNotifier {
@@ -20,17 +19,17 @@ class ProfilePageProvider extends ChangeNotifier {
   // List<String> links() => images;
   int countImage = 0;
 
-  void initModelPlace(ModelPlace _currentPlace) {
-    places = _currentPlace;
-    _images = _currentPlace.images!;
+  void initModelPlace(ModelPlace currentPlace) {
+    places = currentPlace;
+    _images = currentPlace.images!;
     countImage = _images.length;
-    placeNameController.text = _currentPlace.placeName ?? '';
-    subLocationController.text = _currentPlace.subPlaceName ?? '';
-    priceController.text = _currentPlace.price ?? '';
-    durationController.text = _currentPlace.durations ?? '';
-    descriptionController.text = _currentPlace.description ?? '';
-    selectedDistrict = _currentPlace.district;
-    selectedCategory = _currentPlace.category;
+    placeNameController.text = currentPlace.placeName ?? '';
+    subLocationController.text = currentPlace.subPlaceName ?? '';
+    priceController.text = currentPlace.price ?? '';
+    durationController.text = currentPlace.durations ?? '';
+    descriptionController.text = currentPlace.description ?? '';
+    selectedDistrict = currentPlace.district;
+    selectedCategory = currentPlace.category;
     notifyListeners();
   }
 

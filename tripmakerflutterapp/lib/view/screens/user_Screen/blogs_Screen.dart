@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
+import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
@@ -12,6 +13,7 @@ class BlogsScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<CommonProvider>(context);
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
 
@@ -82,7 +84,7 @@ class BlogsScreenWidget extends StatelessWidget {
                                   SizedBox(
                                     width: width / 1,
                                     height: height / 3.5,
-                                    child: getImageWidget(
+                                    child: auth.getImageWidget(
                                       place.images![0],
                                     ),
                                   ),
@@ -169,19 +171,19 @@ class BlogsScreenWidget extends StatelessWidget {
     );
   }
 
-  Widget getImageWidget(String imagePath) {
-    if (imagePath.startsWith("assets/")) {
-      return Image.asset(
-        imagePath,
-        fit: BoxFit.cover,
-      );
-    } else {
-      return Image.file(
-        File(imagePath),
-        fit: BoxFit.cover,
-      );
-    }
-  }
+  // Widget getImageWidget(String imagePath) {
+  //   if (imagePath.startsWith("assets/")) {
+  //     return Image.asset(
+  //       imagePath,
+  //       fit: BoxFit.cover,
+  //     );
+  //   } else {
+  //     return Image.file(
+  //       File(imagePath),
+  //       fit: BoxFit.cover,
+  //     );
+  //   }
+  // }
 }
 
 class PopupScreen extends StatelessWidget {
@@ -197,12 +199,12 @@ class PopupScreen extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  String? validateError(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Please enter a valid value";
-    }
-    return null;
-  }
+  // String? validateError(String? value) {
+  //   if (value == null || value.isEmpty) {
+  //     return "Please enter a valid value";
+  //   }
+  //   return null;
+  // }
 
   void handleSavebuttonBlogPage(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -229,6 +231,7 @@ class PopupScreen extends StatelessWidget {
     final authProfileProvider = Provider.of<ProfilePageProvider>(
       context,
     );
+    final auth = Provider.of<CommonProvider>(context);
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
@@ -328,7 +331,7 @@ class PopupScreen extends StatelessWidget {
                   width: width / 1.2,
                   height: height / 12,
                   child: TextFormField(
-                    validator: validateError,
+                    validator: auth.validateValue,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -343,7 +346,7 @@ class PopupScreen extends StatelessWidget {
                   width: width / 1.2,
                   height: height / 4,
                   child: TextFormField(
-                    validator: validateError,
+                    validator: auth.validateValue,
                     maxLines: null,
                     expands: true,
                     textAlignVertical: TextAlignVertical.top,

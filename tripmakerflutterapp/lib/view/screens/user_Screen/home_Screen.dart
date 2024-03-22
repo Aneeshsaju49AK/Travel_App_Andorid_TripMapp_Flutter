@@ -86,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         if (isProfileSet != true) {
           prefs.setBool("isProfileSet", true);
+
           Navigator.push(
             context,
             MaterialPageRoute(

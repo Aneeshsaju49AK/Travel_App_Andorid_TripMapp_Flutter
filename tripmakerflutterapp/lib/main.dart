@@ -16,6 +16,7 @@ import 'package:tripmakerflutterapp/provider/main_dart_provider.dart';
 import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
 import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
 import 'package:tripmakerflutterapp/provider/searchwidget_provider.dart';
+import 'package:tripmakerflutterapp/provider/tab_view_provider.dart';
 import 'package:tripmakerflutterapp/provider/texiFieldWidget_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
 import 'package:provider/provider.dart';
@@ -75,6 +76,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => SearchProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TabViewProvider(),
         ),
       ],
       child: const MyApp(),

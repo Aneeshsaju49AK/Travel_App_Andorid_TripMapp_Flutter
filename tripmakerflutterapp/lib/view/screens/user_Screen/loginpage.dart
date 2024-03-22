@@ -4,7 +4,6 @@ import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/admin_Screen/admin_Home_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/signinpage.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
-
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
