@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
+import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_Screen.dart';
+
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -27,40 +32,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
   void initState() {
     super.initState();
     _currentPlace = widget.place;
-    // setState(() {
-    //   isFavorite =
-    //       FavoritesDB.favoriteListNotifier.value.contains(_currentPlace);
-    // });
-    // _checkFavoriteStatus();
-    _loadFavoriteStatus();
   }
-
-  Future<void> _loadFavoriteStatus() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isFavorite = prefs.getBool('isFavorite_${_currentPlace.id}') ?? false;
-    });
-  }
-
-  Future<void> _toggleFavoriteStatus() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isFavorite = !isFavorite;
-      prefs.setBool('isFavorite_${_currentPlace.id}', isFavorite);
-    });
-  }
-  // Future<void> _checkFavoriteStatus() async {
-  //   bool isPlaceFavorite =
-  //       await FavoritesDB.favoriteListNotifier.value.contains(_currentPlace);
-
-  //   setState(() {
-  //     isFavorite = isPlaceFavorite;
-  //   });
-  //   print("is $isPlaceFavorite");
-  // }
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<FavoriteButton>(context).loadFavoriteStatus(_currentPlace);
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
 
@@ -95,12 +71,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           left: 290,
                           top: 15,
                         ),
-                        child: HeartButtonWidget(
-                          sizeOfImage: 45,
-                          place: _currentPlace,
-                          isFavorite: isFavorite,
-                          onFavoriteTapped: (p0) {
-                            _toggleFavoriteStatus();
+                        child: Consumer<FavoriteButton>(
+                          builder: (context, value, child) {
+                            return HeartButtonWidget(
+                              sizeOfImage: 45,
+                              place: _currentPlace,
+                              isFavorite: value.isFavorite,
+                              onFavoriteTapped: (p0) {
+                                value.setFavoriteStatus(_currentPlace);
+                              },
+                            );
                           },
                         ),
                       ),
@@ -476,7 +456,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

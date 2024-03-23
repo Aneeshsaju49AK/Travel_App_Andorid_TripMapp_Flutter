@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
+import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
+import 'package:tripmakerflutterapp/provider/common_provider.dart';
+import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
-class ProfileSetupWidget extends StatefulWidget {
-  const ProfileSetupWidget({Key? key}) : super(key: key);
-
-  @override
-  State<ProfileSetupWidget> createState() => _ProfileSetupWidgetState();
-}
-
-class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
-  @override
-  void initState() {
-    super.initState();
-    ProfileDB.userListNotifier;
-  }
+class ProfileSetupWidget extends StatelessWidget {
+  ProfileSetupWidget({Key? key}) : super(key: key);
 
   final nameController = TextEditingController();
 
@@ -27,9 +22,9 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
 
   final phoneController = TextEditingController();
 
-  String? _profilePicturePath;
+  // String? _profilePicturePath;
 
-  XFile? image;
+  // XFile? image;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -95,7 +90,9 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
         email: emailController.text,
         userName: userNameController.text,
         phone: phoneController.text,
-        profilePicturePath: _profilePicturePath,
+        profilePicturePath:
+            Provider.of<ProfilePageProvider>(context, listen: false)
+                .profilePicturePath,
       );
       await ProfileDB.instance.insertProfile(profile);
 
@@ -114,6 +111,8 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
   Widget build(BuildContext context) {
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
+    final authProviderCommon =
+        Provider.of<CommonProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -179,55 +178,49 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                             );
                           }
                         },
+                        // child: CircleAvatarWidget(
+                        //   radius: 80,
+                        //   islocationwidget: true,
+                        //   imagePath: _profilePicturePath,
+                        //   onpressed: () {
+                        //     buttomSheet(context);
+                        //   },
+                        // ),
                       ),
                     ),
                   ),
-                  ValueListenableBuilder(
-                    valueListenable: ProfileDB.userListNotifier,
-                    builder: (context, value, _) {
-                      if (value.isEmpty) {
-                        nameController.text = '';
-                        emailController.text = "";
-                        userNameController.text = "";
-                        phoneController.text = "";
-                      } else {
-                        ProfileModels profile = value[0];
-                        nameController.text = profile.name!;
-                        emailController.text = profile.email!;
-                        userNameController.text = profile.userName!;
-                        phoneController.text = profile.phone!;
-                      }
-
-                      return SizedBox(
-                        width: width / 1,
-                        height: height / 1.7,
-                        child: Column(
-                          children: [
-                            TextFieldWidget(
-                              label: "Name",
-                              validator: validateName,
-                              controller: nameController,
-                            ),
-                            TextFieldWidget(
-                              label: "Email",
-                              validator: validateEmail,
-                              controller: emailController,
-                            ),
-                            TextFieldWidget(
-                              label: "User Name",
-                              validator: validateUserName,
-                              controller: userNameController,
-                            ),
-                            TextFieldWidget(
-                              keyboardType: TextInputType.number,
-                              label: "Phone",
-                              validator: validatePhone,
-                              controller: phoneController,
-                            ),
-                          ],
+                  SizedBox(
+                    width: width / 1,
+                    height: height / 1.7,
+                    child: Column(
+                      children: [
+                        TextFieldWidget(
+                          label: "Name",
+                          validator: authProviderCommon.validateValue,
+                          controller: nameController,
+                          onChange: () {
+                            if (_formKey.currentState?.validate() == false) {
+                              _formKey.currentState?.reset();
+                            }
+                          },
                         ),
-                      );
-                    },
+                        TextFieldWidget(
+                          label: "Email",
+                          validator: authProviderCommon.validateValue,
+                          controller: emailController,
+                        ),
+                        TextFieldWidget(
+                          label: "User Name",
+                          validator: authProviderCommon.validateValue,
+                          controller: userNameController,
+                        ),
+                        TextFieldWidget(
+                          label: "Phone",
+                          validator: authProviderCommon.validateValue,
+                          controller: phoneController,
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     width: width / 1,
@@ -272,88 +265,29 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                         const SizedBox(
                           width: 20,
                         ),
-                        const RoundButton(
-                          imagePath: "asset/imges/navigation_img/location.png",
-                          label: "Delete",
-                          buttonColor: Colors.red,
+                        InkWell(
+                          onTap: () {
+                            nameController.text = "";
+                            emailController.text = "";
+                            userNameController.text = "";
+                            phoneController.text = "";
+                          },
+                          child: const RoundButton(
+                            imagePath:
+                                "asset/imges/navigation_img/location.png",
+                            label: "clear",
+                            buttonColor: Colors.red,
+                          ),
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
           ),
         ),
       ),
-    );
-  }
-
-  buttomSheet(BuildContext context) {
-    num width = MediaQuery.of(context).size.width;
-    num height = MediaQuery.of(context).size.height;
-    return showBottomSheet(
-      context: context,
-      builder: (context) {
-        return SizedBox(
-          width: width / 1,
-          height: height / 5,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Select the image source",
-                  style: GoogleFonts.abel(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton.icon(
-                    onPressed: () async {
-                      XFile? img = await ImagePicker().pickImage(
-                        source: ImageSource.camera,
-                      );
-                      setState(() {
-                        image = img;
-                      });
-                      _profilePicturePath = image!.path;
-                      ProfileDB.userListNotifier.value[0].profilePicturePath =
-                          image!.path;
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.camera),
-                    label: const Text("Camera"),
-                  ),
-                  TextButton.icon(
-                    onPressed: () async {
-                      XFile? img = await ImagePicker().pickImage(
-                        source: ImageSource.gallery,
-                      );
-                      setState(() {
-                        image = img;
-                      });
-
-                      _profilePicturePath = image!.path;
-                      ProfileDB.userListNotifier.value[0].profilePicturePath =
-                          image!.path;
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.image),
-                    label: const Text("Galley"),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

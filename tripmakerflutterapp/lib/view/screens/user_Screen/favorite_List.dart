@@ -1,42 +1,29 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
-class FavoritePage extends StatefulWidget {
-  const FavoritePage({super.key});
+class FavoritePage extends StatelessWidget {
+  FavoritePage({super.key});
 
-  @override
-  State<FavoritePage> createState() => _FavoritePageState();
-}
-
-class _FavoritePageState extends State<FavoritePage> {
   String searchQuery = "";
 
   late ModelPlace currentPlace;
-  bool isFavorite = true;
+
+  // bool isFavorite = true;
   ValueNotifier<List<ModelPlace>> filteredList = ValueNotifier([]);
 
-  @override
-  void initState() {
-    super.initState();
-    FavoritesDB.instance.updateFavoriteList();
-  }
-
-  Future<void> _toggleFavoriteStatus() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isFavorite = !isFavorite;
-      prefs.setBool('isFavorite_${currentPlace.id}', isFavorite);
-    });
-  }
+  // @override
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<FavoriteButton>(context).callRefreshUi;
+    // Provider.of<FavoriteButton>(context).loadFavoriteStatus(currentPlace);
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
 
@@ -81,13 +68,18 @@ class _FavoritePageState extends State<FavoritePage> {
                   width: width / 1,
                   height: height / 1.5,
                   child: ValueListenableBuilder(
-                    valueListenable: filteredList,
+                    valueListenable: searchQuery == ""
+                        ? FavoritesDB.favoriteListNotifier
+                        : filteredList,
                     builder: (context, valueList, _) {
                       return ListView.builder(
                         itemCount: valueList.length,
                         itemBuilder: (context, index) {
                           ModelPlace place = valueList[index];
                           currentPlace = valueList[index];
+                          Provider.of<FavoriteButton>(context)
+                              .loadFavoriteStatus(currentPlace);
+
                           return Padding(
                             padding: const EdgeInsets.all(18.0),
                             child: Container(
@@ -128,17 +120,26 @@ class _FavoritePageState extends State<FavoritePage> {
                                     Positioned(
                                       left: width / 1.3,
                                       top: height / 20,
-                                      child: HeartButtonWidget(
-                                        sizeOfImage: 30,
-                                        place: place,
-                                        isFavorite: isFavorite,
-                                        onFavoriteTapped: (isFavorite) {
-                                          FavoritesDB.instance
-                                              .removeFavorite(place);
-                                          _toggleFavoriteStatus();
-                                          setState(() {
-                                            const FavoritePage();
-                                          });
+                                      child: Consumer<FavoriteButton>(
+                                        builder: (context, value, child) {
+                                          return HeartButtonWidget(
+                                            sizeOfImage: 30,
+                                            place: place,
+                                            isFavorite: value.isFavorite,
+                                            onFavoriteTapped: (isFavorite) {
+                                              final currentIndex = filteredList
+                                                  .value
+                                                  .indexWhere((element) =>
+                                                      element == place);
+                                              if (currentIndex != -1) {
+                                                filteredList.value
+                                                    .removeAt(currentIndex);
+                                              }
+
+                                              value.setFavoriteStatus(
+                                                  currentPlace);
+                                            },
+                                          );
                                         },
                                       ),
                                     ),

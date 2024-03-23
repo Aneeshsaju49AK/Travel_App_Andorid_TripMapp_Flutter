@@ -111,17 +111,72 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                       ? Colors.blue
                                       : Colors.black,
                                 ),
-                              );
-                            } else {
-                              return Text(
-                                "Guest",
-                                style: GoogleFonts.abel(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Provider.of<DarkModeProvider>(context)
-                                          .value
-                                      ? Colors.blue
-                                      : Colors.black,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    switch (index) {
+                                      case 0:
+                                        ScreenSelection
+                                            .selectedIndexNotifier.value = 0;
+                                        Navigator.pop(context);
+                                        break;
+                                      case 1:
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return Scaffold(
+                                                body: SafeArea(
+                                                  child: ProfileSetupWidget(),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        );
+                                        break;
+                                      case 2:
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AboutScreen(),
+                                          ),
+                                        );
+                                        break;
+                                      case 3:
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text("Logout"),
+                                              content: const Text(
+                                                  "Are you sure you want to logout?"),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text("No"),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    _logOutUser(context);
+                                                  },
+                                                  child: const Text("Yes"),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                        break;
+                                    }
+                                  },
+                                  child: Text(
+                                    links[index],
+                                    style: GoogleFonts.abel(
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                                 ),
                               );
                             }

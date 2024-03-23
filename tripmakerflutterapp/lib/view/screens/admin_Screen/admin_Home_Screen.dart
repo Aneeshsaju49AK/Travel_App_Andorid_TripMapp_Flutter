@@ -6,7 +6,7 @@ import 'package:tripmakerflutterapp/view/screens/admin_Screen/add_place.dart';
 class ScreenHomeAdmin extends StatelessWidget {
   ScreenHomeAdmin({super.key});
 
-  List<String> options = [
+  final List<String> options = [
     "Add Place",
   ];
 

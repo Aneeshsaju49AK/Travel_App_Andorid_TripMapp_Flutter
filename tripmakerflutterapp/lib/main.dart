@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:io';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:tripmakerflutterapp/controller/addTrip_model/addTrip_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
@@ -15,6 +18,15 @@ import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
+import 'package:tripmakerflutterapp/provider/activity_page_provider.dart';
+import 'package:tripmakerflutterapp/provider/common_provider.dart';
+import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
+import 'package:tripmakerflutterapp/provider/main_dart_provider.dart';
+import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
+import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
+import 'package:tripmakerflutterapp/provider/searchwidget_provider.dart';
+import 'package:tripmakerflutterapp/provider/tab_view_provider.dart';
+import 'package:tripmakerflutterapp/provider/texiFieldWidget_provider.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
@@ -61,6 +73,40 @@ Future<void> main() async {
   await BlogDB.instance.reFreshUIBlogs();
   await FavoritesDB.instance.updateFavoriteList();
 
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ProviderMainPage(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CommonProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProfilePageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ActivityPageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FavoriteButton(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TextFieldProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MapLocationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SearchProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TabViewProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => DarkModeProvider(),
@@ -68,14 +114,9 @@ Future<void> main() async {
   ], child: const MyApp()));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Consumer<DarkModeProvider>(
@@ -100,44 +141,16 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(
-      const Duration(seconds: 3),
-      () async {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-
-        if (isLoggedIn) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ScreenSelection(),
-            ),
-          );
-        } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const LoginPage(),
-            ),
-          );
-        }
-      },
-    );
-  }
+  // @override
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<ProviderMainPage>(context, listen: false);
+    authProvider.initializeMainPage(context);
+
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
 

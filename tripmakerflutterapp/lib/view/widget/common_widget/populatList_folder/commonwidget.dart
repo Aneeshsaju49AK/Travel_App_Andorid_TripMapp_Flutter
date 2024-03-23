@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,6 +10,12 @@ import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/common_provider.dart';
+import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
+import 'package:tripmakerflutterapp/provider/searchwidget_provider.dart';
+import 'package:tripmakerflutterapp/provider/tab_view_provider.dart';
+import 'package:tripmakerflutterapp/provider/texiFieldWidget_provider.dart';
+
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/category_place.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
@@ -56,7 +63,7 @@ class HeadWritingWidget extends StatelessWidget {
 /*this widget is used for create textfield for
 signup/ and  login page */
 
-class TextFieldWidget extends StatefulWidget {
+class TextFieldWidget extends StatelessWidget {
   final String label;
   final String? Function(String?)? validator;
   final void Function()? onChange;
@@ -73,30 +80,14 @@ class TextFieldWidget extends StatefulWidget {
     this.keyboardType = TextInputType.text,
   }) : super(key: key);
 
-  @override
-  State<TextFieldWidget> createState() => _TextFieldWidgetState();
-}
-
-class _TextFieldWidgetState extends State<TextFieldWidget> {
-  late TextEditingController _controller;
-  bool showError = false;
-  @override
-  void initState() {
-    super.initState();
-    _controller = widget.controller ?? TextEditingController();
-  }
+  // late TextEditingController _controller;
+  final bool showError = false;
 
   // @override
-  // void dispose() {
-  //   // Dispose the controller if it was created in initState
-  //   if (widget.controller == null) {
-  //     _controller.dispose();
-  //   }
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<TextFieldProvider>(context);
+    auth.initController(controller);
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
 
@@ -111,7 +102,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             child: Padding(
               padding: const EdgeInsets.only(left: 20),
               child: Text(
-                widget.label,
+                label,
                 style: GoogleFonts.abel(
                   fontSize: 19,
                   fontWeight: FontWeight.w600,
@@ -125,10 +116,10 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
               width: width / 1.1,
               height: showError ? height / 23 : height / 10,
               child: TextFormField(
-                keyboardType: widget.keyboardType,
-                controller: _controller,
+                keyboardType: keyboardType,
+                controller: auth.controller,
                 decoration: InputDecoration(
-                  hintText: widget.label,
+                  hintText: label,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: const BorderSide(
@@ -137,8 +128,8 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                     ),
                   ),
                 ),
-                validator: widget.validator,
-                onTap: widget.onChange,
+                validator: validator,
+                onTap: onChange,
               ),
             ),
           ),
@@ -187,7 +178,7 @@ class ButtonCommonWidget extends StatelessWidget {
   }
 }
 
-class MapLocation extends StatefulWidget {
+class MapLocation extends StatelessWidget {
   final bool? islocationWidget;
   final Position? location;
   final String? locationName;
@@ -198,20 +189,29 @@ class MapLocation extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  @override
-  _MapLocationState createState() => _MapLocationState();
-}
-
-class _MapLocationState extends State<MapLocation> {
-  bool showFullText = false;
+//  final bool showFullText = false;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          showFullText = !showFullText;
-        });
+    return Consumer<MapLocationProvider>(
+      builder: (context, value, child) {
+        return GestureDetector(
+          onTap: () {
+            value.changeValue();
+            // setState(() {
+            //   showFullText = !showFullText;
+            // });
+          },
+          child: Container(
+            child: islocationWidget == true && location != null
+                ? Text(
+                    value.showFullText
+                        ? "$locationName"
+                        : "${locationName!.substring(0, 10)}...", // Display only the first 10 characters
+                  )
+                : const Text("Location not available"),
+          ),
+        );
       },
       child: Container(
         child: widget.islocationWidget == true && widget.location != null
@@ -274,7 +274,7 @@ class CircleAvatarWidget extends StatelessWidget {
 
 /*this widet is used to build the search bar
 maimly in the home and search page */
-class SearchWidget extends StatefulWidget {
+class SearchWidget extends StatelessWidget {
   final bool isNavigation;
   final void Function(String)? onSearch;
 
@@ -284,30 +284,13 @@ class SearchWidget extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<SearchWidget> createState() => _SearchWidgetState();
-  void updateSearchText(String searchText) {
-    // Call the provided callback function to send the value
-    if (onSearch != null) {
-      onSearch!(searchText);
-    }
-  }
-}
+  // TextEditingController searchController = TextEditingController();
 
-class _SearchWidgetState extends State<SearchWidget> {
-  TextEditingController searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    searchController.addListener(() {
-      // Call the callback function with the current text value
-      widget.updateSearchText(searchController.text);
-    });
-  }
-
+  // @override
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<SearchProvider>(context);
+    auth.listenText();
     return SizedBox(
       child: Padding(
         padding: const EdgeInsets.only(
@@ -317,7 +300,7 @@ class _SearchWidgetState extends State<SearchWidget> {
           bottom: 0,
         ),
         child: TextField(
-          controller: searchController,
+          controller: auth.searchController,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
@@ -325,7 +308,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             labelText: 'Search for the Destinations',
             prefixIcon: IconButton(
               onPressed: () {
-                if (widget.isNavigation == true) {
+                if (isNavigation == true) {
                   ScreenSelection.selectedIndexNotifier.value = 1;
                 }
               },
@@ -371,6 +354,8 @@ class _TabViewWidgetState extends State<TabViewWidget>
 
   @override
   Widget build(BuildContext context) {
+    // final auth = Provider.of<TabViewProvider>(context, listen: false);
+    // auth.initTabController(this);
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
     return Column(
@@ -393,14 +378,20 @@ class _TabViewWidgetState extends State<TabViewWidget>
               ),
               controller: _tabController,
               tabs: const [
-                Tab(
-                  text: 'Most Popular',
+                FittedBox(
+                  child: Tab(
+                    text: 'Most Popular',
+                  ),
                 ),
-                Tab(
-                  text: 'Recommended',
+                FittedBox(
+                  child: Tab(
+                    text: 'Recommended',
+                  ),
                 ),
-                Tab(
-                  text: 'Trending',
+                FittedBox(
+                  child: Tab(
+                    text: 'Trending',
+                  ),
                 )
               ],
             ),
@@ -444,7 +435,7 @@ class _TabViewWidgetState extends State<TabViewWidget>
 /* this widget is used for the main view in TabBar 
   also enable the listview builder
  */
-class TabBarListWidget extends StatefulWidget {
+class TabBarListWidget extends StatelessWidget {
   final ValueNotifier<List<ModelPlace>> placeListNotifierCommon;
   const TabBarListWidget({required this.placeListNotifierCommon, Key? key})
       : super(key: key);
@@ -456,10 +447,12 @@ class TabBarListWidget extends StatefulWidget {
 class _TabBarListWidgetState extends State<TabBarListWidget> {
   List<bool> showFullText =
       List.filled(PlacesDB.instance.placeListNotifier.value.length, false);
+
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<MapLocationProvider>(context);
     return ValueListenableBuilder<List<ModelPlace>>(
-      valueListenable: widget.placeListNotifierCommon,
+      valueListenable: placeListNotifierCommon,
       builder: (context, placeList, _) {
         return ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -772,7 +765,7 @@ class RoundButton extends StatelessWidget {
 /*So this widget is used for create a slider of image
 to view with pageindicator  */
 
-class SliderImageViewWidget extends StatefulWidget {
+class SliderImageViewWidget extends StatelessWidget {
   final List<String> imagePathList;
   const SliderImageViewWidget({required this.imagePathList, Key? key})
       : super(key: key);
@@ -806,7 +799,7 @@ class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> imagePath = widget.imagePathList;
+    final List<String> imagePath = imagePathList;
 
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
@@ -814,51 +807,56 @@ class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
     return SizedBox(
       height: height / 2,
       width: width / 1,
-      child: Stack(
-        children: [
-          ListView.builder(
-            controller: _pageController,
-            itemCount: imagePath.length,
-            itemBuilder: (context, index) {
-              return SizedBox(
-                height: height / 2,
-                width: width / 1,
-                child: imagePath[index].startsWith("asset/")
-                    ? Image.asset(
-                        imagePath[index],
-                        fit: BoxFit.fill,
-                      )
-                    : Image.file(
-                        File(imagePath[index]),
-                        fit: BoxFit.fill,
+      child: Consumer<TabViewProvider>(
+        builder: (context, value, _) {
+          value.initPageController();
+          return Stack(
+            children: [
+              ListView.builder(
+                controller: value.controllerpage,
+                itemCount: imagePath.length,
+                itemBuilder: (context, index) {
+                  return SizedBox(
+                    height: height / 2,
+                    width: width / 1,
+                    child: imagePath[index].startsWith("asset/")
+                        ? Image.asset(
+                            imagePath[index],
+                            fit: BoxFit.fill,
+                          )
+                        : Image.file(
+                            File(imagePath[index]),
+                            fit: BoxFit.fill,
+                          ),
+                  );
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  top: 160,
+                ),
+                child: SizedBox(
+                  child: DotsIndicator(
+                    axis: Axis.vertical,
+                    dotsCount: imagePath.length,
+                    position: value.currentIdex.round(),
+                    decorator: DotsDecorator(
+                      color: Colors.grey,
+                      activeColor: Colors.blue,
+                      size: const Size.square(12.0),
+                      activeSize: const Size(18.0, 19.0),
+                      spacing: const EdgeInsets.all(5.0),
+                      activeShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
-              );
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              top: 160,
-            ),
-            child: SizedBox(
-              child: DotsIndicator(
-                axis: Axis.vertical,
-                dotsCount: imagePath.length,
-                position: _currentIndex.round(),
-                decorator: DotsDecorator(
-                  color: Colors.grey,
-                  activeColor: Colors.blue,
-                  size: const Size.square(12.0),
-                  activeSize: const Size(18.0, 19.0),
-                  spacing: const EdgeInsets.all(5.0),
-                  activeShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }
@@ -899,14 +897,13 @@ class BackButtonWidget extends StatelessWidget {
 
 /*in this widget is try to acheive the add favorite list according to the value */
 
-// ignore: must_be_immutable
-class HeartButtonWidget extends StatefulWidget {
+class HeartButtonWidget extends StatelessWidget {
   final double sizeOfImage;
   final ModelPlace place;
   final Function(ModelPlace)? onFavoriteTapped;
-  bool isFavorite;
+  final bool isFavorite;
 
-  HeartButtonWidget({
+  const HeartButtonWidget({
     required this.sizeOfImage,
     required this.place,
     required this.isFavorite,
@@ -914,51 +911,32 @@ class HeartButtonWidget extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  @override
-  _HeartButtonWidgetState createState() => _HeartButtonWidgetState();
-}
-
-class _HeartButtonWidgetState extends State<HeartButtonWidget> {
-  late ModelPlace _currentPlace;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentPlace = widget.place;
-  }
-
-  // void _toggleFavoriteStatus() async {
-  //   if (_isFavorite) {
-  //     await FavoritesDB.instance.removeFavorite(_currentPlace);
-  //     FavoritesDB.instance.updateFavoriteList();
-  //   } else {
-  //     await FavoritesDB.instance.addFavorite(_currentPlace);
-  //     FavoritesDB.instance.updateFavoriteList();
-  //   }
-  //   widget.onFavoriteTapped?.call(_currentPlace);
-  // }
-
+  // @override
   @override
   Widget build(BuildContext context) {
-    bool isFavorite = widget.isFavorite;
+    final auth = Provider.of<MapLocationProvider>(context);
+    auth.initValue(place);
+    auth.currentPlace;
+
+    auth.checkIsFavorite(isFavorite);
     return GestureDetector(
       onTap: () async {
-        if (isFavorite) {
-          await FavoritesDB.instance.removeFavorite(_currentPlace);
+        if (auth.isFavorite) {
+          await FavoritesDB.instance.removeFavorite(auth.currentPlace);
         } else {
-          await FavoritesDB.instance.addFavorite(_currentPlace);
+          await FavoritesDB.instance.addFavorite(auth.currentPlace);
         }
-        widget.onFavoriteTapped?.call(_currentPlace);
+        onFavoriteTapped?.call(auth.currentPlace);
         FavoritesDB.instance.updateFavoriteList();
       },
       child: ColorFiltered(
         colorFilter: ColorFilter.mode(
-          isFavorite ? Colors.red : Colors.grey,
+          auth.isFavorite ? Colors.red : Colors.grey,
           BlendMode.srcIn,
         ),
         child: Image.asset(
           "asset/imges/heart-in-a-circle.png",
-          width: widget.sizeOfImage,
+          width: sizeOfImage,
         ),
       ),
     );
@@ -1005,27 +983,31 @@ class PopularListViewWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                        width: width / 1,
-                        height: height / 1,
-                        child: getImageWidget(place.images![0]),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 30,
-                          left: 30,
-                        ),
-                        child: Text(
-                          place.placeName!,
-                          style: GoogleFonts.abel(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w800,
+                  child: Consumer<CommonProvider>(
+                    builder: (context, value, child) {
+                      return Stack(
+                        children: [
+                          SizedBox(
+                            width: width / 1,
+                            height: height / 1,
+                            child: value.getImageWidget(place.images![0]),
                           ),
-                        ),
-                      ),
-                    ],
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 30,
+                              left: 30,
+                            ),
+                            child: Text(
+                              place.placeName!,
+                              style: GoogleFonts.abel(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),
@@ -1036,17 +1018,17 @@ class PopularListViewWidget extends StatelessWidget {
     );
   }
 
-  Widget getImageWidget(String imagePath) {
-    if (imagePath.startsWith("assets/")) {
-      return Image.asset(
-        imagePath,
-        fit: BoxFit.cover,
-      );
-    } else {
-      return Image.file(
-        File(imagePath),
-        fit: BoxFit.cover,
-      );
-    }
-  }
+  // Widget getImageWidget(String imagePath) {
+  //   if (imagePath.startsWith("assets/")) {
+  //     return Image.asset(
+  //       imagePath,
+  //       fit: BoxFit.cover,
+  //     );
+  //   } else {
+  //     return Image.file(
+  //       File(imagePath),
+  //       fit: BoxFit.cover,
+  //     );
+  //   }
+  // }
 }

@@ -2,19 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
-class TypePlaceScreen extends StatefulWidget {
+class TypePlaceScreen extends StatelessWidget {
   final ValueNotifier<List<ModelPlace>> placeListNotifierTypePlace;
-  const TypePlaceScreen({required this.placeListNotifierTypePlace, Key? key})
+  TypePlaceScreen({required this.placeListNotifierTypePlace, Key? key})
       : super(key: key);
 
-  @override
-  State<TypePlaceScreen> createState() => _TypePlaceScreenState();
-}
-
-class _TypePlaceScreenState extends State<TypePlaceScreen> {
   String searchQuery = "";
 
   ValueNotifier<List<ModelPlace>> filteredList = ValueNotifier([]);
+
   @override
   Widget build(BuildContext context) {
     num width = MediaQuery.of(context).size.width;
@@ -73,7 +69,9 @@ class _TypePlaceScreenState extends State<TypePlaceScreen> {
 
   void handleSearch(String searchText) {
     searchQuery = searchText;
-    final placeList = widget.placeListNotifierTypePlace.value;
+
+    final placeList = placeListNotifierTypePlace.value;
+
     if (searchText.isEmpty) {
       filteredList.value = placeList;
     } else {
