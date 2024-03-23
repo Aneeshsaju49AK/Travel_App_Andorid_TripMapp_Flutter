@@ -232,10 +232,180 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                             },
                           );
                         } else {
-                          return Container(
-                            color: Colors.amber,
-                            child: const Text("No data"),
+                          return ValueListenableBuilder(
+                            valueListenable:
+                                PlacesDB.instance.placeListNotifier,
+                            builder: (context, value, _) {
+                              return GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                ),
+                                itemCount: placeList.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => DetailsScreen(
+                                            place: placeList[index],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      width: width / 2,
+                                      height: height / 2.5,
+                                      child: Stack(
+                                        children: [
+                                          SizedBox(
+                                            width: width / 2,
+                                            height: height / 2.5,
+                                            child: placeList[index]
+                                                    .images![0]
+                                                    .startsWith("asset/")
+                                                ? Image.asset(
+                                                    placeList[index].images![0],
+                                                    fit: BoxFit.fill,
+                                                  )
+                                                : Image.file(
+                                                    File(placeList[index]
+                                                        .images![0]),
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.black.withOpacity(0.2),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                bottomLeft: Radius.circular(20),
+                                                bottomRight:
+                                                    Radius.circular(20),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: height / 10,
+                                            left: width / 27,
+                                            child: Text(
+                                              placeList[index].placeName!,
+                                              style: GoogleFonts.abel(
+                                                color: Colors.white,
+                                                fontSize: 23,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                onPressed: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        title: const Text(
+                                                            "Delete"),
+                                                        content: const Text(
+                                                            "Are you sure you want to delete?"),
+                                                        actions: [
+                                                          TextButton.icon(
+                                                            onPressed: () {
+                                                              PlacesDB.instance
+                                                                  .deletePlaces(
+                                                                      index)
+                                                                  .then(
+                                                                      (value) async {
+                                                                await PlacesDB
+                                                                    .instance
+                                                                    .reFreshUI();
+                                                              });
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.delete,
+                                                              color: Colors.red,
+                                                            ),
+                                                            label: const Text(
+                                                                "yes"),
+                                                          ),
+                                                          TextButton.icon(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.back_hand,
+                                                              color:
+                                                                  Colors.green,
+                                                            ),
+                                                            label: const Text(
+                                                                "no"),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                icon: const Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                              IconButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) {
+                                                      return Scaffold(
+                                                        body: SafeArea(
+                                                          child:
+                                                              Updatepage_placeModel(
+                                                            place: placeList[
+                                                                index],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }),
+                                                  );
+                                                },
+                                                icon: const Icon(
+                                                  Icons.update,
+                                                  color: Colors.green,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
                           );
+                          // return GridView.builder(
+                          //   gridDelegate:
+                          //       const SliverGridDelegateWithFixedCrossAxisCount(
+                          //     crossAxisCount: 2,
+                          //     crossAxisSpacing: 10,
+                          //     mainAxisSpacing: 10,
+                          //   ),
+                          //   itemCount: PlacesDB.instance.placeListNotifier,
+                          //   itemBuilder: (context, index) {
+                          //     return Container(
+                          //       color: const Color.fromARGB(255, 58, 243, 33),
+                          //       width: width / 2,
+                          //       height: height / 2.5,
+                          //       child: const Text("No value"),
+                          //     );
+                          //   },
+                          // );
                         }
                       },
                     ),
@@ -270,6 +440,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
 
   void handleSearch(String searchText) {
     searchQuery = searchText;
+
     final placeList = PlacesDB.instance.placeListNotifier.value;
     if (searchText.isEmpty) {
       filteredList.value = placeList;

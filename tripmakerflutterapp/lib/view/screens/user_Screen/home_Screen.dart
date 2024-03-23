@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               );
                             },
-                            child: ValueListenableBuilder<List<ProfileModel>>(
+                            child: ValueListenableBuilder<List<ProfileModels>>(
                               valueListenable: ProfileDB.userListNotifier,
                               builder: (context, userList, _) {
                                 if (userList.isNotEmpty) {
@@ -172,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            ValueListenableBuilder<List<ProfileModel>>(
+                            ValueListenableBuilder<List<ProfileModels>>(
                               valueListenable: ProfileDB.userListNotifier,
                               builder: (context, userList, _) {
                                 if (userList.isNotEmpty) {

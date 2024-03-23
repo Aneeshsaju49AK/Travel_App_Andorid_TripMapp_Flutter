@@ -64,7 +64,7 @@ class PlacesDB implements PlaceDbFunctions {
   @override
   Future<void> deletePlaces(int id) async {
     final placeDB = await Hive.openBox<ModelPlace>(PLACE_DB_NAME);
-    await placeDB.delete(id);
+    await placeDB.deleteAt(id);
   }
 
   @override

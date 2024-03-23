@@ -145,7 +145,7 @@ class _Updatepage_placeModelState extends State<Updatepage_placeModel> {
                                   IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        _images.remove(index);
+                                        _images.removeAt(index);
                                         countImage--;
                                       });
                                     },

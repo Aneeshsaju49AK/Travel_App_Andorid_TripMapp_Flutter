@@ -65,10 +65,10 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                             style: GoogleFonts.abel(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
-                              color:
-                                  Provider.of<DarkModeProvider>(context).value
-                                      ? const Color.fromARGB(255, 33, 39, 43)
-                                      : const Color.fromARGB(255, 230, 234, 212),
+                              color: Provider.of<DarkModeProvider>(context)
+                                      .value
+                                  ? const Color.fromARGB(255, 33, 39, 43)
+                                  : const Color.fromARGB(255, 230, 234, 212),
                             ),
                           ),
                         );
@@ -362,11 +362,12 @@ class _PopupScreenState extends State<PopupScreen> {
                                   },
                                   icon: Icon(
                                     Icons.remove,
-                                    color:
-                                        Provider.of<DarkModeProvider>(context)
-                                                .value
-                                            ? const Color.fromARGB(255, 143, 170, 188)
-                                            : const Color.fromARGB(255, 60, 61, 57),
+                                    color: Provider.of<DarkModeProvider>(
+                                                context)
+                                            .value
+                                        ? const Color.fromARGB(
+                                            255, 143, 170, 188)
+                                        : const Color.fromARGB(255, 60, 61, 57),
                                   ),
                                 ),
                                 IconButton(
@@ -375,11 +376,12 @@ class _PopupScreenState extends State<PopupScreen> {
                                   },
                                   icon: Icon(
                                     Icons.add,
-                                    color:
-                                        Provider.of<DarkModeProvider>(context)
-                                                .value
-                                            ? const Color.fromARGB(255, 150, 178, 196)
-                                            : const Color.fromARGB(255, 60, 61, 57),
+                                    color: Provider.of<DarkModeProvider>(
+                                                context)
+                                            .value
+                                        ? const Color.fromARGB(
+                                            255, 150, 178, 196)
+                                        : const Color.fromARGB(255, 60, 61, 57),
                                   ),
                                 ),
                               ],

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:image_picker/image_picker.dart';
-
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
-
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class ProfileSetupWidget extends StatefulWidget {
@@ -18,7 +15,6 @@ class ProfileSetupWidget extends StatefulWidget {
 class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     ProfileDB.userListNotifier;
   }
@@ -67,13 +63,16 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
 
   void handleProfileUpdateButtonPress(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      final profile = ProfileModel(
+      final profile = ProfileModels(
         id: ProfileDB.userListNotifier.value[0].id,
         name: nameController.text,
         email: emailController.text,
         userName: userNameController.text,
         phone: phoneController.text,
-        profilePicturePath: _profilePicturePath,
+        profilePicturePath: _profilePicturePath ??
+            ProfileDB.userListNotifier.value[0].profilePicturePath,
+        // profilePicturePath: _profilePicturePath ,??
+        //     ProfileDB.userListNotifier.value[0].profilePicturePath,
       );
       await ProfileDB.instance.updateProfile(profile);
 
@@ -90,7 +89,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
 
   void handleProfileSaveButtonPress(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      final profile = ProfileModel(
+      final profile = ProfileModels(
         id: DateTime.now().microsecond.toInt(),
         name: nameController.text,
         email: emailController.text,
@@ -186,11 +185,18 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                   ValueListenableBuilder(
                     valueListenable: ProfileDB.userListNotifier,
                     builder: (context, value, _) {
-                      ProfileModel pro = value[0];
-                      nameController.text = pro.name! ?? '';
-                      emailController.text = pro.email! ?? "";
-                      userNameController.text = pro.userName! ?? "";
-                      phoneController.text = pro.phone! ?? "";
+                      if (value.isEmpty) {
+                        nameController.text = '';
+                        emailController.text = "";
+                        userNameController.text = "";
+                        phoneController.text = "";
+                      } else {
+                        ProfileModels profile = value[0];
+                        nameController.text = profile.name!;
+                        emailController.text = profile.email!;
+                        userNameController.text = profile.userName!;
+                        phoneController.text = profile.phone!;
+                      }
 
                       return SizedBox(
                         width: width / 1,
@@ -213,6 +219,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                               controller: userNameController,
                             ),
                             TextFieldWidget(
+                              keyboardType: TextInputType.number,
                               label: "Phone",
                               validator: validatePhone,
                               controller: phoneController,
@@ -332,6 +339,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                       setState(() {
                         image = img;
                       });
+
                       _profilePicturePath = image!.path;
                       ProfileDB.userListNotifier.value[0].profilePicturePath =
                           image!.path;
