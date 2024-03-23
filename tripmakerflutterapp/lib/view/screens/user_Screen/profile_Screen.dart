@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
-
+import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
+import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class ProfileSetupWidget extends StatelessWidget {
@@ -24,10 +28,64 @@ class ProfileSetupWidget extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  // String? validateName(String? value) {
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "please enter a valid name";
+    }
+    return null;
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter a valid Email";
+    }
+    return null;
+  }
+
+  String? validateUserName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter a valid Username";
+    }
+    return null;
+  }
+
+  String? validatePhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter a valid Phone Number";
+    }
+    return null;
+  }
+
+  void handleProfileUpdateButtonPress(BuildContext context) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      final profile = ProfileModels(
+        id: ProfileDB.userListNotifier.value[0].id,
+        name: nameController.text,
+        email: emailController.text,
+        userName: userNameController.text,
+        phone: phoneController.text,
+        profilePicturePath: _profilePicturePath ??
+            ProfileDB.userListNotifier.value[0].profilePicturePath,
+        // profilePicturePath: _profilePicturePath ,??
+        //     ProfileDB.userListNotifier.value[0].profilePicturePath,
+      );
+      await ProfileDB.instance.updateProfile(profile);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Updated Profile successfully'),
+          backgroundColor: Colors.green[200],
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      Navigator.pop(context);
+    }
+  }
+
   void handleProfileSaveButtonPress(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      final profile = ProfileModel(
+      final profile = ProfileModels(
+        id: DateTime.now().microsecond.toInt(),
         name: nameController.text,
         email: emailController.text,
         userName: userNameController.text,
@@ -36,7 +94,7 @@ class ProfileSetupWidget extends StatelessWidget {
             Provider.of<ProfilePageProvider>(context, listen: false)
                 .profilePicturePath,
       );
-      await addValue(profile);
+      await ProfileDB.instance.insertProfile(profile);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -97,16 +155,28 @@ class ProfileSetupWidget extends StatelessWidget {
                     height: height / 4,
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: Consumer<ProfilePageProvider>(
-                        builder: (context, value, child) {
-                          return CircleAvatarWidget(
-                            radius: 80,
-                            islocationwidget: true,
-                            imagePath: value.profilePicturePath,
-                            onpressed: () {
-                              value.buttomSheet(context, false);
-                            },
-                          );
+                      child: ValueListenableBuilder(
+                        valueListenable: ProfileDB.userListNotifier,
+                        builder: (context, value, _) {
+                          if (value.isNotEmpty) {
+                            return CircleAvatarWidget(
+                              radius: 80,
+                              islocationwidget: true,
+                              imagePath: value[0].profilePicturePath,
+                              onpressed: () {
+                                buttomSheet(context);
+                              },
+                            );
+                          } else {
+                            return CircleAvatarWidget(
+                              radius: 80,
+                              islocationwidget: true,
+                              imagePath: _profilePicturePath,
+                              onpressed: () {
+                                buttomSheet(context);
+                              },
+                            );
+                          }
                         },
                         // child: CircleAvatarWidget(
                         //   radius: 80,
@@ -161,15 +231,35 @@ class ProfileSetupWidget extends StatelessWidget {
                           padding: const EdgeInsets.only(
                             left: 30,
                           ),
-                          child: InkWell(
-                            onTap: () {
-                              handleProfileSaveButtonPress(context);
+                          child: ValueListenableBuilder(
+                            valueListenable: ProfileDB.userListNotifier,
+                            builder: (context, value, _) {
+                              if (value.isEmpty) {
+                                return InkWell(
+                                  onTap: () {
+                                    handleProfileSaveButtonPress(context);
+                                  },
+                                  child: const RoundButton(
+                                    imagePath:
+                                        "asset/imges/navigation_img/eye.png",
+                                    label: "Add",
+                                    buttonColor: Colors.blue,
+                                  ),
+                                );
+                              } else {
+                                return InkWell(
+                                  onTap: () {
+                                    handleProfileUpdateButtonPress(context);
+                                  },
+                                  child: const RoundButton(
+                                    imagePath:
+                                        "asset/imges/navigation_img/eye.png",
+                                    label: "Update",
+                                    buttonColor: Colors.blue,
+                                  ),
+                                );
+                              }
                             },
-                            child: const RoundButton(
-                              imagePath: "asset/imges/navigation_img/eye.png",
-                              label: "Add",
-                              buttonColor: Colors.blue,
-                            ),
                           ),
                         ),
                         const SizedBox(

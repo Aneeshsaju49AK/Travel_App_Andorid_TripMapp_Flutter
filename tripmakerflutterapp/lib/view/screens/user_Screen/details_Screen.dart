@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_Screen.dart';
+
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -87,9 +94,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   child: Container(
                     height: height / 1.5,
                     width: width / 1,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 243, 234, 234),
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      color: Provider.of<DarkModeProvider>(context).value
+                          ? const Color.fromARGB(255, 33, 39, 43)
+                          : const Color.fromARGB(255, 230, 234, 212),
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(50),
                       ),
                     ),
@@ -113,7 +122,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     children: [
                                       SizedBox(
                                         width: width / 2,
-                                        height: height / 17,
+                                        height: height / 20,
                                         child: GestureDetector(
                                           onTap: () {
                                             setState(() {
@@ -123,15 +132,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                           child: SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
                                             child: SizedBox(
-                                              child: Text(
-                                                showFullText
-                                                    ? "${_currentPlace.placeName}"
-                                                    : "${_currentPlace.placeName!.substring(0, 6)}...",
-                                                style: GoogleFonts.abel(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.w900,
-                                                ),
-                                              ),
+                                              child: FittedBox(
+                                                  child: Text(
+                                                      "${_currentPlace.placeName}")),
+                                              // child: Text(
+                                              //   showFullText
+                                              //       ? "${_currentPlace.placeName}"
+                                              //       : "${_currentPlace.placeName!.substring(0, 4)}...",
+                                              //   style: GoogleFonts.abel(
+                                              //     fontSize: 30,
+                                              //     fontWeight: FontWeight.w900,
+                                              //   ),
+                                              // ),
                                             ),
                                           ),
                                         ),
@@ -157,9 +169,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                       Axis.horizontal,
                                                   child: FittedBox(
                                                     child: Text(
-                                                      showFullText
-                                                          ? "${_currentPlace.subPlaceName}"
-                                                          : "${_currentPlace.subPlaceName!.substring(0, 5)}...",
+                                                      "${_currentPlace.subPlaceName}",
+                                                      // showFullText
+                                                      //     ? "${_currentPlace.subPlaceName}"
+                                                      //     : "${_currentPlace.subPlaceName!.substring(0, 4)}...",
                                                       style: GoogleFonts.abel(
                                                         fontSize: 17,
                                                         fontWeight:
@@ -251,7 +264,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                     child: Text(
                                                       showFullTextsub
                                                           ? "${_currentPlace.subPlaceName}"
-                                                          : "${_currentPlace.subPlaceName!.substring(0, 5)}...",
+                                                          : "${_currentPlace.subPlaceName!.substring(0, 4)}...",
                                                       style: GoogleFonts.abel(
                                                         fontSize: 15,
                                                         fontWeight:
@@ -268,6 +281,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     ),
                                   ),
                                 ),
+                              ),
+                              SizedBox(
+                                width: 20,
                               ),
                               SizedBox(
                                 width: width / 3.6,
@@ -313,7 +329,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 ),
                               ),
                               Container(
-                                width: width / 3.6,
+                                width: width / 4.9,
                                 height: height / 11,
                                 decoration: const BoxDecoration(
                                   borderRadius: BorderRadius.only(
@@ -386,11 +402,22 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               const SizedBox(
                                 width: 6,
                               ),
-                              Text(
-                                "Watch \nvlogs",
-                                style: GoogleFonts.abel(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BlogsScreenWidget(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Watch \nvlogs",
+                                  style: GoogleFonts.abel(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               )
                             ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tripmakerflutterapp/view/screens/admin_Screen/add_place.dart';
 
+// ignore: must_be_immutable
 class ScreenHomeAdmin extends StatelessWidget {
   ScreenHomeAdmin({super.key});
 

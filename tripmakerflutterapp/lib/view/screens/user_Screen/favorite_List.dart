@@ -6,7 +6,6 @@ import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_con
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
-
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class FavoritePage extends StatelessWidget {
@@ -20,6 +19,7 @@ class FavoritePage extends StatelessWidget {
   ValueNotifier<List<ModelPlace>> filteredList = ValueNotifier([]);
 
   // @override
+
   @override
   Widget build(BuildContext context) {
     Provider.of<FavoriteButton>(context).callRefreshUi;

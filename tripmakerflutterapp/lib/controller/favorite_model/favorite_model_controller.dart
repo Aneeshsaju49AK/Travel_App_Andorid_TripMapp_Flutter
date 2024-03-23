@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class FavoritesDB {
   static const String FAVORITE_DB_NAME = "favorites_DB-01";

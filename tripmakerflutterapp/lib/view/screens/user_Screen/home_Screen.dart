@@ -135,8 +135,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               );
                             },
-                            child: ValueListenableBuilder<List<ProfileModel>>(
-                              valueListenable: userListNotifier,
+                            child: ValueListenableBuilder<List<ProfileModels>>(
+                              valueListenable: ProfileDB.userListNotifier,
                               builder: (context, userList, _) {
                                 if (userList.isNotEmpty) {
                                   return CircleAvatarWidget(
@@ -174,8 +174,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            ValueListenableBuilder<List<ProfileModel>>(
-                              valueListenable: userListNotifier,
+                            ValueListenableBuilder<List<ProfileModels>>(
+                              valueListenable: ProfileDB.userListNotifier,
                               builder: (context, userList, _) {
                                 if (userList.isNotEmpty) {
                                   return Text(
@@ -218,7 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => FavoritePage(),
+                                          builder: (context) =>
+                                              const FavoritePage(),
                                         ),
                                       );
                                     },
@@ -237,6 +238,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: SingleChildScrollView(
                                       child: Column(
                                         children: [
+                                          // CircleAvatarWidget(
+                                          //   radius: 23,
+                                          //   location: _currentPosition,
+                                          //   locationName: _currentLocationName,
+                                          //   islocationwidget: false,
+                                          // ),
+
                                           const Icon(Icons.location_pin),
                                           MapLocation(
                                             islocationWidget: true,

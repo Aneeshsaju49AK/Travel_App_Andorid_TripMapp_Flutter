@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:tripmakerflutterapp/controller/addTrip_model/addTrip_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
@@ -18,34 +25,47 @@ import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
 import 'package:tripmakerflutterapp/provider/searchwidget_provider.dart';
 import 'package:tripmakerflutterapp/provider/tab_view_provider.dart';
 import 'package:tripmakerflutterapp/provider/texiFieldWidget_provider.dart';
+import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  Directory dir = await getApplicationDocumentsDirectory();
+  Hive
+    ..init(dir.path)
+    ..registerAdapter(ProfileModelsAdapter());
+  Hive
+    ..init(dir.path)
+    ..registerAdapter(PlaceCategoryAdapter());
+
+  // if (!Hive.isAdapterRegistered(PlaceCategoryAdapter().typeId)) {
+  //   Hive.registerAdapter(PlaceCategoryAdapter());
+  // }
+
+  // if (!Hive.isAdapterRegistered(ProfileModelAdapter().typeId)) {
+  //   Hive.registerAdapter(ProfileModelAdapter());
+  // }
+
   if (!Hive.isAdapterRegistered(BlogModelAdapter().typeId)) {
     Hive.registerAdapter(BlogModelAdapter());
   }
+
   if (!Hive.isAdapterRegistered(TripModelAdapter().typeId)) {
     Hive.registerAdapter(TripModelAdapter());
   }
+
   if (!Hive.isAdapterRegistered(DistrictAdapter().typeId)) {
     Hive.registerAdapter(DistrictAdapter());
   }
-  if (!Hive.isAdapterRegistered(PlaceCategoryAdapter().typeId)) {
-    Hive.registerAdapter(PlaceCategoryAdapter());
-  }
 
-  if (!Hive.isAdapterRegistered(ProfileModelAdapter().typeId)) {
-    Hive.registerAdapter(ProfileModelAdapter());
-  }
   if (!Hive.isAdapterRegistered(ModelPlaceAdapter().typeId)) {
     Hive.registerAdapter(ModelPlaceAdapter());
   }
-
-  await getUserValue();
   await PlacesDB.instance.reFreshUI();
+  await ProfileDB.instance.reFreshUIProfile();
   await AddtripDB.instance.refreshListUI();
   await BlogDB.instance.reFreshUIBlogs();
   await FavoritesDB.instance.updateFavoriteList();
@@ -84,6 +104,11 @@ void main() async {
       child: const MyApp(),
     ),
   );
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) => DarkModeProvider(),
+    ),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -91,11 +116,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
-      routes: {
-        "LoginPage": (context) => LoginPage(),
+    return Consumer<DarkModeProvider>(
+      builder: (context, darkmodeProvider, child) {
+        return MaterialApp(
+          title: "TripMapp",
+          theme: ThemeData(
+            brightness:
+                darkmodeProvider.value ? Brightness.dark : Brightness.light,
+          ),
+          debugShowCheckedModeBanner: false,
+          home: const SplashScreen(),
+          routes: {
+            "LoginPage": (context) => LoginPage(),
+          },
+        );
       },
     );
   }

@@ -6,11 +6,23 @@ import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
+import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
+import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/blogView_screen.dart';
+
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
-class BlogsScreenWidget extends StatelessWidget {
+class BlogsScreenWidget extends StatefulWidget {
   const BlogsScreenWidget({super.key});
 
+  @override
+  State<BlogsScreenWidget> createState() => _BlogsScreenWidgetState();
+}
+
+class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<CommonProvider>(context);
@@ -57,26 +69,46 @@ class BlogsScreenWidget extends StatelessWidget {
                           child: Text(
                             "No blogs is created",
                             style: GoogleFonts.abel(
-                                fontSize: 20, fontWeight: FontWeight.w500),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color:
+                                  Provider.of<DarkModeProvider>(context).value
+                                      ? Color.fromARGB(255, 195, 206, 212)
+                                      : Color.fromARGB(255, 230, 234, 212),
+                            ),
                           ),
                         );
                       }
 
                       return ListView.builder(
                         itemCount: valueList.length,
-                        itemBuilder: (context, index) {
+                        itemBuilder: (
+                          context,
+                          index,
+                        ) {
                           BlogModel place = valueList[index];
 
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              clipBehavior: Clip.antiAlias,
-                              width: width / 1,
-                              height: height / 3.5,
-                              decoration: const BoxDecoration(
-                                color: Colors.amber,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
+                            padding: const EdgeInsets.all(20.0),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BlogViewPage(
+                                      place: place,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                clipBehavior: Clip.antiAlias,
+                                width: width / 1,
+                                height: height / 3.5,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
                                 ),
                               ),
                               child: Stack(
@@ -119,10 +151,78 @@ class BlogsScreenWidget extends StatelessWidget {
                                         Icons.delete,
                                         size: 30,
                                         color: Colors.red,
+
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.2),
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(20),
+                                          bottomRight: Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 20,
+                                      top: 170,
+                                      child: Text(
+                                        place.name!,
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          color: Provider.of<DarkModeProvider>(
+                                                      context)
+                                                  .value
+                                              ? const Color.fromARGB(
+                                                  255, 33, 39, 43)
+                                              : Color.fromARGB(
+                                                  255, 230, 234, 212),
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: width / 1.4,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Remove"),
+                                                content: Text(
+                                                    "Are you sure you want to remove your blog?"),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text("No"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      BlogDB.instance
+                                                          .deletePlaces(
+                                                              place.id);
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text("Yes"),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          size: 30,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -151,7 +251,9 @@ class BlogsScreenWidget extends StatelessWidget {
                 return Scaffold(
                   body: SafeArea(
                     child: Container(
-                      color: Colors.yellow[50],
+                      color: Provider.of<DarkModeProvider>(context).value
+                          ? const Color.fromARGB(255, 33, 39, 43)
+                          : Color.fromARGB(255, 230, 234, 212),
                       child: PopupScreen(),
                     ),
                   ),
@@ -197,6 +299,14 @@ class PopupScreen extends StatelessWidget {
 
   TextEditingController contentController = TextEditingController();
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    nameController.dispose();
+    contentController.dispose();
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   // String? validateError(String? value) {
@@ -237,8 +347,11 @@ class PopupScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
+        child: Container(
           width: width / 1,
+          color: Provider.of<DarkModeProvider>(context).value
+              ? const Color.fromARGB(255, 33, 39, 43)
+              : Color.fromARGB(255, 230, 234, 212),
           child: Form(
             key: _formKey,
             child: Column(
@@ -249,6 +362,9 @@ class PopupScreen extends StatelessWidget {
                     style: GoogleFonts.abel(
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
+                      color: Provider.of<DarkModeProvider>(context).value
+                          ? Color.fromARGB(255, 212, 223, 231)
+                          : Color.fromARGB(255, 60, 61, 57),
                     ),
                   ),
                 ),
@@ -291,8 +407,13 @@ class PopupScreen extends StatelessWidget {
                                     //   countImage--;
                                     // });
                                   },
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.remove,
+                                    color:
+                                        Provider.of<DarkModeProvider>(context)
+                                                .value
+                                            ? Color.fromARGB(255, 143, 170, 188)
+                                            : Color.fromARGB(255, 60, 61, 57),
                                   ),
                                 ),
                                 IconButton(
@@ -301,8 +422,13 @@ class PopupScreen extends StatelessWidget {
                                         context, true);
                                     // buttomSheet(context);
                                   },
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.add,
+                                    color:
+                                        Provider.of<DarkModeProvider>(context)
+                                                .value
+                                            ? Color.fromARGB(255, 150, 178, 196)
+                                            : Color.fromARGB(255, 60, 61, 57),
                                   ),
                                 ),
                               ],
@@ -320,7 +446,9 @@ class PopupScreen extends StatelessWidget {
                     //   countImage++;
                     // });
                   },
-                  icon: const Icon(Icons.add_a_photo),
+                  icon: const Icon(
+                    Icons.add_a_photo,
+                  ),
                   label: const Text("Add Image"),
                 ),
                 const SizedBox(
@@ -331,7 +459,9 @@ class PopupScreen extends StatelessWidget {
                   width: width / 1.2,
                   height: height / 12,
                   child: TextFormField(
+
                     validator: auth.validateValue,
+
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -346,7 +476,9 @@ class PopupScreen extends StatelessWidget {
                   width: width / 1.2,
                   height: height / 4,
                   child: TextFormField(
+
                     validator: auth.validateValue,
+
                     maxLines: null,
                     expands: true,
                     textAlignVertical: TextAlignVertical.top,

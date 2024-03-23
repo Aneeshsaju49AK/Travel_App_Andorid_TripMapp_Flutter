@@ -11,10 +11,9 @@ class AboutScreen extends StatelessWidget {
     num height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: width / 1,
           height: height / 1,
-          color: Colors.amber,
           child: Column(
             children: [
               Padding(
@@ -29,7 +28,7 @@ class AboutScreen extends StatelessWidget {
                       isCHecked: true,
                     ),
                     const SizedBox(
-                      width: 20,
+                      width: 30,
                     ),
                     Text(
                       "About",
@@ -41,6 +40,63 @@ class AboutScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SizedBox(
+                  width: width / 1,
+                  height: height / 1.3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Application name : Trip Mapp",
+                        style: GoogleFonts.abel(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        "version :01.01.01",
+                        style: GoogleFonts.abel(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        "Deveplore name : Aneesh",
+                        style: GoogleFonts.abel(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        "for feedbacks : aneeshsaju73@gmail.com",
+                        style: GoogleFonts.abel(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        "// User manual",
+                        style: GoogleFonts.abel(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        "'Hi there, Very happy to introduce our new app called Trip Mapp, \n* in this app your view the places which already there \n* you can't add or edit the places \n* you add the places as your favirotes or remove \n *you can update your profile \n* you can create you on trip plans for future \n* you can make you own blogs about any places you visit '",
+                        style: GoogleFonts.abel(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),

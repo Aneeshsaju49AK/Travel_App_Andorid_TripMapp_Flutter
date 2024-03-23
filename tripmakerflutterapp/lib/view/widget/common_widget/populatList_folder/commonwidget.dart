@@ -1,5 +1,8 @@
 import 'dart:io';
 import 'dart:math';
+
+import 'dart:ui';
+tripmakerflutterapp/lib/view/widget/commonwidget.dart
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,11 +12,15 @@ import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+tripmakerflutterapp/lib/view/widget/common_widget/populatList_folder/commonwidget.dart
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
 import 'package:tripmakerflutterapp/provider/searchwidget_provider.dart';
 import 'package:tripmakerflutterapp/provider/tab_view_provider.dart';
 import 'package:tripmakerflutterapp/provider/texiFieldWidget_provider.dart';
+
+import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
+tripmakerflutterapp/lib/view/widget/commonwidget.dart
 import 'package:tripmakerflutterapp/view/screens/user_Screen/category_place.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
@@ -90,12 +97,12 @@ class TextFieldWidget extends StatelessWidget {
 
     return SizedBox(
       width: width / 1,
-      height: showError ? height / 6 : height / 7,
+      height: showError ? height / 6 : height / 4.5,
       child: Column(
         children: [
           SizedBox(
             width: width / 1,
-            height: height / 23,
+            height: showError ? height / 20 : height / 12,
             child: Padding(
               padding: const EdgeInsets.only(left: 20),
               child: Text(
@@ -111,7 +118,7 @@ class TextFieldWidget extends StatelessWidget {
             padding: const EdgeInsets.only(top: 10),
             child: SizedBox(
               width: width / 1.1,
-              height: height / 13,
+              height: showError ? height / 23 : height / 10,
               child: TextFormField(
                 keyboardType: keyboardType,
                 controller: auth.controller,
@@ -210,6 +217,17 @@ class MapLocation extends StatelessWidget {
           ),
         );
       },
+
+      child: Container(
+        child: widget.islocationWidget == true && widget.location != null
+            ? Text(
+                showFullText
+                    ? "${widget.locationName}"
+                    : "${widget.locationName!.substring(0, 10)}...", // Display only the first 10 characters
+              )
+            : const Text("Location not available"),
+      ),
+
     );
   }
 }
@@ -247,6 +265,9 @@ class CircleAvatarWidget extends StatelessWidget {
                 ? Image.asset(
                     "asset/imges/navigation_img/home-icon-silhouette.png",
                     width: 20,
+                    color: Provider.of<DarkModeProvider>(context).value
+                        ? Colors.blue
+                        : Colors.black,
                   )
                 : null
             : location != null
@@ -353,9 +374,13 @@ class _TabViewWidgetState extends State<TabViewWidget>
             width: width / 1,
             height: height / 19,
             child: TabBar(
-              labelColor: Colors.black,
-              labelStyle: const TextStyle(
-                color: Colors.black,
+              labelColor: Provider.of<DarkModeProvider>(context).value
+                  ? Colors.white
+                  : Colors.black,
+              labelStyle: TextStyle(
+                color: Provider.of<DarkModeProvider>(context).value
+                    ? Colors.white
+                    : Colors.black,
               ),
               controller: _tabController,
               tabs: const [
@@ -395,13 +420,13 @@ class _TabViewWidgetState extends State<TabViewWidget>
                 SizedBox(
                   child: TabBarListWidget(
                     placeListNotifierCommon:
-                        PlacesDB.instance.beachCategoryNotifier,
+                        PlacesDB.instance.momumentsCategoryListNotifier,
                   ),
                 ),
                 SizedBox(
                   child: TabBarListWidget(
                     placeListNotifierCommon:
-                        PlacesDB.instance.alappuzhaListNotifier,
+                        PlacesDB.instance.beachCategoryNotifier,
                   ),
                 ),
               ],
@@ -421,7 +446,15 @@ class TabBarListWidget extends StatelessWidget {
   const TabBarListWidget({required this.placeListNotifierCommon, Key? key})
       : super(key: key);
 
-  // bool showFullText = false;
+
+  @override
+  State<TabBarListWidget> createState() => _TabBarListWidgetState();
+}
+
+class _TabBarListWidgetState extends State<TabBarListWidget> {
+  List<bool> showFullText =
+      List.filled(PlacesDB.instance.placeListNotifier.value.length, false);
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<MapLocationProvider>(context);
@@ -480,10 +513,12 @@ class TabBarListWidget extends StatelessWidget {
                             ? Image.asset(
                                 place.images![0],
                                 fit: BoxFit.fill,
+                                filterQuality: FilterQuality.high,
                               )
                             : Image.file(
                                 File(place.images![0]),
                                 fit: BoxFit.fill,
+                                filterQuality: FilterQuality.high,
                               ),
                         // this container is used to set a opacity for image to prevent unreadablty
                         Container(
@@ -501,18 +536,21 @@ class TabBarListWidget extends StatelessWidget {
                           top: 140,
                           child: GestureDetector(
                             onTap: () {
-                              auth.changeValue();
-                              // setState(() {
-                              //   showFullText = !showFullText;
-                              // });
+
+                              setState(() {
+                                showFullText[index] = !showFullText[index];
+                              });
                             },
-                            child: SizedBox(
-                              child: place.placeName != null
+                            child: Container(
+                              child: placeList[index].placeName != null
                                   ? FittedBox(
                                       child: Text(
-                                        auth.showFullText
-                                            ? "${place.placeName}"
-                                            : "${place.placeName!.substring(0, 5)}...",
+                                        placeList[index].placeName!.length <= 8
+                                            ? "${placeList[index].placeName}"
+                                            : showFullText[index]
+                                                ? "${placeList[index].placeName}"
+                                                : "${placeList[index].placeName!.substring(0, 6)}...",
+
                                         style: GoogleFonts.abel(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,
@@ -741,7 +779,35 @@ class SliderImageViewWidget extends StatelessWidget {
   const SliderImageViewWidget({required this.imagePathList, Key? key})
       : super(key: key);
 
-  // late PageController _pageController;
+
+  @override
+  State<SliderImageViewWidget> createState() => _SliderImageViewWidgetState();
+}
+
+class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
+  late PageController _pageController;
+  double _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+      initialPage: 0,
+    );
+    _pageController.addListener(() {
+      setState(() {
+        _currentIndex = _pageController.page!;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final List<String> imagePath = imagePathList;
@@ -812,7 +878,7 @@ class SliderImageViewWidget extends StatelessWidget {
 
 class BackButtonWidget extends StatelessWidget {
   final double sizeOfImage;
-  final bool isCHecked;
+  final bool? isCHecked;
   const BackButtonWidget(
       {required this.sizeOfImage, required this.isCHecked, super.key});
 
@@ -823,13 +889,18 @@ class BackButtonWidget extends StatelessWidget {
         if (isCHecked == true) {
           ScreenSelection.selectedIndexNotifier.value = 0;
           Navigator.pop(context);
-        } else {
+        } else if (isCHecked == false) {
           ScreenSelection.selectedIndexNotifier.value = 0;
+        } else {
+          Navigator.pop(context);
         }
       },
       child: Image.asset(
         "asset/imges/back-button.png",
         width: sizeOfImage,
+        color: Provider.of<DarkModeProvider>(context).value
+            ? Colors.blue
+            : Colors.black,
       ),
     );
   }
@@ -837,7 +908,9 @@ class BackButtonWidget extends StatelessWidget {
 
 /*in this widget is try to acheive the add favorite list according to the value */
 
+
 class HeartButtonWidget extends StatelessWidget {
+
   final double sizeOfImage;
   final ModelPlace place;
   final Function(ModelPlace)? onFavoriteTapped;

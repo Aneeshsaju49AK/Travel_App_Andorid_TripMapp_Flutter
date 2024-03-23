@@ -1,13 +1,13 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/provider/common_provider.dart';
-import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
-import 'package:tripmakerflutterapp/view/screens/admin_Screen/update_admin_page.dart';
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
 
 class AddPlaceAdmin extends StatefulWidget {
   const AddPlaceAdmin({Key? key}) : super(key: key);
@@ -20,9 +20,17 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
   ValueNotifier<List<ModelPlace>> filteredList = ValueNotifier([]);
   String searchQuery = "";
 
+  final CollectionReference places =
+      FirebaseFirestore.instance.collection('places');
+
+  @override
+  void initState() {
+    super.initState();
+    PlacesDB.instance.reFreshUI();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Provider.of<CommonProvider>(context).callRefreshUI();
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -33,10 +41,9 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   width: width / 1,
                   height: height / 14,
-                  color: Colors.amber,
                   child: Row(
                     children: [
                       const SizedBox(
@@ -49,10 +56,10 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                         icon: const Icon(Icons.back_hand),
                       ),
                       const SizedBox(
-                        width: 60,
+                        width: 40,
                       ),
                       Text(
-                        "Addpage",
+                        "Add page Admin",
                         style: GoogleFonts.abel(
                           fontSize: 30,
                           fontWeight: FontWeight.w600,
@@ -76,14 +83,10 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                   child: SizedBox(
                     width: width / 1,
                     height: height / 1.2,
-                    child: ValueListenableBuilder<List<ModelPlace>>(
-                      valueListenable: filteredList.value.isNotEmpty
-                          ? filteredList
-                          : PlacesDB.instance.placeListNotifier,
-                      builder: (context, placeList, _) {
-                        final one = placeList.toList();
-
-                        if (placeList.isNotEmpty) {
+                    child: StreamBuilder(
+                      stream: places.snapshots(),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
                           return GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
@@ -91,143 +94,165 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
                             ),
-                            itemCount: placeList.length,
-                            itemBuilder: (
-                              context,
-                              index,
-                            ) {
-                              return SizedBox(
-                                width: width / 2,
-                                height: height / 2.5,
-                                child: Stack(
-                                  children: [
-                                    placeList[index]
-                                            .images![0]
-                                            .startsWith("asset/")
-                                        ? Image.asset(
-                                            placeList[index].images![0],
-                                            fit: BoxFit.fill,
-                                          )
-                                        : Image.file(
-                                            File(placeList[index].images![0]),
-                                            fit: BoxFit.fill,
-                                          ),
-                                    Positioned(
-                                      top: height / 10,
-                                      left: width / 27,
-                                      child: Text(
-                                        placeList[index].district!.toString(),
-                                        style: GoogleFonts.abel(
-                                            color: Colors.white),
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final DocumentSnapshot placeDetails =
+                                  snapshot.data.docs[index];
+                              final List<dynamic> imageUrl =
+                                  placeDetails['images'];
+                              return InkWell(
+                                onTap: () {
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => DetailsScreen(
+                                  //       place: placeList[index],
+                                  //     ),
+                                  //   ),
+                                  // );
+                                },
+                                child: SizedBox(
+                                  width: width / 2,
+                                  height: height / 2.5,
+                                  child: Stack(
+                                    children: [
+                                      SizedBox(
+                                        width: width / 2,
+                                        height: height / 2.5,
+                                        // child: Image.network(
+                                        //   imageUrl[0],
+                                        //   fit: BoxFit.cover,
+                                        // ),
+                                        child: Image.network(
+                                          imageUrl[0],
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  title: const Text(
-                                                    "Delete",
-                                                  ),
-                                                  content: const Text(
-                                                    "Are you sure you want to delete?",
-                                                  ),
-                                                  actions: [
-                                                    TextButton.icon(
-                                                      onPressed: () {
-                                                        PlacesDB.instance
-                                                            .deletePlaces(index)
-                                                            .then(
-                                                          (value) async {
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.2),
+                                          borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: height / 10,
+                                        left: width / 27,
+                                        child: Text(
+                                          placeDetails['PlaceName'],
+                                          style: GoogleFonts.abel(
+                                            color: Colors.white,
+                                            fontSize: 23,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: const Text("Delete"),
+                                                    content: const Text(
+                                                        "Are you sure you want to delete?"),
+                                                    actions: [
+                                                      TextButton.icon(
+                                                        onPressed: () {
+                                                          PlacesDB.instance
+                                                              .deletePlaces(
+                                                                  index)
+                                                              .then(
+                                                                  (value) async {
                                                             await PlacesDB
                                                                 .instance
                                                                 .reFreshUI();
-                                                          },
-                                                        );
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.delete,
-                                                        color: Colors.red,
+                                                          });
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.delete,
+                                                          color: Colors.red,
+                                                        ),
+                                                        label:
+                                                            const Text("yes"),
                                                       ),
-                                                      label: const Text(
-                                                        "yes",
+                                                      TextButton.icon(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.back_hand,
+                                                          color: Colors.green,
+                                                        ),
+                                                        label: const Text("no"),
                                                       ),
-                                                    ),
-                                                    TextButton.icon(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.back_hand,
-                                                        color: Colors.green,
-                                                      ),
-                                                      label: const Text(
-                                                        "no",
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.delete,
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) {
-                                                  return Scaffold(
-                                                    body: SafeArea(
-                                                      child:
-                                                          UpdatepageplaceModel(
-                                                        place: placeList[index],
-                                                      ),
-                                                    ),
+                                                    ],
                                                   );
                                                 },
-                                              ),
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.update,
-                                            color: Colors.green,
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                          // IconButton(
+                                          //   onPressed: () {
+                                          //     Navigator.push(
+                                          //       context,
+                                          //       MaterialPageRoute(
+                                          //           builder: (context) {
+                                          //         return Scaffold(
+                                          //           body: SafeArea(
+                                          //             child:
+                                          //                 Updatepage_placeModel(
+                                          //               place: placeList[index],
+                                          //             ),
+                                          //           ),
+                                          //         );
+                                          //       }),
+                                          //     );
+                                          //   },
+                                          //   icon: const Icon(
+                                          //     Icons.update,
+                                          //     color: Colors.green,
+                                          //   ),
+                                          // ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
                           );
                         } else {
-                          return GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                            ),
-                            itemCount: 0,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                color: const Color.fromARGB(255, 58, 243, 33),
-                                width: width / 2,
-                                height: height / 2.5,
-                                child: const Text(
-                                  "No value",
-                                ),
-                              );
-                            },
+                          return Container(
+                            color: Colors.amber,
+                            child: const Text("No data"),
                           );
+                          // return GridView.builder(
+                          //   gridDelegate:
+                          //       const SliverGridDelegateWithFixedCrossAxisCount(
+                          //     crossAxisCount: 2,
+                          //     crossAxisSpacing: 10,
+                          //     mainAxisSpacing: 10,
+                          //   ),
+                          //   itemCount: PlacesDB.instance.placeListNotifier,
+                          //   itemBuilder: (context, index) {
+                          //     return Container(
+                          //       color: const Color.fromARGB(255, 58, 243, 33),
+                          //       width: width / 2,
+                          //       height: height / 2.5,
+                          //       child: const Text("No value"),
+                          //     );
+                          //   },
+                          // );
                         }
                       },
                     ),
@@ -251,15 +276,11 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                 );
               },
             ),
-          ).then(
-            (value) async {
-              await PlacesDB.instance.reFreshUI();
-            },
-          );
+          ).then((value) async {
+            await PlacesDB.instance.reFreshUI();
+          });
         },
-        child: const Text(
-          "Add",
-        ),
+        child: const Text("Add"),
       ),
     );
   }
@@ -268,7 +289,6 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
     searchQuery = searchText;
 
     final placeList = PlacesDB.instance.placeListNotifier.value;
-
     if (searchText.isEmpty) {
       filteredList.value = placeList;
     } else {
@@ -292,9 +312,15 @@ class PopupAddPlace extends StatefulWidget {
 }
 
 class _PopupAddPlaceState extends State<PopupAddPlace> {
-  // int countImage = 0;
-  // final List<String> _images = [];
+  final CollectionReference places =
+      FirebaseFirestore.instance.collection('places');
+
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+  int countImage = 0;
+  final List<String> _images = [];
   final districtController = TextEditingController();
+
   final placeNameController = TextEditingController();
   final subLocationController = TextEditingController();
   final priceController = TextEditingController();
@@ -314,45 +340,86 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
 
   void handleAddPlaceSaveButtonPress(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      final place = ModelPlace(
-        id: DateTime.now().microsecond.toString(),
-        district:
-            Provider.of<ProfilePageProvider>(context, listen: false).district,
-        category:
-            Provider.of<ProfilePageProvider>(context, listen: false).place,
-        placeName: placeNameController.text,
-        subPlaceName: subLocationController.text,
-        price: priceController.text,
-        durations: durationController.text,
-        description: descriptionController.text,
-        images: Provider.of<ProfilePageProvider>(context, listen: false).images,
-      );
+      List<String> uploadedImageUrls = [];
+      // Upload each image to Firebase storage
+      for (String imagePath in _images) {
+        try {
+          final String fileName = basename(imagePath);
+          final ref = storage.ref().child('placeImages/$fileName');
+          final uploadTask = ref.putFile(File(imagePath));
+          final downloadUrl = await uploadTask;
+          final String imageUrl = await downloadUrl.ref.getDownloadURL();
+          uploadedImageUrls.add(imageUrl);
+        } catch (e) {
+          print('Error uploading image: $e');
+        }
+      }
 
-      await PlacesDB.instance.insertPlaces(place);
-      // Provider.of<ProfilePageProvider>(
-      //   context,
-      //   listen: false,
-      // ).countImage = 0;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text(
-            "Place added successfully",
+      // Save place details with uploaded image URLs
+      final Place = {
+        'PlaceName': placeNameController.text,
+        'SubName': subLocationController.text,
+        'price': priceController.text,
+        'selectedCategory': selectedCategory.toString(),
+        'selectedDistrict': selectedDistrict.toString(),
+        'Duration': durationController.text,
+        'Description': descriptionController.text,
+        'images': uploadedImageUrls,
+      };
+
+      try {
+        await places.add(Place);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("Place added successfully"),
+            backgroundColor: Colors.green[200],
+            duration: const Duration(seconds: 3),
           ),
-          backgroundColor: Colors.green[200],
-          duration: const Duration(
-            seconds: 3,
-          ),
-        ),
-      );
-      Navigator.pop(context);
+        );
+        Navigator.pop(context);
+      } catch (e) {
+        print('Error saving place details: $e');
+      }
     }
   }
 
+  // void handleAddPlaceSaveButtonPress(BuildContext context) async {
+  //   if (_formKey.currentState?.validate() ?? false) {
+  //     final Place = {
+  //       'PlaceName': placeNameController.text,
+  //       'SubName': subLocationController.text,
+  //       'price': priceController.text,
+  //       'selectedCategory': selectedCategory.toString(),
+  //       'selectedDistrict': selectedDistrict.toString(),
+  //       'Duration': durationController.text,
+  //       'Description': descriptionController.text,
+  //       'images': _images,
+  //     };
+  //     // final place = ModelPlace(
+  //     //   id: DateTime.now().microsecond.toString(),
+  //     //   district: selectedDistrict,
+  //     //   category: selectedCategory,
+  //     //   placeName: placeNameController.text,
+  //     //   subPlaceName: subLocationController.text,
+  //     //   price: priceController.text,
+  //     //   durations: durationController.text,
+  //     //   description: descriptionController.text,
+  //     //   images: _images,
+  //     // );
+  //     await places.add(Place);
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: const Text("Place added successfully"),
+  //         backgroundColor: Colors.green[200],
+  //         duration: const Duration(seconds: 3),
+  //       ),
+  //     );
+  //     Navigator.pop(context);
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
-    final authProfileProvider = Provider.of<ProfilePageProvider>(
-      context,
-    );
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
     return SizedBox(
@@ -371,9 +438,7 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: const Icon(
-                      Icons.minimize,
-                    ),
+                    icon: const Icon(Icons.minimize),
                   ),
                   SizedBox(
                     child: Text(
@@ -386,7 +451,7 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                   ),
                   Column(
                     children: List.generate(
-                      authProfileProvider.countImage,
+                      countImage,
                       (index) {
                         return Visibility(
                           child: Row(
@@ -400,18 +465,12 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                                     color: Colors.black,
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
-                                      image: index <
-                                              authProfileProvider.images.length
+                                      image: index < _images.length
                                           ? FileImage(
-                                              File(
-                                                authProfileProvider
-                                                    .images[index],
-                                              ),
+                                              File(_images[index]),
                                             )
                                           : FileImage(
-                                              File(
-                                                "",
-                                              ),
+                                              File(""),
                                             ),
                                       fit: BoxFit.fill,
                                     ),
@@ -422,7 +481,10 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                                 children: [
                                   IconButton(
                                     onPressed: () {
-                                      authProfileProvider.decreaseCount(index);
+                                      setState(() {
+                                        _images.removeAt(index);
+                                        countImage--;
+                                      });
                                     },
                                     icon: const Icon(
                                       Icons.remove,
@@ -430,10 +492,7 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      authProfileProvider.buttomSheet(
-                                        context,
-                                        true,
-                                      );
+                                      buttomSheet(context);
                                     },
                                     icon: const Icon(
                                       Icons.add,
@@ -449,14 +508,12 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                   ),
                   TextButton.icon(
                     onPressed: () {
-                      authProfileProvider.increament();
+                      setState(() {
+                        countImage++;
+                      });
                     },
-                    icon: const Icon(
-                      Icons.add_a_photo,
-                    ),
-                    label: const Text(
-                      "Add Image",
-                    ),
+                    icon: const Icon(Icons.add_a_photo),
+                    label: const Text("Add Image"),
                   ),
                   const SizedBox(
                     height: 20,
@@ -469,9 +526,7 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                         (District district) {
                           return DropdownMenuItem<District>(
                             value: district,
-                            child: Text(
-                              district.toString().split('.').last,
-                            ),
+                            child: Text(district.toString().split('.').last),
                           );
                         },
                       ).toList(),
@@ -482,7 +537,11 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                         return null;
                       },
                       onChanged: (District? value) {
-                        authProfileProvider.onchagedDistrict(value);
+                        setState(
+                          () {
+                            selectedDistrict = value;
+                          },
+                        );
                       },
                     ),
                   ),
@@ -497,9 +556,7 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                         (PlaceCategory category) {
                           return DropdownMenuItem<PlaceCategory>(
                             value: category,
-                            child: Text(
-                              category.toString().split('.').last,
-                            ),
+                            child: Text(category.toString().split('.').last),
                           );
                         },
                       ).toList(),
@@ -511,7 +568,9 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                       },
                       value: selectedCategory,
                       onChanged: (PlaceCategory? newValue) {
-                        authProfileProvider.onchagedCategory(newValue);
+                        setState(() {
+                          selectedCategory = newValue;
+                        });
                       },
                     ),
                   ),
@@ -566,9 +625,7 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text(
-                    "Description",
-                  ),
+                  const Text("Description"),
                   SizedBox(
                     width: width / 1.2,
                     height: height / 4,
@@ -619,6 +676,73 @@ class _PopupAddPlaceState extends State<PopupAddPlace> {
           ),
         ),
       ),
+    );
+  }
+
+  buttomSheet(BuildContext context) {
+    num width = MediaQuery.of(context).size.width;
+    num height = MediaQuery.of(context).size.height;
+    return showBottomSheet(
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          width: width / 1,
+          height: height / 5,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Select the image source",
+                  style: GoogleFonts.abel(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton.icon(
+                    onPressed: () async {
+                      XFile? img = await ImagePicker().pickImage(
+                        source: ImageSource.camera,
+                      );
+                      if (img != null) {
+                        setState(() {
+                          _images.add(img.path);
+                        });
+
+                        Navigator.pop(context);
+                      }
+                    },
+                    icon: const Icon(Icons.camera),
+                    label: const Text("Camera"),
+                  ),
+                  TextButton.icon(
+                    onPressed: () async {
+                      XFile? img = await ImagePicker().pickImage(
+                        source: ImageSource.gallery,
+                      );
+                      if (img != null) {
+                        setState(() {
+                          _images.add(img.path);
+                        });
+
+                        Navigator.pop(context);
+                      }
+                    },
+                    icon: const Icon(Icons.image),
+                    label: const Text("Galley"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
