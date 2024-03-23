@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:image_picker/image_picker.dart';
-
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
-
 import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 
 class ProfileSetupWidget extends StatefulWidget {
@@ -18,7 +15,6 @@ class ProfileSetupWidget extends StatefulWidget {
 class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     ProfileDB.userListNotifier;
   }
@@ -73,7 +69,8 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
         email: emailController.text,
         userName: userNameController.text,
         phone: phoneController.text,
-        profilePicturePath: _profilePicturePath,
+        profilePicturePath: _profilePicturePath ??
+            ProfileDB.userListNotifier.value[0].profilePicturePath,
         // profilePicturePath: _profilePicturePath ,??
         //     ProfileDB.userListNotifier.value[0].profilePicturePath,
       );
@@ -342,6 +339,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                       setState(() {
                         image = img;
                       });
+
                       _profilePicturePath = image!.path;
                       ProfileDB.userListNotifier.value[0].profilePicturePath =
                           image!.path;

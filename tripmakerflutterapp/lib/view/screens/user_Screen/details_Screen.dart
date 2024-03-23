@@ -141,28 +141,33 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                          width: width / 2,
-                                          height: height / 17,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                showFullText = !showFullText;
-                                              });
-                                            },
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: SizedBox(
+                                        width: width / 2,
+                                        height: height / 20,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              showFullText = !showFullText;
+                                            });
+                                          },
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: SizedBox(
+                                              child: FittedBox(
                                                   child: Text(
-                                                showFullText
-                                                    ? "${_currentPlace.placeName}"
-                                                    : "${_currentPlace.placeName!.substring(0, 9)}...",
-                                                style: GoogleFonts.abel(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.w900,
-                                                ),
-                                              )),
+                                                      "${_currentPlace.placeName}")),
+                                              // child: Text(
+                                              //   showFullText
+                                              //       ? "${_currentPlace.placeName}"
+                                              //       : "${_currentPlace.placeName!.substring(0, 4)}...",
+                                              //   style: GoogleFonts.abel(
+                                              //     fontSize: 30,
+                                              //     fontWeight: FontWeight.w900,
+                                              //   ),
+                                              // ),
                                             ),
-                                          )),
+                                          ),
+                                        ),
+                                      ),
                                       SizedBox(
                                         height: height / 27,
                                         width: width / 1.4,
@@ -184,9 +189,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                       Axis.horizontal,
                                                   child: FittedBox(
                                                     child: Text(
-                                                      showFullText
-                                                          ? "${_currentPlace.subPlaceName}"
-                                                          : "${_currentPlace.subPlaceName!.substring(0, 7)}...",
+                                                      "${_currentPlace.subPlaceName}",
+                                                      // showFullText
+                                                      //     ? "${_currentPlace.subPlaceName}"
+                                                      //     : "${_currentPlace.subPlaceName!.substring(0, 4)}...",
                                                       style: GoogleFonts.abel(
                                                         fontSize: 17,
                                                         fontWeight:
@@ -278,7 +284,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                     child: Text(
                                                       showFullTextsub
                                                           ? "${_currentPlace.subPlaceName}"
-                                                          : "${_currentPlace.subPlaceName!.substring(0, 9)}...",
+                                                          : "${_currentPlace.subPlaceName!.substring(0, 4)}...",
                                                       style: GoogleFonts.abel(
                                                         fontSize: 15,
                                                         fontWeight:
@@ -295,6 +301,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     ),
                                   ),
                                 ),
+                              ),
+                              SizedBox(
+                                width: 20,
                               ),
                               SizedBox(
                                 width: width / 3.6,
@@ -340,7 +349,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 ),
                               ),
                               Container(
-                                width: width / 3.6,
+                                width: width / 4.9,
                                 height: height / 11,
                                 decoration: const BoxDecoration(
                                   borderRadius: BorderRadius.only(

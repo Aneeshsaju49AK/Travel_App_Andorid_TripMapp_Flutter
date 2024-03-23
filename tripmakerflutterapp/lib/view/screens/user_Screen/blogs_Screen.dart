@@ -67,7 +67,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                               fontWeight: FontWeight.w500,
                               color:
                                   Provider.of<DarkModeProvider>(context).value
-                                      ? const Color.fromARGB(255, 33, 39, 43)
+                                      ? Color.fromARGB(255, 195, 206, 212)
                                       : Color.fromARGB(255, 230, 234, 212),
                             ),
                           ),

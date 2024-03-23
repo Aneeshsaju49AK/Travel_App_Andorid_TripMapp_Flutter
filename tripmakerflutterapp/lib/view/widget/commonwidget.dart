@@ -103,12 +103,12 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
 
     return SizedBox(
       width: width / 1,
-      height: showError ? height / 6 : height / 7,
+      height: showError ? height / 6 : height / 4.5,
       child: Column(
         children: [
           SizedBox(
             width: width / 1,
-            height: height / 23,
+            height: showError ? height / 20 : height / 12,
             child: Padding(
               padding: const EdgeInsets.only(left: 20),
               child: Text(
@@ -124,7 +124,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             padding: const EdgeInsets.only(top: 10),
             child: SizedBox(
               width: width / 1.1,
-              height: height / 13,
+              height: showError ? height / 23 : height / 10,
               child: TextFormField(
                 keyboardType: widget.keyboardType,
                 controller: _controller,
@@ -455,7 +455,8 @@ class TabBarListWidget extends StatefulWidget {
 }
 
 class _TabBarListWidgetState extends State<TabBarListWidget> {
-  bool showFullText = false;
+  List<bool> showFullText =
+      List.filled(PlacesDB.instance.placeListNotifier.value.length, false);
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<List<ModelPlace>>(
@@ -486,7 +487,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                   height: 300,
                   decoration: BoxDecoration(
                     border: Border.all(),
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(20),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black,
@@ -513,10 +514,12 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                             ? Image.asset(
                                 place.images![0],
                                 fit: BoxFit.fill,
+                                filterQuality: FilterQuality.high,
                               )
                             : Image.file(
                                 File(place.images![0]),
                                 fit: BoxFit.fill,
+                                filterQuality: FilterQuality.high,
                               ),
                         // this container is used to set a opacity for image to prevent unreadablty
                         Container(
@@ -535,16 +538,18 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                showFullText = !showFullText;
+                                showFullText[index] = !showFullText[index];
                               });
                             },
                             child: Container(
-                              child: place.placeName != null
+                              child: placeList[index].placeName != null
                                   ? FittedBox(
                                       child: Text(
-                                        showFullText
-                                            ? "${place.placeName}"
-                                            : "${place.placeName!.substring(0, 6)}...",
+                                        placeList[index].placeName!.length <= 8
+                                            ? "${placeList[index].placeName}"
+                                            : showFullText[index]
+                                                ? "${placeList[index].placeName}"
+                                                : "${placeList[index].placeName!.substring(0, 6)}...",
                                         style: GoogleFonts.abel(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,
