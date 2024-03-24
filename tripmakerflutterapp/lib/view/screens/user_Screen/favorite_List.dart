@@ -7,8 +7,11 @@ import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/headWwite_widget/headwrite_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/heartButton_folder/heartbutton_widget.dart';
 
 import '../../widget/common_widget/populatList_folder/commonwidget.dart';
+import '../../widget/common_widget/search_folder/search_widget.dart';
 
 class FavoritePage extends StatelessWidget {
   FavoritePage({super.key});

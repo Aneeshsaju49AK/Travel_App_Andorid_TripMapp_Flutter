@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/sliderimage_folder/sliderImage_widget.dart';
 
 import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 

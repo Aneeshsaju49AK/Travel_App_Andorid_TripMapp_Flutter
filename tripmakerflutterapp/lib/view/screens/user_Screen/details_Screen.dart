@@ -10,6 +10,9 @@ import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/buttonCommon_widget/buttonCommon_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/heartButton_folder/heartbutton_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/sliderimage_folder/sliderImage_widget.dart';
 
 import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 

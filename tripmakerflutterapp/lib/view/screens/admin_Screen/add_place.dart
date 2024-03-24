@@ -7,6 +7,9 @@ import 'package:tripmakerflutterapp/controller/place_model/place_model_controlle
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/roundButton_folder/roundButton_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/search_folder/search_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/texiField_widget/textfield_widget.dart';
 
 import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 

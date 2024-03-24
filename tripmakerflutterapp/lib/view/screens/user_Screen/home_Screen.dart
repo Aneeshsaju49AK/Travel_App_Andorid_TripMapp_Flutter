@@ -14,6 +14,11 @@ import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/drawer_screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/favorite_List.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/profile_Screen.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/circleAvatar_folder/circleAvatar_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/map_folder/map_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/search_folder/search_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/slider_folder/silder_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/tabview_folder/tavview_widget.dart';
 
 import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 import '../../widget/navigation/Navigation.dart';

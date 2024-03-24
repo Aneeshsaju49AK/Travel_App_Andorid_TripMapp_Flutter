@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/headWwite_widget/headwrite_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/search_folder/search_widget.dart';
 
 import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 

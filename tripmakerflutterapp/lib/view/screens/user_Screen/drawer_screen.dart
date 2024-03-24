@@ -9,6 +9,7 @@ import 'package:tripmakerflutterapp/view/screens/user_Screen/about_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/profile_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/circleAvatar_folder/circleAvatar_widget.dart';
 
 import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 

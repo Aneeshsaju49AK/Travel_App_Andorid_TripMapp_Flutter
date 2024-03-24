@@ -9,6 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/circleAvatar_folder/circleAvatar_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/headWwite_widget/headwrite_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/roundButton_folder/roundButton_widget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/texiField_widget/textfield_widget.dart';
 
 import '../../widget/common_widget/backButton_folder/backButton_widget.dart';
 import '../../widget/common_widget/populatList_folder/commonwidget.dart';
