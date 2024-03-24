@@ -51,13 +51,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
               Padding(
                 padding: const EdgeInsets.only(
                   top: 30,
+                  right: 80,
                 ),
-                child: Container(
-                  color: Colors.amber,
-                  width: 100,
-                  height: 100,
-                  child: BackButtonWidget(sizeOfImage: 30, isCHecked: true),
-                ),
+                child: BackButtonWidget(sizeOfImage: 30, isCHecked: true),
               ),
               Padding(
                 padding: EdgeInsets.only(
@@ -90,7 +86,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               ),
               SizedBox(
                 width: width / 2,
-                height: height / 2.3,
+                height: height / 2.1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -100,33 +96,70 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ),
                       child: SizedBox(
                         width: width / 2,
-                        height: height / 31,
+                        height: height / 10,
                         child: ValueListenableBuilder<List<ProfileModels>>(
                           valueListenable: ProfileDB.userListNotifier,
                           builder: (context, userList, _) {
                             if (userList.isNotEmpty) {
-                              return Text(
-                                userList[0].email!,
-                                style: GoogleFonts.abel(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Provider.of<DarkModeProvider>(context)
-                                          .value
-                                      ? Colors.blue
-                                      : Colors.black,
-                                ),
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  FittedBox(
+                                    child: Text(
+                                      userList[0].name!,
+                                      style: GoogleFonts.abel(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700,
+                                        color: Provider.of<DarkModeProvider>(
+                                                    context)
+                                                .value
+                                            ? Colors.blue
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    userList[0].email!,
+                                    style: GoogleFonts.abel(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color:
+                                          Provider.of<DarkModeProvider>(context)
+                                                  .value
+                                              ? Colors.blue
+                                              : Colors.black,
+                                    ),
+                                  ),
+                                ],
                               );
                             } else {
-                              return Text(
-                                "Guestmail",
-                                style: GoogleFonts.abel(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Provider.of<DarkModeProvider>(context)
-                                          .value
-                                      ? Colors.blue
-                                      : Colors.black,
-                                ),
+                              return Column(
+                                children: [
+                                  Text(
+                                    "Guestname",
+                                    style: GoogleFonts.abel(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color:
+                                          Provider.of<DarkModeProvider>(context)
+                                                  .value
+                                              ? Colors.blue
+                                              : Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Guestmail",
+                                    style: GoogleFonts.abel(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color:
+                                          Provider.of<DarkModeProvider>(context)
+                                                  .value
+                                              ? Colors.blue
+                                              : Colors.black,
+                                    ),
+                                  ),
+                                ],
                               );
                             }
                           },

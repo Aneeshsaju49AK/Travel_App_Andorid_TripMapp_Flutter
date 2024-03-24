@@ -115,32 +115,40 @@ class ActivityScreenWidget extends StatelessWidget {
                                 ),
                                 Positioned(
                                   top: height / 7,
-                                  left: 20,
+                                  left: 50,
                                   child: SizedBox(
                                     width: width / 1.5,
                                     child: FittedBox(
-                                        child: Text(
-                                      place.selectedPlace!.placeName!,
-                                      style: GoogleFonts.abel(
-                                        color: Colors.white,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w700,
+                                        child: Container(
+                                      height: 200,
+                                      width: 200,
+                                      child: Text(
+                                        place.selectedPlace!.placeName!,
+                                        style: GoogleFonts.abel(
+                                          color: Colors.white,
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
                                     )),
                                   ),
                                 ),
                                 Positioned(
                                   top: height / 5.5,
+                                  left: 50,
                                   child: SizedBox(
-                                    width: width / 2,
-                                    height: height / 23,
+                                    width: width / 1.5,
                                     child: FittedBox(
-                                        child: Text(
-                                      place.name!,
-                                      style: GoogleFonts.abel(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700,
+                                        child: Container(
+                                      height: 200,
+                                      width: 200,
+                                      child: Text(
+                                        place.name!,
+                                        style: GoogleFonts.abel(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
                                     )),
                                   ),
