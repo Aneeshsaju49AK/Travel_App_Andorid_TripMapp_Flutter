@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,10 +27,15 @@ import 'package:tripmakerflutterapp/provider/texiFieldWidget_provider.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+  DeviceOrientation.portraitDown;
+  DeviceOrientation.portraitUp;
   await Hive.initFlutter();
   Directory dir = await getApplicationDocumentsDirectory();
   Hive
