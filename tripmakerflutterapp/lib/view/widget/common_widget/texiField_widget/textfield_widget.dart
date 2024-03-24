@@ -36,12 +36,12 @@ class TextFieldWidget extends StatelessWidget {
 
     return SizedBox(
       width: width / 1,
-      height: showError ? height / 6 : height / 4.5,
+      height: showError ? height / 8 : height / 6.5,
       child: Column(
         children: [
           SizedBox(
             width: width / 1,
-            height: showError ? height / 20 : height / 12,
+            // height: showError ? height / 12 : height / 12,
             child: Padding(
               padding: const EdgeInsets.only(left: 20),
               child: Text(
@@ -57,7 +57,7 @@ class TextFieldWidget extends StatelessWidget {
             padding: const EdgeInsets.only(top: 10),
             child: SizedBox(
               width: width / 1.1,
-              height: showError ? height / 23 : height / 10,
+              // height: showError ? height / 10 : height / 8,
               child: TextFormField(
                 keyboardType: keyboardType,
                 controller: auth.controller,
@@ -67,7 +67,7 @@ class TextFieldWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                     borderSide: const BorderSide(
                       width: 1,
-                      color: Colors.grey,
+                      color: Color.fromARGB(255, 203, 54, 54),
                     ),
                   ),
                 ),

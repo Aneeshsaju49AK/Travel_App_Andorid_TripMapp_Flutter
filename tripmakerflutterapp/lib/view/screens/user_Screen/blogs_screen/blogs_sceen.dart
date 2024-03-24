@@ -82,7 +82,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                           context,
                           index,
                         ) {
-                          BlogModel place = valueList[index];
+                          BlogModel blog = valueList[index];
 
                           return InkWell(
                             onTap: () {
@@ -90,7 +90,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        BlogViewPage(place: place),
+                                        BlogViewPage(place: blog),
                                   ));
                             },
                             child: Padding(
@@ -106,16 +106,15 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                 ),
                                 child: Stack(
                                   children: [
-                                    Consumer<CommonProvider>(
-                                      builder: (context, value, _) {
-                                        return SizedBox(
-                                          width: width / 1,
-                                          height: height / 3.5,
-                                          child: value.getImageWidget(
-                                            place.images![0],
-                                          ),
-                                        );
-                                      },
+                                    SizedBox(
+                                      width: width / 1,
+                                      height: height / 3.5,
+                                      child: Provider.of<CommonProvider>(
+                                              context,
+                                              listen: false)
+                                          .getImageWidget(
+                                        blog.images![0],
+                                      ),
                                     ),
                                     Container(
                                       decoration: BoxDecoration(
@@ -161,13 +160,13 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                                         onPressed: () {
                                                           BlogDB.instance
                                                               .deletePlaces(
-                                                                  place.id)
+                                                                  blog.id)
                                                               .then(
                                                             (value) {
+                                                              BlogDB.instance
+                                                                  .reFreshUIBlogs();
                                                               Navigator.pop(
                                                                   context);
-                                                              AddtripDB.instance
-                                                                  .refreshListUI();
                                                             },
                                                           );
                                                         },
@@ -194,13 +193,16 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                       child: SizedBox(
                                         width: width / 1.5,
                                         child: FittedBox(
-                                            child: Text(
-                                          place.name!,
-                                          style: GoogleFonts.abel(
-                                            color: Color.fromARGB(
-                                                255, 221, 232, 230),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
+                                            child: Container(
+                                          width: width / 2,
+                                          child: Text(
+                                            blog.name!,
+                                            style: GoogleFonts.abel(
+                                              color: Color.fromARGB(
+                                                  255, 221, 232, 230),
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         )),
                                       ),

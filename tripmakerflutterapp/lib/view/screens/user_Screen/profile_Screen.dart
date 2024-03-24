@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
-import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/circleAvatar_folder/circleAvatar_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/headWwite_widget/headwrite_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/roundButton_folder/roundButton_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/texiField_widget/textfield_widget.dart';
-
 import '../../widget/common_widget/backButton_folder/backButton_widget.dart';
-import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class ProfileSetupWidget extends StatelessWidget {
   ProfileSetupWidget({Key? key}) : super(key: key);
@@ -158,7 +151,7 @@ class ProfileSetupWidget extends StatelessWidget {
                   ),
                   SizedBox(
                     width: width / 1,
-                    height: height / 4,
+                    height: height / 4.7,
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: ValueListenableBuilder(
@@ -169,18 +162,24 @@ class ProfileSetupWidget extends StatelessWidget {
                               radius: 80,
                               islocationwidget: true,
                               imagePath: value[0].profilePicturePath,
-                              // onpressed: () {
-                              //   buttomSheet(context);
-                              // },
+                              onpressed: () {
+                                Provider.of<ProfilePageProvider>(context,
+                                        listen: false)
+                                    .buttomSheet(context, false);
+                              },
                             );
                           } else {
                             return CircleAvatarWidget(
                               radius: 80,
                               islocationwidget: true,
-                              // imagePath: _profilePicturePath,
-                              // onpressed: () {
-                              //   buttomSheet(context);
-                              // },
+                              imagePath: Provider.of<ProfilePageProvider>(
+                                      context,
+                                      listen: false)
+                                  .profilePicturePath,
+                              onpressed: () {
+                                Provider.of<ProfilePageProvider>(context)
+                                    .buttomSheet(context, false);
+                              },
                             );
                           }
                         },
@@ -197,7 +196,7 @@ class ProfileSetupWidget extends StatelessWidget {
                   ),
                   SizedBox(
                     width: width / 1,
-                    height: height / 1.7,
+                    height: height / 1.6,
                     child: Column(
                       children: [
                         TextFieldWidget(
@@ -230,7 +229,7 @@ class ProfileSetupWidget extends StatelessWidget {
                   ),
                   SizedBox(
                     width: width / 1,
-                    height: height / 9,
+                    height: height / 8,
                     child: Row(
                       children: [
                         Padding(

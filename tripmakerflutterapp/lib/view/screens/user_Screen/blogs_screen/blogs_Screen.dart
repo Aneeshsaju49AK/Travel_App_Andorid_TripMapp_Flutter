@@ -7,6 +7,7 @@ import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_screen/blogs_sceen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/roundButton_folder/roundButton_widget.dart';
 
 class PopupScreen extends StatelessWidget {
@@ -45,9 +46,9 @@ class PopupScreen extends StatelessWidget {
         content: contentController.text,
         images: Provider.of<ProfilePageProvider>(context, listen: false).images,
       );
-      await BlogDB.instance.insertBlog(blog).then(
-            (value) => BlogDB.instance.reFreshUIBlogs(),
-          );
+      await BlogDB.instance.insertBlog(blog).then((value) {
+        BlogDB.instance.blogsallNotifier.notifyListeners();
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

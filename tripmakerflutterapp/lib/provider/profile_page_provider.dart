@@ -35,6 +35,7 @@ class ProfilePageProvider extends ChangeNotifier {
 
   void decreaseCount(int index) {
     _images.removeAt(index);
+    notifyListeners();
     countImage--;
     notifyListeners();
   }
@@ -65,7 +66,11 @@ class ProfilePageProvider extends ChangeNotifier {
   }
 
   String? get profilePicturePath => _profilePicturePath;
-  List<String> get images => _images;
+  List<String> get images {
+    notifyListeners();
+    return _images;
+  }
+
   XFile? image;
 
   buttomSheet(BuildContext context, bool isList) {
