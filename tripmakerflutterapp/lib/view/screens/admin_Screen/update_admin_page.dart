@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+
+
+import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class UpdatepageplaceModel extends StatelessWidget {
   final ModelPlace place;

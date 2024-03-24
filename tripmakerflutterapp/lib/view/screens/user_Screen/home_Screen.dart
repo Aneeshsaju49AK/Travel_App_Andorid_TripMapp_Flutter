@@ -14,8 +14,9 @@ import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/drawer_screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/favorite_List.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/profile_Screen.dart';
-import 'package:tripmakerflutterapp/view/widget/Navigation.dart';
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+
+import '../../widget/common_widget/populatList_folder/commonwidget.dart';
+import '../../widget/navigation/Navigation.dart';
 
 class ScreenSelection extends StatelessWidget {
   ScreenSelection({Key? key}) : super(key: key);
@@ -131,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const DrawerScreen(),
+                                  builder: (context) => DrawerScreen(),
                                 ),
                               );
                             },
@@ -218,8 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const FavoritePage(),
+                                          builder: (context) => FavoritePage(),
                                         ),
                                       );
                                     },

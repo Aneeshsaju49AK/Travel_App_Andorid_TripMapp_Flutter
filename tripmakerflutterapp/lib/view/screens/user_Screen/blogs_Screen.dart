@@ -6,14 +6,11 @@ import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
-import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
-import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogView_screen.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
 
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class BlogsScreenWidget extends StatefulWidget {
   const BlogsScreenWidget({super.key});
@@ -36,7 +33,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
             width: width / 1,
             child: Column(
               children: [
-                const Row(
+                Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
@@ -111,119 +108,6 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                   ),
                                 ),
                               ),
-                              child: Stack(
-                                children: [
-                                  SizedBox(
-                                    width: width / 1,
-                                    height: height / 3.5,
-                                    child: auth.getImageWidget(
-                                      place.images![0],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 20,
-                                      top: 30,
-                                    ),
-                                    child: Text(place.name!),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 20,
-                                      top: 90,
-                                    ),
-                                    child: Text(place.content!),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 120,
-                                    ),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        BlogDB.instance
-                                            .deletePlaces(place.id)
-                                            .then((value) async {
-                                          await BlogDB.instance
-                                              .reFreshUIBlogs();
-                                        });
-                                      },
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        size: 30,
-                                        color: Colors.red,
-
-                                      ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.2),
-                                        borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(20),
-                                          bottomRight: Radius.circular(20),
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      left: 20,
-                                      top: 170,
-                                      child: Text(
-                                        place.name!,
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          color: Provider.of<DarkModeProvider>(
-                                                      context)
-                                                  .value
-                                              ? const Color.fromARGB(
-                                                  255, 33, 39, 43)
-                                              : const Color.fromARGB(
-                                                  255, 230, 234, 212),
-                                          fontWeight: FontWeight.w900,
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      left: width / 1.4,
-                                      child: IconButton(
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: const Text("Remove"),
-                                                content: const Text(
-                                                    "Are you sure you want to remove your blog?"),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const Text("No"),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      BlogDB.instance
-                                                          .deletePlaces(
-                                                              place.id);
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: const Text("Yes"),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                        icon: const Icon(
-                                          Icons.delete,
-                                          size: 30,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
                           );
                         },
@@ -254,7 +138,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                       color: Provider.of<DarkModeProvider>(context).value
                           ? const Color.fromARGB(255, 33, 39, 43)
                           : const Color.fromARGB(255, 230, 234, 212),
-                      child: const PopupScreen(),
+                      child: PopupScreen(),
                     ),
                   ),
                 );
@@ -302,7 +186,7 @@ class PopupScreen extends StatelessWidget {
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
+
     nameController.dispose();
     contentController.dispose();
   }
@@ -461,9 +345,7 @@ class PopupScreen extends StatelessWidget {
                   width: width / 1.2,
                   height: height / 12,
                   child: TextFormField(
-
                     validator: auth.validateValue,
-
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -478,9 +360,7 @@ class PopupScreen extends StatelessWidget {
                   width: width / 1.2,
                   height: height / 4,
                   child: TextFormField(
-
                     validator: auth.validateValue,
-
                     maxLines: null,
                     expands: true,
                     textAlignVertical: TextAlignVertical.top,
@@ -527,3 +407,116 @@ class PopupScreen extends StatelessWidget {
     );
   }
 }
+// child: Stack(
+//                                 children: [
+//                                   SizedBox(
+//                                     width: width / 1,
+//                                     height: height / 3.5,
+//                                     child: auth.getImageWidget(
+//                                       place.images![0],
+//                                     ),
+//                                   ),
+//                                   Padding(
+//                                     padding: const EdgeInsets.only(
+//                                       left: 20,
+//                                       top: 30,
+//                                     ),
+//                                     child: Text(place.name!),
+//                                   ),
+//                                   Padding(
+//                                     padding: const EdgeInsets.only(
+//                                       left: 20,
+//                                       top: 90,
+//                                     ),
+//                                     child: Text(place.content!),
+//                                   ),
+//                                   Padding(
+//                                     padding: const EdgeInsets.only(
+//                                       top: 120,
+//                                     ),
+//                                     child: IconButton(
+//                                       onPressed: () {
+//                                         BlogDB.instance
+//                                             .deletePlaces(place.id)
+//                                             .then((value) async {
+//                                           await BlogDB.instance
+//                                               .reFreshUIBlogs();
+//                                         });
+//                                       },
+//                                       icon: const Icon(
+//                                         Icons.delete,
+//                                         size: 30,
+//                                         color: Colors.red,
+
+//                                       ),
+//                                     ),
+//                                     Container(
+//                                       decoration: BoxDecoration(
+//                                         color: Colors.black.withOpacity(0.2),
+//                                         borderRadius: const BorderRadius.only(
+//                                           bottomLeft: Radius.circular(20),
+//                                           bottomRight: Radius.circular(20),
+//                                         ),
+//                                       ),
+//                                     ),
+//                                     Positioned(
+//                                       left: 20,
+//                                       top: 170,
+//                                       child: Text(
+//                                         place.name!,
+//                                         style: TextStyle(
+//                                           fontSize: 24,
+//                                           color: Provider.of<DarkModeProvider>(
+//                                                       context)
+//                                                   .value
+//                                               ? const Color.fromARGB(
+//                                                   255, 33, 39, 43)
+//                                               : const Color.fromARGB(
+//                                                   255, 230, 234, 212),
+//                                           fontWeight: FontWeight.w900,
+//                                         ),
+//                                       ),
+//                                     ),
+//                                     Positioned(
+//                                       left: width / 1.4,
+//                                       child: IconButton(
+//                                         onPressed: () {
+//                                           showDialog(
+//                                             context: context,
+//                                             builder: (BuildContext context) {
+//                                               return AlertDialog(
+//                                                 title: const Text("Remove"),
+//                                                 content: const Text(
+//                                                     "Are you sure you want to remove your blog?"),
+//                                                 actions: [
+//                                                   TextButton(
+//                                                     onPressed: () {
+//                                                       Navigator.of(context)
+//                                                           .pop();
+//                                                     },
+//                                                     child: const Text("No"),
+//                                                   ),
+//                                                   TextButton(
+//                                                     onPressed: () {
+//                                                       BlogDB.instance
+//                                                           .deletePlaces(
+//                                                               place.id);
+//                                                       Navigator.pop(context);
+//                                                     },
+//                                                     child: const Text("Yes"),
+//                                                   ),
+//                                                 ],
+//                                               );
+//                                             },
+//                                           );
+//                                         },
+//                                         icon: const Icon(
+//                                           Icons.delete,
+//                                           size: 30,
+//                                           color: Colors.red,
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),

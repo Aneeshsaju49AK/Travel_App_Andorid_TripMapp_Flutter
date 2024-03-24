@@ -6,7 +6,9 @@ import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_con
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
+
+import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class FavoritePage extends StatelessWidget {
   FavoritePage({super.key});
@@ -35,7 +37,7 @@ class FavoritePage extends StatelessWidget {
             height: height / 1,
             child: Column(
               children: [
-                const Row(
+                Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(

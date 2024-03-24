@@ -10,8 +10,10 @@ import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 
 import 'package:tripmakerflutterapp/view/screens/user_Screen/addtrip_Screen.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/headWwite_widget/headwrite_widget.dart';
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+
+import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class ActivityScreenWidget extends StatelessWidget {
   const ActivityScreenWidget({super.key});
@@ -28,7 +30,7 @@ class ActivityScreenWidget extends StatelessWidget {
           height: height / 1,
           child: Column(
             children: [
-              const Row(
+              Row(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
@@ -165,6 +167,9 @@ class ActivityScreenWidget extends StatelessWidget {
                                       Icons.delete,
                                       size: 30,
                                       color: Colors.red,
+                                    ),
+                                  ),
+                                ),
                                 Container(
                                   decoration: BoxDecoration(
                                     color: Colors.black.withOpacity(0.2),
@@ -377,7 +382,6 @@ class PopScreenAddTrip extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             width: width / 1,
-
             color: Provider.of<DarkModeProvider>(context).value
                 ? const Color.fromARGB(255, 33, 39, 43)
                 : const Color.fromARGB(255, 230, 234, 212),
@@ -394,180 +398,166 @@ class PopScreenAddTrip extends StatelessWidget {
                       size: 40,
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     child: Text(
                       "Add Place",
                       style: GoogleFonts.abel(
                         fontSize: 26,
                         fontWeight: FontWeight.w700,
-
                       ),
-                      SizedBox(
-                        child: Text(
-                          "Add Place",
-                          style: GoogleFonts.abel(
-                            fontSize: 26,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AddTripScreen(
-                                  onPlace: (selectedPlace) {
-                                    place =
-                                        value.setStateModelPlace(selectedPlace);
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: width / 1.4,
-                            height: height / 4,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Stack(
-                              children: [
-                                SizedBox(
-                                  width: width / 1.4,
-                                  height: height / 4,
-                                  child:
-                                      authProviderCommonProvider.getImageWidget(
-                                    place?.images?.isEmpty ?? true
-                                        ? "asset/imges/pexels-photo-4220967.jpeg"
-                                        : place!.images![0],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Text(
-                        "Name your Trip",
-                      ),
-                      SizedBox(
-                        width: width / 1.2,
-                        height: height / 12,
-                        child: TextFormField(
-                          validator: authProviderCommonProvider.validateValue,
-                          controller: nameController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            "Select you start date",
-                          ),
-                          SizedBox(
-                            width: width / 2.2,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              value.showDatePickerUI(
-                                true,
-                                context,
-                              );
-                            },
-                            child: Image.asset(
-                              "asset/imges/navigation_img/calendar.png",
-                              width: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: width / 1.2,
-                        height: height / 12,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            label: Text(
-                              value.startDate.toString(),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          const Text("Select you start date"),
-                          SizedBox(
-                            width: width / 2.2,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              value.showDatePickerUI(false, context);
-                            },
-                            child: Image.asset(
-                              "asset/imges/navigation_img/calendar.png",
-                              width: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: width / 1.2,
-                        height: height / 12,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            label: Text(
-                              value.endDate.toString(),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 15,
-                          top: 20,
-                        ),
-                        child: Row(
-                          children: [
-
-                            GestureDetector(
-                              onTap: () {
-                                handleActivitySaveButtonPress(context);
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddTripScreen(
+                              onPlace: (selectedPlace) {
+                                place = value.setStateModelPlace(selectedPlace);
                               },
-                              child: const RoundButton(
-                                label: "Save",
-                                imagePath: "asset/imges/navigation_img/eye.png",
-                                buttonColor: Colors.blue,
-
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: width / 1.4,
+                        height: height / 4,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              width: width / 1.4,
+                              height: height / 4,
+                              child: authProviderCommonProvider.getImageWidget(
+                                place?.images?.isEmpty ?? true
+                                    ? "asset/imges/pexels-photo-4220967.jpeg"
+                                    : place!.images![0],
                               ),
-                            ),
-                            const SizedBox(
-                              width: 40,
-                            ),
-                            const RoundButton(
-                              label: "Clear",
-                              imagePath: "asset/imges/navigation_img/eye.png",
-                              buttonColor: Colors.red,
                             ),
                           ],
                         ),
                       ),
+                    ),
+                  ),
+                  const Text(
+                    "Name your Trip",
+                  ),
+                  SizedBox(
+                    width: width / 1.2,
+                    height: height / 12,
+                    child: TextFormField(
+                      validator: authProviderCommonProvider.validateValue,
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        "Select you start date",
+                      ),
+                      SizedBox(
+                        width: width / 2.2,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          value.showDatePickerUI(
+                            true,
+                            context,
+                          );
+                        },
+                        child: Image.asset(
+                          "asset/imges/navigation_img/calendar.png",
+                          width: 20,
+                        ),
+                      ),
                     ],
                   ),
-                ),
+                  SizedBox(
+                    width: width / 1.2,
+                    height: height / 12,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        label: Text(
+                          value.startDate.toString(),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      const Text("Select you start date"),
+                      SizedBox(
+                        width: width / 2.2,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          value.showDatePickerUI(false, context);
+                        },
+                        child: Image.asset(
+                          "asset/imges/navigation_img/calendar.png",
+                          width: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: width / 1.2,
+                    height: height / 12,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        label: Text(
+                          value.endDate.toString(),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 15,
+                      top: 20,
+                    ),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            handleActivitySaveButtonPress(context);
+                          },
+                          child: const RoundButton(
+                            label: "Save",
+                            imagePath: "asset/imges/navigation_img/eye.png",
+                            buttonColor: Colors.blue,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        const RoundButton(
+                          label: "Clear",
+                          imagePath: "asset/imges/navigation_img/eye.png",
+                          buttonColor: Colors.red,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -575,5 +565,4 @@ class PopScreenAddTrip extends StatelessWidget {
       },
     );
   }
-
 }

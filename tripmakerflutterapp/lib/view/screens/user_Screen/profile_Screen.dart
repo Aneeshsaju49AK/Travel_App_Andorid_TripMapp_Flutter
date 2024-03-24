@@ -9,7 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+
+import '../../widget/common_widget/backButton_folder/backButton_widget.dart';
+import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class ProfileSetupWidget extends StatelessWidget {
   ProfileSetupWidget({Key? key}) : super(key: key);
@@ -64,8 +66,8 @@ class ProfileSetupWidget extends StatelessWidget {
         email: emailController.text,
         userName: userNameController.text,
         phone: phoneController.text,
-        profilePicturePath: _profilePicturePath ??
-            ProfileDB.userListNotifier.value[0].profilePicturePath,
+        // profilePicturePath: _profilePicturePath ??
+        //     ProfileDB.userListNotifier.value[0].profilePicturePath,
         // profilePicturePath: _profilePicturePath ,??
         //     ProfileDB.userListNotifier.value[0].profilePicturePath,
       );
@@ -125,7 +127,7 @@ class ProfileSetupWidget extends StatelessWidget {
                   SizedBox(
                     width: width / 1,
                     height: height / 7,
-                    child: const Row(
+                    child: Row(
                       children: [
                         Padding(
                           padding: EdgeInsets.only(
@@ -163,18 +165,18 @@ class ProfileSetupWidget extends StatelessWidget {
                               radius: 80,
                               islocationwidget: true,
                               imagePath: value[0].profilePicturePath,
-                              onpressed: () {
-                                buttomSheet(context);
-                              },
+                              // onpressed: () {
+                              //   buttomSheet(context);
+                              // },
                             );
                           } else {
                             return CircleAvatarWidget(
                               radius: 80,
                               islocationwidget: true,
-                              imagePath: _profilePicturePath,
-                              onpressed: () {
-                                buttomSheet(context);
-                              },
+                              // imagePath: _profilePicturePath,
+                              // onpressed: () {
+                              //   buttomSheet(context);
+                              // },
                             );
                           }
                         },

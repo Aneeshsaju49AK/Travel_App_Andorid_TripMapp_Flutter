@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
+
+import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class TypePlaceScreen extends StatelessWidget {
   final ValueNotifier<List<ModelPlace>> placeListNotifierTypePlace;
@@ -23,7 +25,7 @@ class TypePlaceScreen extends StatelessWidget {
             height: height / 1,
             child: Column(
               children: [
-                const Row(
+                Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(

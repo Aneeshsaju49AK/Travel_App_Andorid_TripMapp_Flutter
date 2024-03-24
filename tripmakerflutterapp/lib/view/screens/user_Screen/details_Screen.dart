@@ -9,8 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_Screen.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
 
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class DetailsScreen extends StatefulWidget {
   final ModelPlace place;
@@ -407,8 +408,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BlogsScreenWidget(),
+                                      builder: (context) => BlogsScreenWidget(),
                                     ),
                                   );
                                 },

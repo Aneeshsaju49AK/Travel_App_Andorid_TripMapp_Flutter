@@ -8,10 +8,12 @@ import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/about_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/profile_Screen.dart';
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
+
+import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class DrawerScreen extends StatefulWidget {
-  const DrawerScreen({Key? key}) : super(key: key);
+  DrawerScreen({Key? key}) : super(key: key);
 
   @override
   State<DrawerScreen> createState() => _DrawerScreenState();
@@ -45,18 +47,19 @@ class _DrawerScreenState extends State<DrawerScreen> {
           color: Colors.white,
           child: Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.only(
-                  right: 120,
+              Padding(
+                padding: const EdgeInsets.only(
                   top: 30,
                 ),
-                child: BackButtonWidget(
-                  sizeOfImage: 30,
-                  isCHecked: true,
+                child: Container(
+                  color: Colors.amber,
+                  width: 100,
+                  height: 100,
+                  child: BackButtonWidget(sizeOfImage: 30, isCHecked: true),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   left: 40,
                 ),
                 child: SizedBox(
@@ -90,100 +93,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                      ),
-                      child: SizedBox(
-                        width: width / 2,
-                        height: height / 30,
-                        child: ValueListenableBuilder<List<ProfileModels>>(
-                          valueListenable: ProfileDB.userListNotifier,
-                          builder: (context, userList, _) {
-                            if (userList.isNotEmpty) {
-                              return Text(
-                                userList[0].name!,
-                                style: GoogleFonts.abel(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Provider.of<DarkModeProvider>(context)
-                                          .value
-                                      ? Colors.blue
-                                      : Colors.black,
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    switch (index) {
-                                      case 0:
-                                        ScreenSelection
-                                            .selectedIndexNotifier.value = 0;
-                                        Navigator.pop(context);
-                                        break;
-                                      case 1:
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return Scaffold(
-                                                body: SafeArea(
-                                                  child: ProfileSetupWidget(),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        );
-                                        break;
-                                      case 2:
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AboutScreen(),
-                                          ),
-                                        );
-                                        break;
-                                      case 3:
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: const Text("Logout"),
-                                              content: const Text(
-                                                  "Are you sure you want to logout?"),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text("No"),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    _logOutUser(context);
-                                                  },
-                                                  child: const Text("Yes"),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                        break;
-                                    }
-                                  },
-                                  child: Text(
-                                    links[index],
-                                    style: GoogleFonts.abel(
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 40,
@@ -250,7 +159,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) {
-                                            return const Scaffold(
+                                            return Scaffold(
                                               body: SafeArea(
                                                 child: ProfileSetupWidget(),
                                               ),

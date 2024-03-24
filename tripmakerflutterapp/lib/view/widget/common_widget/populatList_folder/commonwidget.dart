@@ -213,15 +213,15 @@ class MapLocation extends StatelessWidget {
           ),
         );
       },
-      child: Container(
-        child: widget.islocationWidget == true && widget.location != null
-            ? Text(
-                showFullText
-                    ? "${widget.locationName}"
-                    : "${widget.locationName!.substring(0, 10)}...", // Display only the first 10 characters
-              )
-            : const Text("Location not available"),
-      ),
+      // child: Container(
+      //   child: widget.islocationWidget == true && widget.location != null
+      //       ? Text(
+      //           showFullText
+      //               ? "${widget.locationName}"
+      //               : "${widget.locationName!.substring(0, 10)}...", // Display only the first 10 characters
+      //         )
+      //       : const Text("Location not available"),
+      // ),
     );
   }
 }
@@ -435,7 +435,7 @@ class _TabViewWidgetState extends State<TabViewWidget>
 /* this widget is used for the main view in TabBar 
   also enable the listview builder
  */
-class TabBarListWidget extends StatelessWidget {
+class TabBarListWidget extends StatefulWidget {
   final ValueNotifier<List<ModelPlace>> placeListNotifierCommon;
   const TabBarListWidget({required this.placeListNotifierCommon, Key? key})
       : super(key: key);
@@ -452,7 +452,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
   Widget build(BuildContext context) {
     final auth = Provider.of<MapLocationProvider>(context);
     return ValueListenableBuilder<List<ModelPlace>>(
-      valueListenable: placeListNotifierCommon,
+      valueListenable: PlacesDB.instance.placeListNotifier,
       builder: (context, placeList, _) {
         return ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -765,7 +765,7 @@ class RoundButton extends StatelessWidget {
 /*So this widget is used for create a slider of image
 to view with pageindicator  */
 
-class SliderImageViewWidget extends StatelessWidget {
+class SliderImageViewWidget extends StatefulWidget {
   final List<String> imagePathList;
   const SliderImageViewWidget({required this.imagePathList, Key? key})
       : super(key: key);
@@ -799,7 +799,7 @@ class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> imagePath = imagePathList;
+    final List<String> imagePath = widget.imagePathList;
 
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
@@ -857,39 +857,6 @@ class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
             ],
           );
         },
-      ),
-    );
-  }
-}
-
-/*this Widget is for back-Button common in every page
- */
-
-class BackButtonWidget extends StatelessWidget {
-  final double sizeOfImage;
-  final bool? isCHecked;
-  const BackButtonWidget(
-      {required this.sizeOfImage, required this.isCHecked, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (isCHecked == true) {
-          ScreenSelection.selectedIndexNotifier.value = 0;
-          Navigator.pop(context);
-        } else if (isCHecked == false) {
-          ScreenSelection.selectedIndexNotifier.value = 0;
-        } else {
-          Navigator.pop(context);
-        }
-      },
-      child: Image.asset(
-        "asset/imges/back-button.png",
-        width: sizeOfImage,
-        color: Provider.of<DarkModeProvider>(context).value
-            ? Colors.blue
-            : Colors.black,
       ),
     );
   }

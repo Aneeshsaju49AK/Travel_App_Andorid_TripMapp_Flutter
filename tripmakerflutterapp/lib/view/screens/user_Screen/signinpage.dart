@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
+
+import '../../widget/common_widget/populatList_folder/commonwidget.dart';
+
 
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
@@ -70,7 +72,7 @@ class SignInPage extends StatelessWidget {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const LoginPage(),
+          builder: (context) =>  LoginPage(),
         ),
       );
     }

@@ -5,9 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/view/widget/commonwidget.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
+
+import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class AddPlaceAdmin extends StatefulWidget {
   const AddPlaceAdmin({Key? key}) : super(key: key);

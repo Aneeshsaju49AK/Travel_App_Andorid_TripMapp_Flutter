@@ -3,11 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:tripmakerflutterapp/controller/addTrip_model/addTrip_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
@@ -28,7 +24,6 @@ import 'package:tripmakerflutterapp/provider/searchwidget_provider.dart';
 import 'package:tripmakerflutterapp/provider/tab_view_provider.dart';
 import 'package:tripmakerflutterapp/provider/texiFieldWidget_provider.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
 import 'package:provider/provider.dart';
 
@@ -103,15 +98,13 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (context) => TabViewProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => DarkModeProvider(),
+        ),
       ],
       child: const MyApp(),
     ),
   );
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(
-      create: (context) => DarkModeProvider(),
-    ),
-  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -133,7 +126,7 @@ class MyApp extends StatelessWidget {
             "LoginPage": (
               context,
             ) =>
-                const LoginPage(),
+                LoginPage(),
           },
         );
       },
