@@ -53,8 +53,11 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 40,
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: const SizedBox(
+                    height: 40,
+                  ),
                 ),
                 SizedBox(
                   width: width / 1,
@@ -105,7 +108,6 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                       );
                                     },
                                   ),
-
                                   Container(
                                     decoration: BoxDecoration(
                                       color: Colors.black.withOpacity(0.2),
@@ -115,75 +117,6 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                       ),
                                     ),
                                   ),
-                                  Positioned(
-                                    top: height / 7,
-                                    left: 20,
-                                    child: SizedBox(
-                                      width: width / 1.5,
-                                      child: FittedBox(
-                                          child: Text(
-                                        place.name!,
-                                        style: GoogleFonts.abel(
-                                          color: Colors.white,
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      )),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: height / 5.5,
-                                    child: SizedBox(
-                                      width: width / 2,
-                                      height: height / 23,
-                                      child: FittedBox(
-                                          child: Text(
-                                        place.name!,
-                                        style: GoogleFonts.abel(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      )),
-                                    ),
-                                  ),
-                                  // Text(place.startDate!.toString()),
-                                  // Positioned(
-                                  //   top: height / 4.5,
-                                  //   child: SizedBox(
-                                  //     width: width / 2,
-                                  //     height: height / 35,
-                                  //     child: FittedBox(
-                                  //         child: Text(
-                                  //       place.startDate!
-                                  //           .toString()
-                                  //           .substring(0, 10),
-                                  //       style: GoogleFonts.abel(
-                                  //         color: Colors.white,
-                                  //         fontSize: 15,
-                                  //         fontWeight: FontWeight.w700,
-                                  //       ),
-                                  //     )),
-                                  //   ),
-                                  // ),
-                                  // Positioned(
-                                  //   top: height / 4,
-                                  //   child: SizedBox(
-                                  //     width: width / 2,
-                                  //     height: height / 35,
-                                  //     child: FittedBox(
-                                  //         child: Text(
-                                  //       place.endDate!
-                                  //           .toString()
-                                  //           .substring(0, 10),
-                                  //       style: GoogleFonts.abel(
-                                  //         color: Colors.white,
-                                  //         fontSize: 15,
-                                  //         fontWeight: FontWeight.w700,
-                                  //       ),
-                                  //     )),
-                                  //   ),
-                                  // ),
                                   Positioned(
                                     left: width / 1.7,
                                     top: height / 30,
@@ -242,6 +175,28 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                       ],
                                     ),
                                   ),
+                                  Positioned(
+                                    top: 100,
+                                    left: 60,
+                                    child: SizedBox(
+                                      width: width / 1.5,
+                                      child: Container(
+                                        color: Colors.amber,
+                                        width: 100,
+                                        height: 100,
+                                        child: FittedBox(
+                                            child: Text(
+                                          place.name!,
+                                          style: GoogleFonts.abel(
+                                            color: Color.fromARGB(
+                                                255, 20, 210, 182),
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        )),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -251,64 +206,6 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                     },
                   ),
                 ),
-                // SizedBox(
-                //   width: width / 1,
-                //   height: height / 1.3,
-                //   child: ValueListenableBuilder(
-                //     valueListenable: BlogDB.instance.blogsallNotifier,
-                //     builder: (context, valueList, _) {
-                //       if (valueList.isEmpty) {
-                //         return Center(
-                //           child: Text(
-                //             "No blogs is created",
-                //             style: GoogleFonts.abel(
-                //               fontSize: 20,
-                //               fontWeight: FontWeight.w500,
-                //               color: Provider.of<DarkModeProvider>(context)
-                //                       .value
-                //                   ? const Color.fromARGB(255, 33, 39, 43)
-                //                   : const Color.fromARGB(255, 230, 234, 212),
-                //             ),
-                //           ),
-                //         );
-                //       }
-                //       return ListView.builder(
-                //         itemCount: valueList.length,
-                //         itemBuilder: (
-                //           context,
-                //           index,
-                //         ) {
-                //           BlogModel place = valueList[index];
-                //           return Padding(
-                //             padding: const EdgeInsets.all(20.0),
-                //             child: InkWell(
-                //               onTap: () {
-                //                 Navigator.push(
-                //                   context,
-                //                   MaterialPageRoute(
-                //                     builder: (context) => BlogViewPage(
-                //                       place: place,
-                //                     ),
-                //                   ),
-                //                 );
-                //               },
-                //               child: Container(
-                //                 clipBehavior: Clip.antiAlias,
-                //                 width: width / 1,
-                //                 height: height / 3.5,
-                //                 decoration: const BoxDecoration(
-                //                   borderRadius: BorderRadius.all(
-                //                     Radius.circular(20),
-                //                   ),
-                //                 ),
-                //               ),
-                //             ),
-                //           );
-                //         },
-                //       );
-                //     },
-                //   ),
-                // ),
               ],
             ),
           ),
