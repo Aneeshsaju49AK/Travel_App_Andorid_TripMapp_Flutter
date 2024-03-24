@@ -45,7 +45,10 @@ class PopupScreen extends StatelessWidget {
         content: contentController.text,
         images: Provider.of<ProfilePageProvider>(context, listen: false).images,
       );
-      await BlogDB.instance.insertBlog(blog);
+      await BlogDB.instance.insertBlog(blog).then(
+            (value) => BlogDB.instance.reFreshUIBlogs(),
+          );
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('User added successfully'),
@@ -59,7 +62,7 @@ class PopupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<CommonProvider>(context);
+    final auth = Provider.of<CommonProvider>(context, listen: false);
     num width = MediaQuery.of(context).size.width;
     num height = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
@@ -109,7 +112,7 @@ class PopupScreen extends StatelessWidget {
                                                 File(value.images[index]),
                                               )
                                             : FileImage(
-                                                File(""),
+                                                File(" "),
                                               ),
                                         fit: BoxFit.fill,
                                       ),
