@@ -18,6 +18,7 @@ import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
 import 'package:tripmakerflutterapp/provider/activity_page_provider.dart';
 import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
+import 'package:tripmakerflutterapp/provider/firebase_provider.dart';
 import 'package:tripmakerflutterapp/provider/main_dart_provider.dart';
 import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
 import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
@@ -106,6 +107,9 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => DarkModeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PlaceListNotifier(),
         ),
       ],
       child: const MyApp(),
