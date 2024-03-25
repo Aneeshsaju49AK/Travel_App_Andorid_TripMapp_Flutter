@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:tripmakerflutterapp/controller/place_model/place_model_controlle
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
+import 'package:tripmakerflutterapp/view/screens/admin_Screen/update_admin_page.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/roundButton_folder/roundButton_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/search_folder/search_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/texiField_widget/textfield_widget.dart';
@@ -26,6 +28,10 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
 
   final CollectionReference places =
       FirebaseFirestore.instance.collection('places');
+
+  void deletePlace(docsId) {
+    places.doc(docsId).delete();
+  }
 
   @override
   void initState() {
@@ -167,15 +173,10 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                                     actions: [
                                                       TextButton.icon(
                                                         onPressed: () {
-                                                          PlacesDB.instance
-                                                              .deletePlaces(
-                                                                  index)
-                                                              .then(
-                                                                  (value) async {
-                                                            await PlacesDB
-                                                                .instance
-                                                                .reFreshUI();
-                                                          });
+                                                          deletePlace(
+                                                              placeDetails.id);
+                                                          Navigator.pop(
+                                                              context);
                                                         },
                                                         icon: const Icon(
                                                           Icons.delete,
@@ -203,6 +204,26 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                             icon: const Icon(
                                               Icons.delete,
                                               color: Colors.red,
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PlaceUpdateFirebase(
+                                                    placeData: placeDetails
+                                                            .data()
+                                                        as Map<String, dynamic>,
+                                                    id: placeDetails.id,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.update,
+                                              color: Colors.green,
                                             ),
                                           ),
                                           // IconButton(
