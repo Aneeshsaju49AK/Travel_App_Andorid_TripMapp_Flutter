@@ -7,6 +7,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:tripmakerflutterapp/controller/firebase_controller/firebase_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
@@ -28,9 +29,11 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<MapLocationProvider>(context);
+    ControllerFirebase.instance.fetchPlaces();
     return ValueListenableBuilder<List<ModelPlace>>(
-      valueListenable: PlacesDB.instance.placeListNotifier,
+      valueListenable: ControllerFirebase.placeListNotifier,
       builder: (context, placeList, _) {
+        print("placeList.length ${placeList.length}");
         return ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: min(5, placeList.length),

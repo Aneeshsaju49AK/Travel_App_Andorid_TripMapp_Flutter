@@ -2,6 +2,7 @@
 in homepage */
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tripmakerflutterapp/controller/firebase_controller/firebase_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/populatList_folder/commonwidget.dart';
@@ -89,7 +90,7 @@ class _TabViewWidgetState extends State<TabViewWidget>
                 SizedBox(
                   child: TabBarListWidget(
                     placeListNotifierCommon:
-                        PlacesDB.instance.placeListNotifier,
+                        ControllerFirebase.placeListNotifier,
                   ),
                 ),
                 SizedBox(
