@@ -13,7 +13,8 @@ import 'package:tripmakerflutterapp/view/widget/common_widget/texiField_widget/t
 class PlaceUpdateFirebase extends StatefulWidget {
   final Map<String, dynamic> placeData;
   final dynamic id;
-  PlaceUpdateFirebase({required this.id, required this.placeData, Key? key})
+  const PlaceUpdateFirebase(
+      {required this.id, required this.placeData, Key? key})
       : super(key: key);
 
   @override
@@ -67,7 +68,9 @@ class _PlaceUpdateFirebaseState extends State<PlaceUpdateFirebase> {
       imagesList.addAll(imagesData.map((e) => e.toString()));
     }
     _images.addAll(imagesList);
+    print(_images.length);
     countImage = _images.length;
+
     // Populate the TextEditingControllers with data from the widget.placeData map
     placeNameController.text = widget.placeData['PlaceName'] ?? '';
     subLocationController.text = widget.placeData['SubName'] ?? '';
@@ -132,10 +135,10 @@ class _PlaceUpdateFirebaseState extends State<PlaceUpdateFirebase> {
                                         color: Colors.black,
                                         borderRadius: BorderRadius.circular(20),
                                         image: DecorationImage(
-                                          image: index < _images.length
-                                              ? NetworkImage(_images[index])
-                                              : NetworkImage(
-                                                  "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn-images-1.medium.com%2Fmax%2F1200%2F1*5-aoK8IBmXve5whBQM90GA.png&tbnid=2BooXSdz1JICpM&vet=12ahUKEwi3n5a9yo2FAxWmyzgGHegLC6EQMygAegQIARBx..i&imgrefurl=https%3A%2F%2Fmedium.com%2Fflutter&docid=_XxRqWR9WEOR6M&w=1000&h=1000&q=image%20flutter&ved=2ahUKEwi3n5a9yo2FAxWmyzgGHegLC6EQMygAegQIARBx"),
+                                          image: index < imagesList.length
+                                              ? NetworkImage(imagesList[index])
+                                              : FileImage(File(_images[index]))
+                                                  as ImageProvider<Object>,
                                           fit: BoxFit.fill,
                                         ),
                                       ),
@@ -147,7 +150,7 @@ class _PlaceUpdateFirebaseState extends State<PlaceUpdateFirebase> {
                                         onPressed: () {
                                           setState(() {
                                             _images.removeAt(index);
-                                            countImage--;
+                                            countImage = _images.length;
                                           });
                                         },
                                         icon: const Icon(
@@ -172,8 +175,10 @@ class _PlaceUpdateFirebaseState extends State<PlaceUpdateFirebase> {
                       ),
                       TextButton.icon(
                         onPressed: () {
+                          print(_images.length);
                           setState(() {
                             countImage++;
+                            print(_images.length);
                           });
                         },
                         icon: const Icon(Icons.add_a_photo),
@@ -503,6 +508,10 @@ class _PlaceUpdateFirebaseState extends State<PlaceUpdateFirebase> {
         }
       }
 
+      if (imagesList.isNotEmpty) {
+        uploadedImageUrls.addAll(imagesList);
+      }
+
       // Save place details with uploaded image URLs
       final Place = {
         'PlaceName': placeNameController.text,
@@ -517,7 +526,7 @@ class _PlaceUpdateFirebaseState extends State<PlaceUpdateFirebase> {
 
       try {
         // await places.add(Place);
-        places.doc(widget.id).update(Place);
+        await places.doc(widget.id).update(Place);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text("Place added successfully"),

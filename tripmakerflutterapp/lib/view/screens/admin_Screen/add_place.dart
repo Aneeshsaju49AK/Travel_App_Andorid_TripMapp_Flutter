@@ -211,14 +211,20 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PlaceUpdateFirebase(
-                                                    placeData: placeDetails
-                                                            .data()
-                                                        as Map<String, dynamic>,
-                                                    id: placeDetails.id,
-                                                  ),
-                                                ),
+                                                    builder: (context) {
+                                                  return Scaffold(
+                                                    body: SafeArea(
+                                                      child:
+                                                          PlaceUpdateFirebase(
+                                                        placeData:
+                                                            placeDetails.data()
+                                                                as Map<String,
+                                                                    dynamic>,
+                                                        id: placeDetails.id,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),
                                               );
                                             },
                                             icon: Icon(
