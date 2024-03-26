@@ -276,9 +276,14 @@ class ActivityScreenWidget extends StatelessWidget {
   }
 }
 
-class PopScreenAddTrip extends StatelessWidget {
+class PopScreenAddTrip extends StatefulWidget {
   PopScreenAddTrip({super.key});
 
+  @override
+  State<PopScreenAddTrip> createState() => _PopScreenAddTripState();
+}
+
+class _PopScreenAddTripState extends State<PopScreenAddTrip> {
   final nameController = TextEditingController();
 
   ModelPlace? place;
@@ -375,7 +380,8 @@ class PopScreenAddTrip extends StatelessWidget {
                             SizedBox(
                               width: width / 1.4,
                               height: height / 4,
-                              child: authProviderCommonProvider.getImageWidget(
+                              child:
+                                  authProviderCommonProvider.getImageWidgetUrl(
                                 place?.images?.isEmpty ?? true
                                     ? "asset/imges/pexels-photo-4220967.jpeg"
                                     : place!.images![0],

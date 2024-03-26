@@ -38,60 +38,51 @@ class PopularListViewWidget extends StatelessWidget {
                   onPlaceSelected!(place);
                   Navigator.pop(context);
                 },
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailsScreen(place: place),
-                        ));
-                  },
-                  child: Container(
-                    clipBehavior: Clip.antiAlias,
-                    width: width / 4,
-                    height: height / 4,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Consumer<CommonProvider>(
-                      builder: (context, value, child) {
-                        return Stack(
-                          children: [
-                            SizedBox(
-                              width: width / 1,
-                              height: height / 1,
-                              child: Image.network(
-                                place.images![0],
-                                fit: BoxFit.fill,
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  width: width / 4,
+                  height: height / 4,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Consumer<CommonProvider>(
+                    builder: (context, value, child) {
+                      return Stack(
+                        children: [
+                          SizedBox(
+                            width: width / 1,
+                            height: height / 1,
+                            child: Image.network(
+                              place.images![0],
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.2),
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
                               ),
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.2),
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20),
-                                ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 30,
+                              left: 30,
+                            ),
+                            child: Text(
+                              place.placeName!,
+                              style: GoogleFonts.abel(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 30,
-                                left: 30,
-                              ),
-                              child: Text(
-                                place.placeName!,
-                                style: GoogleFonts.abel(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),

@@ -29,6 +29,21 @@ class CommonProvider extends ChangeNotifier {
     }
   }
 
+  Widget getImageWidgetUrl(String imagePath) {
+    if (imagePath.startsWith("https://")) {
+      notifyListeners();
+      return Image.network(
+        imagePath,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.file(
+        File(imagePath),
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
   void callRefreshUI() {
     PlacesDB.instance.reFreshUI();
   }
