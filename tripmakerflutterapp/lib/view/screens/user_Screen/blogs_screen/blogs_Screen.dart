@@ -27,13 +27,13 @@ class _PopupScreenState extends State<PopupScreen> {
 
   TextEditingController contentController = TextEditingController();
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
+  // @override
+  // void dispose() {
+  //   super.dispose();
 
-    nameController.dispose();
-    contentController.dispose();
-  }
+  //   nameController.dispose();
+  //   contentController.dispose();
+  // }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -126,8 +126,12 @@ class _PopupScreenState extends State<PopupScreen> {
                                       onPressed: () {
                                         // value.decreaseCount(index);
                                         setState(() {
-                                          _images.removeAt(index);
-                                          countImage--;
+                                          try {
+                                            _images.removeAt(index);
+                                            countImage--;
+                                          } catch (e) {
+                                            print(e);
+                                          }
                                         });
                                       },
                                       icon: Icon(
@@ -143,8 +147,12 @@ class _PopupScreenState extends State<PopupScreen> {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        // value.buttomSheet(context, true);
-                                        buttomSheet(context);
+                                        try {
+                                          buttomSheet(context);
+                                        } catch (e) {
+                                          print('Error loading image: $e');
+                                          // Handle the error gracefully, e.g., show a snackbar or display a fallback image
+                                        }
                                       },
                                       icon: Icon(
                                         Icons.add,
@@ -251,9 +259,9 @@ class _PopupScreenState extends State<PopupScreen> {
     );
   }
 
-  void addImage(String imagePath) {
-    _images.add(imagePath);
-  }
+  // void addImage(String imagePath) {
+  //   _images.add(imagePath);
+  // }
 
   buttomSheet(BuildContext context) {
     num width = MediaQuery.of(context).size.width;
@@ -289,7 +297,9 @@ class _PopupScreenState extends State<PopupScreen> {
                       // image = img;
 
                       if (img != null) {
-                        addImage(img.path);
+                        setState(() {
+                          _images.add(img.path);
+                        });
                       }
 
                       // setState(() {
@@ -309,7 +319,9 @@ class _PopupScreenState extends State<PopupScreen> {
                       );
 
                       if (img != null) {
-                        addImage(img.path);
+                        setState(() {
+                          _images.add(img.path);
+                        });
                       }
 
                       // image = img;
