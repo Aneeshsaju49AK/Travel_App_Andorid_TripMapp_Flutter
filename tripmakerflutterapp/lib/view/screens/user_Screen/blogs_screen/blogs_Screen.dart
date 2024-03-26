@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
@@ -10,12 +11,17 @@ import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_screen/blogs_sceen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/roundButton_folder/roundButton_widget.dart';
 
-class PopupScreen extends StatelessWidget {
+class PopupScreen extends StatefulWidget {
   PopupScreen({super.key});
 
-  // int countImage = 0;
+  @override
+  State<PopupScreen> createState() => _PopupScreenState();
+}
 
-  // final List<String> _images = [];
+class _PopupScreenState extends State<PopupScreen> {
+  int countImage = 0;
+
+  final List<String> _images = [];
 
   TextEditingController nameController = TextEditingController();
 
@@ -32,19 +38,13 @@ class PopupScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   // String? validateError(String? value) {
-  //   if (value == null || value.isEmpty) {
-  //     return "Please enter a valid value";
-  //   }
-  //   return null;
-  // }
-
   void handleSavebuttonBlogPage(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       final blog = BlogModel(
         id: DateTime.now().microsecond,
         name: nameController.text,
         content: contentController.text,
-        images: Provider.of<ProfilePageProvider>(context, listen: false).images,
+        images: _images,
       );
       await BlogDB.instance.insertBlog(blog).then((value) {
         BlogDB.instance.blogsallNotifier.notifyListeners();
@@ -94,7 +94,7 @@ class PopupScreen extends StatelessWidget {
                     ),
                     Column(
                       children: List.generate(
-                        value.countImage,
+                        countImage,
                         (index) {
                           return Visibility(
                             child: Row(
@@ -108,9 +108,9 @@ class PopupScreen extends StatelessWidget {
                                       color: Colors.black,
                                       borderRadius: BorderRadius.circular(20),
                                       image: DecorationImage(
-                                        image: index < value.images.length
+                                        image: index < _images.length
                                             ? FileImage(
-                                                File(value.images[index]),
+                                                File(_images[index]),
                                               )
                                             : FileImage(
                                                 File(" "),
@@ -124,10 +124,11 @@ class PopupScreen extends StatelessWidget {
                                   children: [
                                     IconButton(
                                       onPressed: () {
-                                        value.decreaseCount(index);
-                                        // setState(() {
-                                        //   countImage--;
-                                        // });
+                                        // value.decreaseCount(index);
+                                        setState(() {
+                                          _images.removeAt(index);
+                                          countImage--;
+                                        });
                                       },
                                       icon: Icon(
                                         Icons.remove,
@@ -142,8 +143,8 @@ class PopupScreen extends StatelessWidget {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        value.buttomSheet(context, true);
-                                        // buttomSheet(context);
+                                        // value.buttomSheet(context, true);
+                                        buttomSheet(context);
                                       },
                                       icon: Icon(
                                         Icons.add,
@@ -166,10 +167,10 @@ class PopupScreen extends StatelessWidget {
                     ),
                     TextButton.icon(
                       onPressed: () {
-                        value.increament();
-                        // setState(() {
-                        //   countImage++;
-                        // });
+                        // value.increament();
+                        setState(() {
+                          countImage++;
+                        });
                       },
                       icon: const Icon(
                         Icons.add_a_photo,
@@ -247,6 +248,90 @@ class PopupScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void addImage(String imagePath) {
+    _images.add(imagePath);
+  }
+
+  buttomSheet(BuildContext context) {
+    num width = MediaQuery.of(context).size.width;
+    num height = MediaQuery.of(context).size.height;
+    return showBottomSheet(
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          width: width / 1,
+          height: height / 5,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Select the image source",
+                  style: GoogleFonts.abel(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton.icon(
+                    onPressed: () async {
+                      XFile? img = await ImagePicker().pickImage(
+                        source: ImageSource.camera,
+                      );
+                      // image = img;
+
+                      if (img != null) {
+                        addImage(img.path);
+                      }
+
+                      // setState(() {
+                      //   image = img;
+                      // });
+                      // _profilePicturePath = img!.path;
+
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.camera),
+                    label: const Text("Camera"),
+                  ),
+                  TextButton.icon(
+                    onPressed: () async {
+                      XFile? img = await ImagePicker().pickImage(
+                        source: ImageSource.gallery,
+                      );
+
+                      if (img != null) {
+                        addImage(img.path);
+                      }
+
+                      // image = img;
+                      // setState(() {
+                      //   image = img;
+                      // });
+                      // if (img != null) {
+                      //   addImage(img.path);
+                      // }
+                      // _profilePicturePath = img!.path;
+
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.image),
+                    label: const Text("Galley"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

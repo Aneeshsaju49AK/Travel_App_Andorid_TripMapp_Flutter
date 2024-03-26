@@ -23,8 +23,9 @@ class TabBarListWidget extends StatefulWidget {
 }
 
 class _TabBarListWidgetState extends State<TabBarListWidget> {
-  List<bool> showFullText =
-      List.filled(PlacesDB.instance.placeListNotifier.value.length, false);
+  // List<bool> showFullText =
+  //     List.filled(PlacesDB.instance.placeListNotifier.value.length, false);
+  bool showFullText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -110,18 +111,19 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                showFullText[index] = !showFullText[index];
+                                showFullText = !showFullText;
                               });
                             },
                             child: Container(
                               child: placeList[index].placeName != null
                                   ? FittedBox(
                                       child: Text(
-                                        placeList[index].placeName!.length <= 8
+                                        // placeList[index].placeName!.length <= 15
+                                        //     ? "${placeList[index].placeName}"
+                                        //     : showFullText
+                                        showFullText
                                             ? "${placeList[index].placeName}"
-                                            : showFullText[index]
-                                                ? "${placeList[index].placeName}"
-                                                : "${placeList[index].placeName!.substring(0, 6)}...",
+                                            : "${placeList[index].placeName!.substring(0, 6)}...",
                                         style: GoogleFonts.abel(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,

@@ -188,6 +188,36 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                   ValueListenableBuilder(
                     valueListenable: ProfileDB.userListNotifier,
                     builder: (context, value, _) {
+                      if (value.isEmpty) {
+                        return SizedBox(
+                          width: width / 1,
+                          height: height / 1.6,
+                          child: Column(
+                            children: [
+                              TextFieldWidget(
+                                label: "Name",
+                                validator: validateName,
+                                controller: nameController,
+                              ),
+                              TextFieldWidget(
+                                label: "Email",
+                                validator: validateEmail,
+                                controller: emailController,
+                              ),
+                              TextFieldWidget(
+                                label: "User Name",
+                                validator: validateUserName,
+                                controller: userNameController,
+                              ),
+                              TextFieldWidget(
+                                label: "Phone",
+                                validator: validatePhone,
+                                controller: phoneController,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                       ProfileModels pro = value[0];
                       nameController.text = pro.name ?? '';
                       emailController.text = pro.email ?? "";
@@ -218,6 +248,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                               label: "Phone",
                               validator: validatePhone,
                               controller: phoneController,
+                              keyboardType: TextInputType.phone,
                             ),
                           ],
                         ),
@@ -335,8 +366,11 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                         image = img;
                       });
                       _profilePicturePath = image!.path;
-                      ProfileDB.userListNotifier.value[0].profilePicturePath =
-                          image!.path;
+                      if (ProfileDB.userListNotifier.value.isNotEmpty) {
+                        ProfileDB.userListNotifier.value[0].profilePicturePath =
+                            image!.path;
+                      }
+
                       Navigator.pop(context);
                     },
                     icon: const Icon(Icons.image),
