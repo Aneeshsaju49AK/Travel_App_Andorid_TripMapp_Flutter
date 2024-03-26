@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tripmakerflutterapp/controller/firebase_controller/firebase_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/category_place.dart';
@@ -12,41 +13,43 @@ import 'package:tripmakerflutterapp/view/widget/common_widget/populatList_folder
 
 class SilderViewWidget extends StatelessWidget {
   SilderViewWidget({super.key});
-
   final List<CategoryDataOption> categories = [
     CategoryDataOption(
       title: "Hill Stations",
       imagePath: "asset/imges/categies_img/pexels-mikhail-nilov-8321369.jpg",
       placeListNotifierSilderWidget:
-          PlacesDB.instance.hillStationCatrgoryListNotifier,
+          ControllerFirebase.instance.hillStationCatrgoryListNotifier,
     ),
     CategoryDataOption(
       title: "Monuments",
       imagePath: "asset/imges/categies_img/pexels-setu-chhaya-9455189.jpg",
       placeListNotifierSilderWidget:
-          PlacesDB.instance.momumentsCategoryListNotifier,
+          ControllerFirebase.instance.momumentsCategoryListNotifier,
     ),
     CategoryDataOption(
       title: "Waterfalls",
       imagePath: "asset/imges/categies_img/pexels-aleksey-kuprikov-3715436.jpg",
       placeListNotifierSilderWidget:
-          PlacesDB.instance.waterfallsCategoryListNotifier,
+          ControllerFirebase.instance.waterfallsCategoryListNotifier,
     ),
     CategoryDataOption(
       title: "Forests",
       imagePath: "asset/imges/categies_img/pexels-veeterzy-38136.jpg",
-      placeListNotifierSilderWidget: PlacesDB.instance.forestsCategoryNotifier,
+      placeListNotifierSilderWidget:
+          ControllerFirebase.instance.forestsCategoryNotifier,
     ),
     CategoryDataOption(
       title: "Beaches",
       imagePath:
           "asset/imges/categies_img/pexels-asad-photo-maldives-1450372.jpg",
-      placeListNotifierSilderWidget: PlacesDB.instance.beachCategoryNotifier,
+      placeListNotifierSilderWidget:
+          ControllerFirebase.instance.beachCategoryNotifier,
     ),
     CategoryDataOption(
       title: "Deserts",
       imagePath: "asset/imges/categies_img/pexels-denys-gromov-13252308.jpg",
-      placeListNotifierSilderWidget: PlacesDB.instance.desertsCategoryNotifier,
+      placeListNotifierSilderWidget:
+          ControllerFirebase.instance.lakeCategoryNotifier,
     ),
   ];
 
@@ -136,9 +139,13 @@ class CategoryDataOption {
   final String title;
   final String imagePath;
   final ValueNotifier<List<ModelPlace>> placeListNotifierSilderWidget;
+  void initvalue() {
+    ControllerFirebase.instance.fetchPlaces();
+  }
 
-  CategoryDataOption(
-      {required this.title,
-      required this.imagePath,
-      required this.placeListNotifierSilderWidget});
+  CategoryDataOption({
+    required this.title,
+    required this.imagePath,
+    required this.placeListNotifierSilderWidget,
+  });
 }

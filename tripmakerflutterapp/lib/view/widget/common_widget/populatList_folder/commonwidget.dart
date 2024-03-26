@@ -51,7 +51,19 @@ class PopularListViewWidget extends StatelessWidget {
                           SizedBox(
                             width: width / 1,
                             height: height / 1,
-                            child: value.getImageWidget(place.images![0]),
+                            child: Image.network(
+                              place.images![0],
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.2),
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -63,6 +75,7 @@ class PopularListViewWidget extends StatelessWidget {
                               style: GoogleFonts.abel(
                                 fontSize: 30,
                                 fontWeight: FontWeight.w800,
+                                color: Colors.white,
                               ),
                             ),
                           ),

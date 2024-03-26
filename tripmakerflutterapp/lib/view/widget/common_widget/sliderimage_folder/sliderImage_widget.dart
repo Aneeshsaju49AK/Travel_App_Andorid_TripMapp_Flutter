@@ -63,12 +63,12 @@ class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
                     height: height / 2,
                     width: width / 1,
                     child: imagePath[index].startsWith("asset/")
-                        ? Image.asset(
+                        ? Image.network(
                             imagePath[index],
                             fit: BoxFit.fill,
                           )
-                        : Image.file(
-                            File(imagePath[index]),
+                        : Image.network(
+                            imagePath[index],
                             fit: BoxFit.fill,
                           ),
                   );
