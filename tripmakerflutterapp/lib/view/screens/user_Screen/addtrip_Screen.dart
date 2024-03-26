@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tripmakerflutterapp/controller/firebase_controller/firebase_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
@@ -7,9 +8,21 @@ import 'package:tripmakerflutterapp/view/widget/common_widget/search_folder/sear
 
 import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
-class AddTripScreen extends StatelessWidget {
+class AddTripScreen extends StatefulWidget {
   final void Function(ModelPlace)? onPlace;
   AddTripScreen({this.onPlace, super.key});
+
+  @override
+  State<AddTripScreen> createState() => _AddTripScreenState();
+}
+
+class _AddTripScreenState extends State<AddTripScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    handleSearch(searchQuery);
+  }
 
   String searchQuery = "";
 
@@ -63,7 +76,7 @@ class AddTripScreen extends StatelessWidget {
                     placeListNotifierPopular: filteredList,
                     onPlaceSelected: (selectedPlace) {
                       // Handle the selected place here
-                      onPlace?.call(selectedPlace);
+                      widget.onPlace?.call(selectedPlace);
                       // print("Selected place: ${selectedPlace.placeName}");
                     },
                   ),
@@ -79,7 +92,7 @@ class AddTripScreen extends StatelessWidget {
   void handleSearch(String searchText) {
     searchQuery = searchText;
 
-    final placeList = PlacesDB.instance.placeListNotifier.value;
+    final placeList = ControllerFirebase.placeListNotifier.value;
 
     if (searchText.isEmpty) {
       filteredList.value = placeList;

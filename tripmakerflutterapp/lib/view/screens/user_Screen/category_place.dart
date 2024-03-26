@@ -7,10 +7,22 @@ import 'package:tripmakerflutterapp/view/widget/common_widget/search_folder/sear
 
 import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
-class TypePlaceScreen extends StatelessWidget {
+class TypePlaceScreen extends StatefulWidget {
   final ValueNotifier<List<ModelPlace>> placeListNotifierTypePlace;
   TypePlaceScreen({required this.placeListNotifierTypePlace, Key? key})
       : super(key: key);
+
+  @override
+  State<TypePlaceScreen> createState() => _TypePlaceScreenState();
+}
+
+class _TypePlaceScreenState extends State<TypePlaceScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    handleSearch.call(searchQuery);
+  }
 
   String searchQuery = "";
 
@@ -63,7 +75,7 @@ class TypePlaceScreen extends StatelessWidget {
                   height: height / 1.5,
                   child: PopularListViewWidget(
                     placeListNotifierPopular:
-                        placeListNotifierTypePlace ?? filteredList,
+                        filteredList ?? widget.placeListNotifierTypePlace,
                   ),
                 ),
               ],
@@ -77,7 +89,7 @@ class TypePlaceScreen extends StatelessWidget {
   void handleSearch(String searchText) {
     searchQuery = searchText;
 
-    final placeList = placeListNotifierTypePlace.value;
+    final placeList = widget.placeListNotifierTypePlace.value;
 
     if (searchText.isEmpty) {
       filteredList.value = placeList;

@@ -139,9 +139,6 @@ class CategoryDataOption {
   final String title;
   final String imagePath;
   final ValueNotifier<List<ModelPlace>> placeListNotifierSilderWidget;
-  void initvalue() {
-    ControllerFirebase.instance.fetchPlaces();
-  }
 
   CategoryDataOption({
     required this.title,
