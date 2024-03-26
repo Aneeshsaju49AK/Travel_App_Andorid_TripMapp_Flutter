@@ -26,7 +26,8 @@ class TabViewProvider extends ChangeNotifier {
     );
     _pageController.addListener(() {
       _currentIndex = _pageController.page!;
+      notifyListeners();
     });
-    notifyListeners();
+    // notifyListeners();
   }
 }

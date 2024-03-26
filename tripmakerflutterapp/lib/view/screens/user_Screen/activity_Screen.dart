@@ -262,14 +262,12 @@ class ActivityScreenWidget extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showBottomSheet(
-            context: context,
-            builder: (context) {
-              return PopScreenAddTrip();
-            },
-          );
-        },
+        onPressed: () => showBottomSheet(
+          context: context,
+          builder: (context) {
+            return PopScreenAddTrip();
+          },
+        ),
         child: const Icon(
           Icons.add,
         ),

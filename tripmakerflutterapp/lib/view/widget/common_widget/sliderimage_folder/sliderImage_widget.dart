@@ -18,27 +18,27 @@ class SliderImageViewWidget extends StatefulWidget {
 }
 
 class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
-  late PageController _pageController;
-  double _currentIndex = 0;
+  // late PageController _pageController;
+  // double _currentIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(
-      initialPage: 0,
-    );
-    _pageController.addListener(() {
-      setState(() {
-        _currentIndex = _pageController.page!;
-      });
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _pageController = PageController(
+  //     initialPage: 0,
+  //   );
+  //   _pageController.addListener(() {
+  //     setState(() {
+  //       _currentIndex = _pageController.page!;
+  //     });
+  //   });
+  // }
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _pageController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,13 +62,13 @@ class _SliderImageViewWidgetState extends State<SliderImageViewWidget> {
                   return SizedBox(
                     height: height / 2,
                     width: width / 1,
-                    child: imagePath[index].startsWith("asset/")
+                    child: imagePath[index].startsWith("https://")
                         ? Image.network(
                             imagePath[index],
                             fit: BoxFit.fill,
                           )
-                        : Image.network(
-                            imagePath[index],
+                        : Image.file(
+                            File(imagePath[index]),
                             fit: BoxFit.fill,
                           ),
                   );

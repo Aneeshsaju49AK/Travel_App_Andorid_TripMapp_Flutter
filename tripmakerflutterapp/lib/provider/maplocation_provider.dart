@@ -9,12 +9,12 @@ class MapLocationProvider extends ChangeNotifier {
   ModelPlace get currentPlace => _currentPlace;
   void initValue(ModelPlace place) {
     _currentPlace = place;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void checkIsFavorite(bool isFavoriteWidget) {
     _isFavorite = isFavoriteWidget;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void changeValue() {

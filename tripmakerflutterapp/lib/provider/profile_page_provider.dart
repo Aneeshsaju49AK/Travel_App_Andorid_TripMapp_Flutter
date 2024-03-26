@@ -67,7 +67,7 @@ class ProfilePageProvider extends ChangeNotifier {
 
   String? get profilePicturePath => _profilePicturePath;
   List<String> get images {
-    notifyListeners();
+    // notifyListeners();
     return _images;
   }
 

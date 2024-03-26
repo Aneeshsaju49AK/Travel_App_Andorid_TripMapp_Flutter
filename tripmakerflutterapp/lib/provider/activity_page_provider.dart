@@ -6,7 +6,7 @@ class ActivityPageProvider extends ChangeNotifier {
   //to refresh the hive database valueNotifier
   void reFreshListUI() {
     AddtripDB.instance.refreshListUI();
-    notifyListeners();
+    // notifyListeners();
   }
 
   //to pick the date

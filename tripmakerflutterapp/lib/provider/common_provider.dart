@@ -22,7 +22,6 @@ class CommonProvider extends ChangeNotifier {
         fit: BoxFit.cover,
       );
     } else {
-      notifyListeners();
       return Image.file(
         File(imagePath),
         fit: BoxFit.cover,
