@@ -83,13 +83,13 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                       clipBehavior: Clip.antiAlias,
                       children: [
                         place.images![0].startsWith("asset/")
-                            ? Image.asset(
+                            ? Image.network(
                                 place.images![0],
                                 fit: BoxFit.fill,
                                 filterQuality: FilterQuality.high,
                               )
-                            : Image.file(
-                                File(place.images![0]),
+                            : Image.network(
+                                place.images![0],
                                 fit: BoxFit.fill,
                                 filterQuality: FilterQuality.high,
                               ),

@@ -67,7 +67,7 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
           ControllerFirebase.instance.fetchPlaces();
 
           return ValueListenableBuilder(
-            valueListenable: ControllerFirebase.placeListNotifier,
+            valueListenable: ControllerFirebase.instance.lakeCategoryNotifier,
             builder: (context, value, child) {
               return ListView.builder(
                 itemCount: value.length,
