@@ -11,10 +11,11 @@ class NavigationBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     List<NavigationItem> items = [
       NavigationItem(
-          iconPath: "asset/imges/navigation_img/home-icon-silhouette.png"),
+        iconPath: "asset/imges/mayor.png",
+      ),
       NavigationItem(iconPath: "asset/imges/navigation_img/location.png"),
-      NavigationItem(iconPath: "asset/imges/navigation_img/calendar.png"),
-      NavigationItem(iconPath: "asset/imges/navigation_img/eye.png"),
+      NavigationItem(iconPath: "asset/imges/author.png"),
+      NavigationItem(iconPath: "asset/imges/director.png"),
     ];
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -39,6 +40,7 @@ class NavigationBarWidget extends StatelessWidget {
                     child: Image.asset(
                       items[index].iconPath,
                       color: Colors.blue,
+                      scale: 10,
                     ),
                   ),
                 ),

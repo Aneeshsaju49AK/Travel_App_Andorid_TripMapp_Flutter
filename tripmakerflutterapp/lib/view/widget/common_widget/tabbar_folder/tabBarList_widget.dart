@@ -73,7 +73,7 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
                     ),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(18),
                     child: Stack(
                       fit: StackFit.expand,
                       clipBehavior: Clip.antiAlias,

@@ -74,7 +74,7 @@ class PopularListViewWidget extends StatelessWidget {
                                   left: 30,
                                 ),
                                 child: FittedBox(
-                                  child: Container(
+                                  child: SizedBox(
                                     height: 100,
                                     width: 250,
                                     child: SingleChildScrollView(
@@ -90,8 +90,9 @@ class PopularListViewWidget extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              IconButton(
-                                onPressed: () {
+
+                              InkWell(
+                                onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -100,12 +101,28 @@ class PopularListViewWidget extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                icon: Icon(
-                                  Icons.remove_red_eye_rounded,
-                                  size: 30,
+                                child: Image.asset(
+                                  "asset/imges/approve.png",
+                                  scale: 7,
+                                  color: Colors.white,
                                 ),
-                                color: Colors.white,
-                              ),
+                              )
+                              // IconButton(
+                              //   onPressed: () {
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             DetailsScreen(place: place),
+                              //       ),
+                              //     );
+                              //   },
+                              //   icon: const Icon(
+                              //     Icons.remove_red_eye_rounded,
+                              //     size: 30,
+                              //   ),
+                              //   color: Colors.white,
+                              // ),
                             ],
                           ),
                         ],

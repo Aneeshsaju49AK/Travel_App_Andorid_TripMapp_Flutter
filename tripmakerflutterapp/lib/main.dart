@@ -147,6 +147,9 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             brightness:
                 darkmodeProvider.value ? Brightness.dark : Brightness.light,
+            textTheme: darkmodeProvider.value
+                ? ThemeData.dark().textTheme
+                : ThemeData.light().textTheme,
           ),
           debugShowCheckedModeBanner: false,
           home: const SplashScreen(),

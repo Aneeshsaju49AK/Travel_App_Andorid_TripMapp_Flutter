@@ -75,10 +75,9 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
                 itemBuilder: (context, index) {
                   ModelPlace place = value[index];
                   // print("${place.id}");
-                  return Container(
+                  return SizedBox(
                     height: 300,
                     width: 300,
-                    color: Colors.amber,
                     child: Stack(children: [
                       Container(
                         decoration: BoxDecoration(

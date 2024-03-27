@@ -51,7 +51,7 @@ class _PopupScreenState extends State<PopupScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('User added successfully'),
-          backgroundColor: Colors.green[200],
+          backgroundColor: Colors.blue[200],
           duration: const Duration(seconds: 3),
         ),
       );

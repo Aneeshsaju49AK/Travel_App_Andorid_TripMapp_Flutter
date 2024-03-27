@@ -55,12 +55,20 @@ class ActivityScreenWidget extends StatelessWidget {
                   builder: (context, valueList, _) {
                     if (valueList.isEmpty) {
                       return Center(
-                        child: Text(
-                          "No trip is planned",
-                          style: GoogleFonts.abel(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        child: Column(
+                          children: [
+                            Text(
+                              "No trip is planned",
+                              style: GoogleFonts.abel(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Image.asset(
+                              "asset/imges/emoji.png",
+                              scale: 3,
+                            ),
+                          ],
                         ),
                       );
                     }

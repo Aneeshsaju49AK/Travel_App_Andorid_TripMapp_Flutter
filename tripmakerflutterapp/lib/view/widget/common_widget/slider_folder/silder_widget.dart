@@ -68,6 +68,7 @@ class SilderViewWidget extends StatelessWidget {
                     builder: (context) => TypePlaceScreen(
                       placeListNotifierTypePlace:
                           categories[index].placeListNotifierSilderWidget,
+                      categoryname: categories[index].title,
                     ),
                   ),
                 );
@@ -101,9 +102,7 @@ class SilderViewWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  Positioned(
-                    top: 90,
-                    left: 10,
+                  Center(
                     child: Text(
                       categories[index].title,
                       style: GoogleFonts.abel(

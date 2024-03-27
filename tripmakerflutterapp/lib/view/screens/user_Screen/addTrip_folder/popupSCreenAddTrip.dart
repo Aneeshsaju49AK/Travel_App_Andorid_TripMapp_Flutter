@@ -38,15 +38,15 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
         selectedPlace: place,
       );
       await AddtripDB.instance.insertAddtrip(trip);
+
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text("Place added successfully"),
-          backgroundColor: Colors.green[200],
+          backgroundColor: Colors.blue[200],
           duration: const Duration(seconds: 3),
         ),
       );
-
-      Navigator.pop(context);
     }
   }
 
@@ -147,7 +147,7 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
                   ),
                   Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Text(
@@ -190,7 +190,7 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
                   ),
                   Row(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Text(

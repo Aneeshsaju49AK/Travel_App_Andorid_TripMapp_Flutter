@@ -64,12 +64,21 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                     builder: (context, valueList, _) {
                       if (valueList.isEmpty) {
                         return Center(
-                          child: Text(
-                            "No blogs is planned",
-                            style: GoogleFonts.abel(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "No blogs is planned",
+                                style: GoogleFonts.abel(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Image.asset(
+                                "asset/imges/emoji.png",
+                                scale: 3,
+                              ),
+                            ],
                           ),
                         );
                       }

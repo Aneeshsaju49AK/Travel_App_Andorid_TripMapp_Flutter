@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => DrawerScreen(),
+                                  builder: (context) => const DrawerScreen(),
                                 ),
                               );
                             },
@@ -225,15 +225,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => FavoritePage(),
+                                          builder: (context) =>
+                                              const FavoritePage(),
                                         ),
                                       );
                                     },
-                                    child: const Icon(
-                                      Icons.favorite,
-                                      size: 40,
-                                      color: Colors.red,
+                                    child: Image.asset(
+                                      "asset/imges/diamond.png",
+                                      scale: 13,
                                     ),
+                                    //  const Icon(
+                                    //   Icons.favorite,
+                                    //   size: 40,
+                                    //   color: Colors.red,
+                                    // ),
                                   ),
                                 ),
                                 SizedBox(
@@ -251,7 +256,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                           //   islocationwidget: false,
                                           // ),
 
-                                          const Icon(Icons.location_pin),
+                                          // const Icon(Icons.location_pin),
+                                          Image.asset(
+                                            "asset/imges/tour-guide.png",
+                                            scale: 15,
+                                          ),
                                           MapLocation(
                                             islocationWidget: true,
                                             location: _currentPosition,

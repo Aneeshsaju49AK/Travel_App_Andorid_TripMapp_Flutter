@@ -9,7 +9,11 @@ import '../../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class TypePlaceScreen extends StatefulWidget {
   final ValueNotifier<List<ModelPlace>> placeListNotifierTypePlace;
-  const TypePlaceScreen({required this.placeListNotifierTypePlace, Key? key})
+  String categoryname;
+  TypePlaceScreen(
+      {required this.placeListNotifierTypePlace,
+      required this.categoryname,
+      Key? key})
       : super(key: key);
 
   @override
@@ -20,6 +24,7 @@ class _TypePlaceScreenState extends State<TypePlaceScreen> {
   @override
   void initState() {
     super.initState();
+
     handleSearch.call(searchQuery);
   }
 
@@ -42,7 +47,7 @@ class _TypePlaceScreenState extends State<TypePlaceScreen> {
               children: [
                 Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(
                         top: 45,
                         left: 12,
@@ -53,7 +58,7 @@ class _TypePlaceScreenState extends State<TypePlaceScreen> {
                       ),
                     ),
                     HeadWritingWidget(
-                      label: "Category",
+                      label: widget.categoryname,
                       divideHeight: 9,
                       divideWidth: 1.2,
                     ),
