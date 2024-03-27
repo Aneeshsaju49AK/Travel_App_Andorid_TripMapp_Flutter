@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/firebase_controller/firebase_controller.dart';
 import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
-import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
-import 'package:tripmakerflutterapp/view/widget/common_widget/populatList_folder/commonwidget.dart';
+import 'package:tripmakerflutterapp/provider/darkmode_page_provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/tabbar_folder/tabBarList_widget.dart';
 
 class TabViewWidget extends StatefulWidget {

@@ -1,17 +1,12 @@
 /* this widget is used for the main view in TabBar 
   also enable the listview builder
  */
-import 'dart:io';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/firebase_controller/firebase_controller.dart';
-import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/details_folder/details_Screen.dart';
 
 class TabBarListWidget extends StatefulWidget {
   final ValueNotifier<List<ModelPlace>> placeListNotifierCommon;
@@ -29,12 +24,12 @@ class _TabBarListWidgetState extends State<TabBarListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<MapLocationProvider>(context);
+    // final auth = Provider.of<MapLocationProvider>(context);
     ControllerFirebase.instance.fetchPlaces();
     return ValueListenableBuilder<List<ModelPlace>>(
       valueListenable: ControllerFirebase.placeListNotifier,
       builder: (context, placeList, _) {
-        print("placeList.length ${placeList.length}");
+        // print("placeList.length ${placeList.length}");
         return ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: min(5, placeList.length),

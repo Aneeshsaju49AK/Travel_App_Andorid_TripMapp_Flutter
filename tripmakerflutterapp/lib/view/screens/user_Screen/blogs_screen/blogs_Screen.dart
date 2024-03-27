@@ -5,14 +5,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
-import 'package:tripmakerflutterapp/provider/common_provider.dart';
-import 'package:tripmakerflutterapp/provider/profile_page_provider.dart';
-import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_screen/blogs_sceen.dart';
+import 'package:tripmakerflutterapp/provider/common_page_provider/common_provider.dart';
+import 'package:tripmakerflutterapp/provider/profile_page_provider/profile_page_provider.dart';
+import 'package:tripmakerflutterapp/provider/darkmode_page_provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/roundButton_folder/roundButton_widget.dart';
 
 class PopupScreen extends StatefulWidget {
-  PopupScreen({super.key});
+  const PopupScreen({super.key});
 
   @override
   State<PopupScreen> createState() => _PopupScreenState();
@@ -27,13 +26,12 @@ class _PopupScreenState extends State<PopupScreen> {
 
   TextEditingController contentController = TextEditingController();
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-
-  //   nameController.dispose();
-  //   contentController.dispose();
-  // }
+  @override
+  void dispose() {
+    nameController.dispose();
+    contentController.dispose();
+    super.dispose();
+  }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -49,7 +47,7 @@ class _PopupScreenState extends State<PopupScreen> {
       await BlogDB.instance.insertBlog(blog).then((value) {
         BlogDB.instance.blogsallNotifier.notifyListeners();
       });
-
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('User added successfully'),
@@ -57,7 +55,6 @@ class _PopupScreenState extends State<PopupScreen> {
           duration: const Duration(seconds: 3),
         ),
       );
-      Navigator.pop(context);
     }
   }
 

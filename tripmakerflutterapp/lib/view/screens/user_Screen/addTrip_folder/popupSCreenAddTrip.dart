@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/addTrip_model/addTrip_model_controller.dart';
 import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/provider/activity_page_provider.dart';
-import 'package:tripmakerflutterapp/provider/common_provider.dart';
-import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/addtrip_Screen.dart';
+import 'package:tripmakerflutterapp/provider/activity_page_provider/activity_page_provider.dart';
+import 'package:tripmakerflutterapp/provider/common_page_provider/common_provider.dart';
+import 'package:tripmakerflutterapp/provider/darkmode_page_provider/darkMode_provider.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/search_folder/addtrip_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/roundButton_folder/roundButton_widget.dart';
 
 class PopScreenAddTrip extends StatefulWidget {
@@ -116,7 +116,7 @@ class _PopScreenAddTripState extends State<PopScreenAddTrip> {
                               child:
                                   authProviderCommonProvider.getImageWidgetUrl(
                                 place?.images?.isEmpty ?? true
-                                    ? "asset/imges/pexels-photo-4220967.jpeg"
+                                    ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXKxcfMgVngAo6Qv2z9RfFAVSCVE5LnHkRxw&usqp=CAU"
                                     : place!.images![0],
                               ),
                             ),

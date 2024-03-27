@@ -4,19 +4,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/provider/common_provider.dart';
-import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
+import 'package:tripmakerflutterapp/provider/common_page_provider/common_provider.dart';
+import 'package:tripmakerflutterapp/provider/favorite_page_provider/favorite_page_provider.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/details_folder/details_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/headWwite_widget/headwrite_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/heartButton_folder/heartbutton_widget.dart';
+import '../../../widget/common_widget/search_folder/search_widget.dart';
 
-import '../../widget/common_widget/populatList_folder/commonwidget.dart';
-import '../../widget/common_widget/search_folder/search_widget.dart';
+class FavoritePage extends StatefulWidget {
+  const FavoritePage({super.key});
 
-class FavoritePage extends StatelessWidget {
-  FavoritePage({super.key});
+  @override
+  State<FavoritePage> createState() => _FavoritePageState();
+}
 
+class _FavoritePageState extends State<FavoritePage> {
   String searchQuery = "";
 
   late ModelPlace currentPlace;
@@ -25,7 +28,6 @@ class FavoritePage extends StatelessWidget {
   ValueNotifier<List<ModelPlace>> filteredList = ValueNotifier([]);
 
   // @override
-
   @override
   Widget build(BuildContext context) {
     Provider.of<FavoriteButton>(context).callRefreshUi;
@@ -41,7 +43,7 @@ class FavoritePage extends StatelessWidget {
             height: height / 1,
             child: Column(
               children: [
-                Row(
+                const Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(

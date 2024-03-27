@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
+import 'package:tripmakerflutterapp/provider/darkmode_page_provider/darkMode_provider.dart';
 
 class CircleAvatarWidget extends StatelessWidget {
   final double radius;

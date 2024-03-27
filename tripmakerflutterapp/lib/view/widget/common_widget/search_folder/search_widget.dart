@@ -1,9 +1,7 @@
 /*this widet is used to build the search bar
 maimly in the home and search page */
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tripmakerflutterapp/provider/searchwidget_provider.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/home_folder/home_Screen.dart';
 
 // class SearchWidget extends StatelessWidget {
 //   final bool isNavigation;

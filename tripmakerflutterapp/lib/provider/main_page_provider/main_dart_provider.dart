@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/home_folder/home_Screen.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/login_folder/loginpage.dart';
 
 class ProviderMainPage with ChangeNotifier {
   final emailController = TextEditingController();

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
+import 'package:tripmakerflutterapp/provider/maplocation_page_provider/maplocation_provider.dart';
 
 class HeartButtonWidget extends StatelessWidget {
   final double sizeOfImage;

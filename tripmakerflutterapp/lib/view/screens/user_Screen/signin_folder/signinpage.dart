@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tripmakerflutterapp/provider/common_provider.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/loginpage.dart';
+import 'package:tripmakerflutterapp/provider/common_page_provider/common_provider.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/login_folder/loginpage.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/buttonCommon_widget/buttonCommon_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/headWwite_widget/headwrite_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/texiField_widget/textfield_widget.dart';
-
-import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});

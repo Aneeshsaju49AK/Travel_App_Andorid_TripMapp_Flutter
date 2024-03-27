@@ -6,10 +6,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tripmakerflutterapp/controller/firebase_controller/firebase_controller.dart';
-import 'package:tripmakerflutterapp/controller/place_model/place_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/category_place.dart';
-import 'package:tripmakerflutterapp/view/widget/common_widget/populatList_folder/commonwidget.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/category_folder/category_place.dart';
 
 class SilderViewWidget extends StatelessWidget {
   SilderViewWidget({super.key});

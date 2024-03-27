@@ -3,20 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/addTrip_model/addTrip_model_controller.dart';
 import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
-import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/provider/activity_page_provider.dart';
-import 'package:tripmakerflutterapp/provider/common_provider.dart';
-
-import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
+import 'package:tripmakerflutterapp/provider/activity_page_provider/activity_page_provider.dart';
+import 'package:tripmakerflutterapp/provider/common_page_provider/common_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/addTrip_folder/popupSCreenAddTrip.dart';
-
-import 'package:tripmakerflutterapp/view/screens/user_Screen/addtrip_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/headWwite_widget/headwrite_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/heartButton_folder/heartbutton_widget.dart';
-import 'package:tripmakerflutterapp/view/widget/common_widget/roundButton_folder/roundButton_widget.dart';
-
-import '../../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class ActivityScreenWidget extends StatelessWidget {
   const ActivityScreenWidget({super.key});
@@ -120,7 +112,7 @@ class ActivityScreenWidget extends StatelessWidget {
                                   child: SizedBox(
                                     width: width / 1.5,
                                     child: FittedBox(
-                                        child: Container(
+                                        child: SizedBox(
                                       height: 200,
                                       width: 200,
                                       child: Text(
@@ -140,7 +132,7 @@ class ActivityScreenWidget extends StatelessWidget {
                                   child: SizedBox(
                                     width: width / 1.5,
                                     child: FittedBox(
-                                        child: Container(
+                                        child: SizedBox(
                                       height: 200,
                                       width: 200,
                                       child: Text(

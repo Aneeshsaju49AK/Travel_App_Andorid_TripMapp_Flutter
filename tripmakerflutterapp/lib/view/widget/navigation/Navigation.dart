@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/home_folder/home_Screen.dart';
 
 /* This class is for making the navigation possible through
 the ValueListenerBuilder the no need to navigator.push */

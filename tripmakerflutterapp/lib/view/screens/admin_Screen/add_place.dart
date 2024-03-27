@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,8 +11,6 @@ import 'package:tripmakerflutterapp/view/screens/admin_Screen/update_admin_page.
 import 'package:tripmakerflutterapp/view/widget/common_widget/roundButton_folder/roundButton_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/search_folder/search_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/texiField_widget/textfield_widget.dart';
-
-import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class AddPlaceAdmin extends StatefulWidget {
   const AddPlaceAdmin({Key? key}) : super(key: key);
@@ -227,7 +224,7 @@ class _AddPlaceAdminState extends State<AddPlaceAdmin> {
                                                 }),
                                               );
                                             },
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.update,
                                               color: Colors.green,
                                             ),

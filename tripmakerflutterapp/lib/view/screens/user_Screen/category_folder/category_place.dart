@@ -5,11 +5,11 @@ import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/
 import 'package:tripmakerflutterapp/view/widget/common_widget/headWwite_widget/headwrite_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/search_folder/search_widget.dart';
 
-import '../../widget/common_widget/populatList_folder/commonwidget.dart';
+import '../../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class TypePlaceScreen extends StatefulWidget {
   final ValueNotifier<List<ModelPlace>> placeListNotifierTypePlace;
-  TypePlaceScreen({required this.placeListNotifierTypePlace, Key? key})
+  const TypePlaceScreen({required this.placeListNotifierTypePlace, Key? key})
       : super(key: key);
 
   @override
@@ -19,7 +19,6 @@ class TypePlaceScreen extends StatefulWidget {
 class _TypePlaceScreenState extends State<TypePlaceScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     handleSearch.call(searchQuery);
   }

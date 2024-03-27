@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:tripmakerflutterapp/provider/maplocation_provider.dart';
+import 'package:tripmakerflutterapp/provider/maplocation_page_provider/maplocation_provider.dart';
 
 class MapLocation extends StatelessWidget {
   final bool? islocationWidget;

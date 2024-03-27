@@ -4,18 +4,15 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
-import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/about_Screen.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/home_Screen.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/profile_Screen.dart';
+import 'package:tripmakerflutterapp/provider/darkmode_page_provider/darkMode_provider.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/about_folder/about_Screen.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/home_folder/home_Screen.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/profile_folder/profile_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/circleAvatar_folder/circleAvatar_widget.dart';
-import 'package:tripmakerflutterapp/view/widget/common_widget/firebase_folder/firebase_convert.dart';
-
-import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class DrawerScreen extends StatefulWidget {
-  DrawerScreen({Key? key}) : super(key: key);
+  const DrawerScreen({Key? key}) : super(key: key);
 
   @override
   State<DrawerScreen> createState() => _DrawerScreenState();
@@ -24,7 +21,6 @@ class DrawerScreen extends StatefulWidget {
 class _DrawerScreenState extends State<DrawerScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     ProfileDB.instance.reFreshUIProfile();
   }
@@ -49,15 +45,15 @@ class _DrawerScreenState extends State<DrawerScreen> {
           color: Colors.white,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
+              const Padding(
+                padding: EdgeInsets.only(
                   top: 30,
                   right: 80,
                 ),
                 child: BackButtonWidget(sizeOfImage: 30, isCHecked: true),
               ),
               Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: 40,
                 ),
                 child: SizedBox(

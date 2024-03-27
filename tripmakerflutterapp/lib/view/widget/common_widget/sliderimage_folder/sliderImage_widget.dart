@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tripmakerflutterapp/provider/tab_view_provider.dart';
+import 'package:tripmakerflutterapp/provider/tabview_page_provider/tab_view_provider.dart';
 
 class SliderImageViewWidget extends StatefulWidget {
   final List<String> imagePathList;

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:tripmakerflutterapp/controller/addTrip_model/addTrip_model_controller.dart';
 import 'package:tripmakerflutterapp/controller/blog_model/blog_model_controller.dart';
-import 'package:tripmakerflutterapp/model/addTrip_model/addTrip_model.dart';
 import 'package:tripmakerflutterapp/model/blog_model/blog_model.dart';
-import 'package:tripmakerflutterapp/provider/common_provider.dart';
-import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
+import 'package:tripmakerflutterapp/provider/common_page_provider/common_provider.dart';
+import 'package:tripmakerflutterapp/provider/darkmode_page_provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_screen/blogView_screen.dart';
-
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_screen/blogs_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/headWwite_widget/headwrite_widget.dart';
@@ -34,7 +31,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
             width: width / 1,
             child: Column(
               children: [
-                Row(
+                const Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
@@ -53,9 +50,9 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                     ),
                   ],
                 ),
-                SingleChildScrollView(
+                const SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: const SizedBox(
+                  child: SizedBox(
                     height: 40,
                   ),
                 ),
@@ -68,7 +65,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                       if (valueList.isEmpty) {
                         return Center(
                           child: Text(
-                            "No trip is planned",
+                            "No blogs is planned",
                             style: GoogleFonts.abel(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
@@ -193,12 +190,12 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                                       child: SizedBox(
                                         width: width / 1.5,
                                         child: FittedBox(
-                                            child: Container(
+                                            child: SizedBox(
                                           width: width / 2,
                                           child: Text(
                                             blog.name!,
                                             style: GoogleFonts.abel(
-                                              color: Color.fromARGB(
+                                              color: const Color.fromARGB(
                                                   255, 221, 232, 230),
                                               fontSize: 24,
                                               fontWeight: FontWeight.w600,
@@ -240,7 +237,7 @@ class _BlogsScreenWidgetState extends State<BlogsScreenWidget> {
                       color: Provider.of<DarkModeProvider>(context).value
                           ? const Color.fromARGB(255, 33, 39, 43)
                           : const Color.fromARGB(255, 230, 234, 212),
-                      child: PopupScreen(),
+                      child: const PopupScreen(),
                     ),
                   ),
                 );

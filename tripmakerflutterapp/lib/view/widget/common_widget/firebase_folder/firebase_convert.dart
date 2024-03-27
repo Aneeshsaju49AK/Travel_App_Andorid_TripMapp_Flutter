@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tripmakerflutterapp/controller/firebase_controller/firebase_controller.dart';
@@ -23,13 +21,13 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Firebase Convert'),
+        title: const Text('Firebase Convert'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: places.snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
@@ -39,7 +37,7 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
               .map((doc) => doc.data() as Map<String, dynamic>)
               .toList();
 
-          print("hlo ${places.doc().id}");
+          // print("hlo ${places.doc().id}");
 
           // Function to convert Firebase data to List<ModelPlace>
           List<ModelPlace> getPlaceList() {
@@ -76,7 +74,7 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
                 itemCount: value.length,
                 itemBuilder: (context, index) {
                   ModelPlace place = value[index];
-                  print("${place.id}");
+                  // print("${place.id}");
                   return Container(
                     height: 300,
                     width: 300,
@@ -135,7 +133,7 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
       case 'District.Wayanad':
         return District.Wayanad;
       default:
-        print('Unknown category: $districtString');
+        // print('Unknown category: $districtString');
         break;
     }
     return null;
@@ -163,7 +161,7 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
         return PlaceCategory.lake;
 
       default:
-        print('Unknown category: $catogoryString');
+        // print('Unknown category: $catogoryString');
         break;
     }
 

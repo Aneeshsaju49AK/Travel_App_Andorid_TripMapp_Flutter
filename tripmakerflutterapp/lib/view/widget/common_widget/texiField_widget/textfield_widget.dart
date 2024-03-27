@@ -4,7 +4,7 @@ signup/ and  login page */
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:tripmakerflutterapp/provider/texiFieldWidget_provider.dart';
+import 'package:tripmakerflutterapp/provider/textfield_page_provider/texiFieldWidget_provider.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final String label;

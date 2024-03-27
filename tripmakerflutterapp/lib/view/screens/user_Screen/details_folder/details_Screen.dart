@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
-import 'package:tripmakerflutterapp/provider/darkMode_provider.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_screen/blogs_Screen.dart';
+import 'package:tripmakerflutterapp/provider/favorite_page_provider/favorite_page_provider.dart';
+import 'package:tripmakerflutterapp/provider/darkmode_page_provider/darkMode_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_screen/blogs_sceen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/buttonCommon_widget/buttonCommon_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/heartButton_folder/heartbutton_widget.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/sliderimage_folder/sliderImage_widget.dart';
-
-import '../../widget/common_widget/populatList_folder/commonwidget.dart';
 
 class DetailsScreen extends StatefulWidget {
   final ModelPlace place;
@@ -287,7 +280,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 20,
                               ),
                               SizedBox(
@@ -412,7 +405,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => BlogsScreenWidget(),
+                                      builder: (context) =>
+                                          const BlogsScreenWidget(),
                                     ),
                                   );
                                 },
