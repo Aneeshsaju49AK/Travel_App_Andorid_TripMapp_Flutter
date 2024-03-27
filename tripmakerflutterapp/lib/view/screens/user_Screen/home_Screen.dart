@@ -9,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripmakerflutterapp/controller/user_model/user_model_controllers.dart';
 import 'package:tripmakerflutterapp/model/user_model/user_model.dart';
-import 'package:tripmakerflutterapp/view/screens/user_Screen/activity_Screen.dart';
+import 'package:tripmakerflutterapp/view/screens/user_Screen/addTrip_folder/activity_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/addtrip_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_screen/blogs_Screen.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/blogs_screen/blogs_sceen.dart';

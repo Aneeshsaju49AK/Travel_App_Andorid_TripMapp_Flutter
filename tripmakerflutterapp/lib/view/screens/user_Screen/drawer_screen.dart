@@ -208,7 +208,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const FirebaseConvert(),
+                                              const AboutScreen(),
                                         ),
                                       );
                                       break;
