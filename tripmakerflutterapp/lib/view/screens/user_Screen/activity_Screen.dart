@@ -97,7 +97,7 @@ class ActivityScreenWidget extends StatelessWidget {
                                     return SizedBox(
                                       width: width / 1,
                                       height: height / 3.5,
-                                      child: value.getImageWidget(
+                                      child: value.getImageWidgetUrl(
                                         place.selectedPlace!.images![0],
                                       ),
                                     );

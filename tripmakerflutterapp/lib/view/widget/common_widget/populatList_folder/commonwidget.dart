@@ -52,9 +52,9 @@ class PopularListViewWidget extends StatelessWidget {
                           SizedBox(
                             width: width / 1,
                             height: height / 1,
-                            child: Image.network(
+                            child: Provider.of<CommonProvider>(context)
+                                .getImageWidgetUrl(
                               place.images![0],
-                              fit: BoxFit.fill,
                             ),
                           ),
                           Container(
@@ -66,19 +66,47 @@ class PopularListViewWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 30,
-                              left: 30,
-                            ),
-                            child: Text(
-                              place.placeName!,
-                              style: GoogleFonts.abel(
-                                fontSize: 30,
-                                fontWeight: FontWeight.w800,
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 30,
+                                  left: 30,
+                                ),
+                                child: FittedBox(
+                                  child: Container(
+                                    height: 100,
+                                    width: 250,
+                                    child: SingleChildScrollView(
+                                      child: Text(
+                                        place.placeName!,
+                                        style: GoogleFonts.abel(
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          DetailsScreen(place: place),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.remove_red_eye_rounded,
+                                  size: 30,
+                                ),
                                 color: Colors.white,
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       );
