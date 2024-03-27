@@ -31,7 +31,7 @@ class CommonProvider extends ChangeNotifier {
 
   Widget getImageWidgetUrl(String imagePath) {
     if (imagePath.startsWith("https://")) {
-      notifyListeners();
+      // notifyListeners();
       return Image.network(
         imagePath,
         fit: BoxFit.cover,

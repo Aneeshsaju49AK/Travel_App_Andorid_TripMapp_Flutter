@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tripmakerflutterapp/controller/favorite_model/favorite_model_controller.dart';
 import 'package:tripmakerflutterapp/model/place_model/place_model.dart';
+import 'package:tripmakerflutterapp/provider/common_provider.dart';
 import 'package:tripmakerflutterapp/provider/favorite_page_provider.dart';
 import 'package:tripmakerflutterapp/view/screens/user_Screen/details_Screen.dart';
 import 'package:tripmakerflutterapp/view/widget/common_widget/backButton_folder/backButton_widget.dart';
@@ -112,7 +113,9 @@ class FavoritePage extends StatelessWidget {
                                     SizedBox(
                                       width: width / 1,
                                       height: height / 3.5,
-                                      child: getImageWidget(
+                                      child:
+                                          Provider.of<CommonProvider>(context)
+                                              .getImageWidgetUrl(
                                         place.images![0],
                                       ),
                                     ),

@@ -75,6 +75,7 @@ class ControllerFirebase {
         (doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           ModelPlace place = ModelPlace(
+            id: doc.id,
             district: districtFromString(data['selectedDistrict']),
             category: categoryFromString(data['selectedCategory']),
             placeName: data['PlaceName'],
@@ -86,7 +87,7 @@ class ControllerFirebase {
                 .map((item) => item.toString())
                 .toList(),
           );
-
+          print(place.id);
           placesList.add(place);
           if (place.district == District.Alappuzha) {
             alappuzhaplacesList.add(place);

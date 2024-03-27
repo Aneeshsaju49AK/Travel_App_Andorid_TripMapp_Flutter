@@ -39,11 +39,14 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
               .map((doc) => doc.data() as Map<String, dynamic>)
               .toList();
 
+          print("hlo ${places.doc().id}");
+
           // Function to convert Firebase data to List<ModelPlace>
           List<ModelPlace> getPlaceList() {
             return List.generate(
               placeList.length,
               (index) => ModelPlace(
+                id: snapshot.data!.docs[index].id,
                 district: districtFromString(
                   placeList[index]['selectedDistrict'],
                 ),
@@ -73,6 +76,7 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
                 itemCount: value.length,
                 itemBuilder: (context, index) {
                   ModelPlace place = value[index];
+                  print("${place.id}");
                   return Container(
                     height: 300,
                     width: 300,
@@ -101,7 +105,6 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
   }
 
   District? districtFromString(String? districtString) {
-    print(districtString);
     switch (districtString) {
       case 'District.Alappuzha':
         return District.Alappuzha;
@@ -139,7 +142,6 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
   }
 
   PlaceCategory? categoryFromString(String catogoryString) {
-    print(catogoryString);
     PlaceCategory? place;
     switch (catogoryString) {
       case 'PlaceCategory.hillStations':
@@ -164,7 +166,7 @@ class _FirebaseConvertState extends State<FirebaseConvert> {
         print('Unknown category: $catogoryString');
         break;
     }
-    print(place);
+
     return place;
   }
 }
