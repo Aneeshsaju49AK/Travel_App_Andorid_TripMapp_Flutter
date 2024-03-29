@@ -11,7 +11,7 @@ import 'package:tripmakerflutterapp/view/screens/user_Screen/search_folder/addtr
 import 'package:tripmakerflutterapp/view/widget/common_widget/roundButton_folder/roundButton_widget.dart';
 
 class PopScreenAddTrip extends StatefulWidget {
-  PopScreenAddTrip({super.key});
+  const PopScreenAddTrip({super.key});
 
   @override
   State<PopScreenAddTrip> createState() => _PopScreenAddTripState();

@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -58,6 +57,7 @@ class _PlaceUpdateFirebaseState extends State<PlaceUpdateFirebase> {
     return null;
   }
 
+  @override
   void initState() {
     super.initState();
     print(widget.placeData);

@@ -190,7 +190,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) {
-                                            return Scaffold(
+                                            return const Scaffold(
                                               body: SafeArea(
                                                 child: ProfileSetupWidget(),
                                               ),

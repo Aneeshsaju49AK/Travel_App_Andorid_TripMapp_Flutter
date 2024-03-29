@@ -25,7 +25,7 @@ class ActivityScreenWidget extends StatelessWidget {
           height: height / 1,
           child: Column(
             children: [
-              Row(
+              const Row(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
@@ -266,7 +266,7 @@ class ActivityScreenWidget extends StatelessWidget {
         onPressed: () => showBottomSheet(
           context: context,
           builder: (context) {
-            return PopScreenAddTrip();
+            return const PopScreenAddTrip();
           },
         ),
         child: const Icon(

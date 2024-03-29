@@ -56,21 +56,21 @@ Future<void> main() async {
   DeviceOrientation.portraitDown;
   DeviceOrientation.portraitUp;
   await Hive.initFlutter();
-  Directory dir = await getApplicationDocumentsDirectory();
-  Hive
-    ..init(dir.path)
-    ..registerAdapter(ProfileModelsAdapter());
-  Hive
-    ..init(dir.path)
-    ..registerAdapter(PlaceCategoryAdapter());
+  // Directory dir = await getApplicationDocumentsDirectory();
+  // Hive
+  //   ..init(dir.path)
+  //   ..registerAdapter(ProfileModelsAdapter());
+  // Hive
+  //   ..init(dir.path)
+  //   ..registerAdapter(PlaceCategoryAdapter());
 
-  // if (!Hive.isAdapterRegistered(PlaceCategoryAdapter().typeId)) {
-  //   Hive.registerAdapter(PlaceCategoryAdapter());
-  // }
+  if (!Hive.isAdapterRegistered(PlaceCategoryAdapter().typeId)) {
+    Hive.registerAdapter(PlaceCategoryAdapter());
+  }
 
-  // if (!Hive.isAdapterRegistered(ProfileModelAdapter().typeId)) {
-  //   Hive.registerAdapter(ProfileModelAdapter());
-  // }
+  if (!Hive.isAdapterRegistered(ProfileModelsAdapter().typeId)) {
+    Hive.registerAdapter(ProfileModelsAdapter());
+  }
 
   if (!Hive.isAdapterRegistered(BlogModelAdapter().typeId)) {
     Hive.registerAdapter(BlogModelAdapter());

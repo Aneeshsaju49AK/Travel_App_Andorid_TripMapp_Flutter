@@ -71,8 +71,7 @@ class ControllerFirebase {
       List<ModelPlace> beachesplacesList = [];
       List<ModelPlace> lakeplacesList = [];
 
-      querySnapshot.docs.forEach(
-        (doc) {
+      for (var doc in querySnapshot.docs) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           ModelPlace place = ModelPlace(
             id: doc.id,
@@ -134,8 +133,7 @@ class ControllerFirebase {
           } else if (place.category == PlaceCategory.waterfalls) {
             waterfallsplacesList.add(place);
           }
-        },
-      );
+        }
 
       // Update the ValueNotifier with the obtained list
       placeListNotifier.value = placesList;

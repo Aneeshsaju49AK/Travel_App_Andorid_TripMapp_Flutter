@@ -16,8 +16,8 @@ class ProviderMainPage with ChangeNotifier {
   bool get isLoggedIn => _isLoggedIn;
 
   Future<void> initializeMainPage(BuildContext context) async {
-    await Timer(
-      Duration(seconds: 3),
+    Timer(
+      const Duration(seconds: 3),
       () async {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         _isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
